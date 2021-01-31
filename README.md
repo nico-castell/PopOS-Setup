@@ -1,7 +1,7 @@
-# Pop!_OS Start
-[![Lines of code](https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?color=yellow&label=Lines%20of%20code)](https://github.com/nico-castell/PopOS-Start)
+# Pop!_OS Setup
+[![Lines of code](https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?color=yellow&label=Lines%20of%20code)](https://github.com/nico-castell/PopOS-Setup)
 [![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?color=yellow&label=Commits%20since%20last%20release)](https://github.com/nico-castell/PopOS-Setup/commits)
-[![GitHub](https://img.shields.io/github/license/nico-castell/PopOS-Start?color=yellow&label=License)](LICENSE)
+[![GitHub](https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=yellow&label=License)](LICENSE)
 
 This script was born from a desire to set up
 [Pop!_OS](https://pop.system76.com/) quickly and without too much fuzz. It
@@ -11,7 +11,7 @@ focuses on 3 things:
 1. Getting programs set up.
 1. Getting GNOME set up.
 
-- [Pop!_OS Start](#pop_os-start)
+- [Pop!_OS Setup](#pop_os-setup)
   - [The steps of the script](#the-steps-of-the-script)
   - [How to use](#how-to-use)
     - [Keep in mind:](#keep-in-mind)
@@ -72,7 +72,7 @@ successfully.
 
 1. Clone this repo
     ```bash
-    git clone https://github.com/nico-castell/PopOS-Start.git
+    git clone https://github.com/nico-castell/PopOS-Setup.git
     ```
 1. (Optional) The script modifies some files at runtime. You may want to
     remove the **.git** folder
