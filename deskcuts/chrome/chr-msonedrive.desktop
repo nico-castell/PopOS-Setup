@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=OneDrive
+Comment=Access OneDrive.
+GenericName=Drive;Office;
+Exec=google-chrome --app=https://onedrive.live.com/
+Icon=/home/nicolas/.mydock/msoffice/onedrive.png
+Type=Application
+StartupNotify=false
+Terminal=false
+Categories=Office;
+Keywords=OneDrive;Drive;Office;Microsoft
+
+X-Desktop-File-Install-Version=0.24

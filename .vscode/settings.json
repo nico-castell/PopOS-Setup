@@ -1,0 +1,18 @@
+{
+    // BashIDE extension settings:
+    "bashIde.explainshellEndpoint": "http://localhost:5000",
+    // Configure git to autofetch:
+    "git.autofetch": true,
+    // Use these rulers to know when to type a new line: (Prefer 78)
+    "editor.rulers": [
+        78,
+        120
+    ],
+    "files.exclude": {
+        "**/.git": false,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true
+    }
+}

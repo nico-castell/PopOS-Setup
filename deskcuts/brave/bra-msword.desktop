@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Word
+Comment=Access the Word web app.
+GenericName=Office
+Exec=brave-browser --app=https://www.office.com/launch/word?auth=1
+Icon=/home/nicolas/.mydock/msoffice/word.png
+Type=Application
+StartupNotify=false
+Terminal=false
+Categories=Office;
+Keywords=Write;Word;Office;Microsoft
+
+X-Desktop-File-Install-Version=0.24

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Netflix
+Comment=Access the netflix web and browse.
+GenericName=Movies
+Exec=brave-browser --app=https://www.netflix.com/browse
+Icon=/home/nicolas/.mydock/netflixlogo.png
+Type=Application
+StartupNotify=false
+Terminal=false
+Categories=Video;Movies;Entertainment;
+Keywords=Netflix;Movies
+
+X-Desktop-File-Install-Version=0.24

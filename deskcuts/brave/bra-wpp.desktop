@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=WhatsApp
+Comment=Chat with other people.
+GenericName=Chat;
+Exec=brave-browser --app=https://web.whatsapp.com/
+Icon=/home/nicolas/.mydock/whatsapp.png
+Type=Application
+StartupNotify=false
+Terminal=false
+Categories=Chat;
+Keywords=Chat;
+
+X-Desktop-File-Install-Version=0.24

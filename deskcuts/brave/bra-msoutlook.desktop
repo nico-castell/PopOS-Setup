@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Outlook
+Comment=Access the OutLook web app.
+GenericName=Office
+Exec=brave-browser --app=https://office.live.com/start/Outlook.aspx?ui=en%2DUS&rs=US
+Icon=/home/nicolas/.mydock/msoffice/outlook.png
+Type=Application
+StartupNotify=false
+Terminal=false
+Categories=Office;
+Keywords=Mail;Outlook;Office;Microsoft
+
+X-Desktop-File-Install-Version=0.24

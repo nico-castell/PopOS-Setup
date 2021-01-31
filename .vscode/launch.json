@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Bash-Debug: Active file",
+            "cwd": "${workspaceFolder}",
+            "program": "${file}",
+            "args": [
+                "${input:ARGS}"
+            ]
+        }
+    ],
+    "compounds": [],
+    "inputs": [
+        {
+            "id": "ARGS",
+            "type": "promptString",
+            "description": "Input the arguments for the script"
+        }
+    ]
+}

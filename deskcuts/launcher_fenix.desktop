@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Launcher Fenix
+Comment=Play minecraft, for free.
+GenericName=Minecraft Server
+Exec=java -jar /home/nicolas/.mydock/launcher_fenix.jar
+Icon=/home/nicolas/.mydock/mccoffee.png
+Type=Application
+StartupNotify=false
+Terminal=false
+Categories=Game;Server;
+Keywords=Minecraft;Server
+
+X-Desktop-File-Install-Version=0.24
