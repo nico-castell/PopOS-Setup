@@ -181,7 +181,7 @@ if [ -z $load_tmp_file ]; then
 
     # If java is going to be installed, offer to build a minecraft server.
     if [[ ${TO_APT[@]} == *"default-jre"* ]]; then
-        prompt_user "mc_server_builder" "build a minecraft server"
+        prompt_user "mc_server_builder.sh" "build a minecraft server"
         BUILD_MC_SERVER=("$Confimed")
         if [ "$BUILD_MC_SERVER" = true ]; then
             echo "BUILD_MC_SERVER" >> "$choices_file"
@@ -268,9 +268,9 @@ fi
 # Make the backup alias for the backup script
 Make_backup_alias () {
     # If there is a backup script, make an alias for it, but only, if an alias hasn't already been made.
-    if [ -f "$script_location/back_me_up" ] && [ -z "$(cat $1 | grep "alias backup")" ]; then
+    if [ -f "$script_location/back_me_up.sh" ] && [ -z "$(cat $1 | grep "alias backup")" ]; then
         echo >> $1
-        echo "alias backup=\"$script_location/back_me_up\"" >> $1
+        echo "alias backup=\"$script_location/back_me_up.sh\"" >> $1
     fi
 }
 echo "Making an alias for the backup script..."
@@ -831,22 +831,22 @@ fi
 
 # Build minecraft server.
 if [ "$BUILD_MC_SERVER" = true ]; then
-    "$script_location"/mc_server_builder
+    "$script_location"/mc_server_builder.sh
     Separate 4
 fi
 unset BUILD_MC_SERVER INSTALL_DUC
 
 # Configure gnome using secondary scripts.
-if [ -f "$script_location/gnome_settings" ]; then
-    "$script_location"/gnome_settings
+if [ -f "$script_location/gnome_settings.sh" ]; then
+    "$script_location"/gnome_settings.sh
     Separate 4
 fi
 
-if [ -f "$script_location/gnome_appearance" ]; then
+if [ -f "$script_location/gnome_appearance.sh" ]; then
     echo "Restarting gnome shell..."
     busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting…")' > /dev/null
     sleep 8 # Wait for the refresh to be over before continuing
-    "$script_location"/gnome_appearance
+    "$script_location"/gnome_appearance.sh
     Separate 4
 fi
 
