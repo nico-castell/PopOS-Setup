@@ -2,18 +2,22 @@
 
 All significant changes to **PopOS Start** will be documented here
 
-1. [Unreleased](#Unreleased)
 1. [Released](#Released)
+1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
 
-## Unreleased
-
-1. Add more git configs in the vscode git setup.
-
 ## Released
+### Version [0.1.2](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.2) - *2021-01-31*
+#### Changed
+Now the project is hosted on a new repository.
+#### Deprecated
+The old repository is deprecated and will be removed within the next 14 days.
 
-### Version [1.3.3](https://github.com/nico-castell/PopOS-Start/releases/tag/1.3.3) - *2021-01-28*
+---
 
+## Previous repository
+
+### Version 0.1.1 - *2021-01-28*
 #### Added
 1. Implementation of rsync in *back_me_up*.
 1. Implementation of wait animations in *back_me_up* and *pop_OS_start*.
@@ -21,8 +25,7 @@ All significant changes to **PopOS Start** will be documented here
 1. Added Extension Development to select menu in Visual Studio Code setup.
 1. Improved documentation.
 
-### Version [1.3.2](https://github.com/nico-castell/PopOS-Start/releases/tag/1.3.2) - *2021-01-10*
-
+### Version 0.1.0 - *2021-01-10*
 #### About
 This is the first official release, there were other minor and not so minor
 upgrades to the project before it was published. Previous versions were not
@@ -42,22 +45,19 @@ documented so information about then is very limited.
 
 ## Pre-Releases
 
-### Version 1.3.0
-
+### Version 0.0.3
 #### Changed
 This was a major **re-writing** of the pop_OS_start script, it allowed for
 more expandability, simplified processes and seriously reduced the number of
 bugs.
 
-### Version 1.2.0
-
+### Version 0.0.2
 #### Added
 1. **Reboot the machine** after upgrading the kernel or installing a
 proprietary NVIDIA driver.
 1. Load choices from a temporary file.
 
-### Version 1.1.0
-
+### Version 0.0.1
 #### Added
 1. Choose packages to remove or install and flatpaks to install
 **at the start** of the script, not when the operation is about to be
