@@ -3,6 +3,8 @@
         "rogalmic.bash-debug",
         "mads-hartmann.bash-ide-vscode",
         "gruntfuggly.todo-tree",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "usernamehw.errorlens",
+        "nico-castell.linux-desktop-file",
     ]
 }
