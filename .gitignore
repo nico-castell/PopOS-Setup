@@ -1,0 +1,27 @@
+# Exclude windows config files, shortcuts and temporary files
+*.db
+*.ini
+*.lnk
+*.url
+~*
+$RECYCLE.BIN/
+
+# Exclude test and tmp files
+*test*
+*temp*
+*tmp*
+
+# Ignore vim files
+*~
+*.swp
+
+# Backups (I mean... we have git.)
+Backup*/
+
+# Configure ignore and track for Visual Studio and Visual Studio Code
+.vs/*
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
