@@ -1,5 +1,5 @@
 # Pop!_OS Start
-[![GitHub repo size](https://img.shields.io/github/repo-size/nico-castell/PopOS-Setup?color=yellow&label=Repository%20Size)](https://github.com/nico-castell/PopOS-Start)
+[![Lines of code](https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?color=yellow&label=Lines%20of%20code)](https://github.com/nico-castell/PopOS-Start)
 [![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?color=yellow&label=Commits%20since%20last%20release)](https://github.com/nico-castell/PopOS-Setup/commits)
 [![GitHub](https://img.shields.io/github/license/nico-castell/PopOS-Start?color=yellow&label=License)](LICENSE)
 
@@ -18,7 +18,7 @@ focuses on 3 things:
   - [Known issues](#known-issues)
   - [Licensing](#licensing)
 
-## The steps of the [script](pop_OS_start)
+## The steps of the [script](pop_OS_start.sh)
 
 1. Process options.
     * --disable-reboot) Not allow the script to reboot the computer.
@@ -80,9 +80,9 @@ successfully.
     cd "path/to/cloned/repo"
     rm -rf .git
     ```
-1. Run the pop_OS_start script
+1. Run the pop_OS_start.sh script
     ```bash
-    ./pop_OS_start
+    ./pop_OS_start.sh
     ```
 1. Answer the questions (they have a 10 second time out and default to no).
     You'll be asked what software you want to remove and install, and which
