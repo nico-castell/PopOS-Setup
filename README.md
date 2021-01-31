@@ -1,6 +1,6 @@
 # Pop!_OS Start
-[![GitHub repo size](https://img.shields.io/github/repo-size/nico-castell/PopOS-Start?color=yellow&label=Repository%20Size)](https://github.com/nico-castell/PopOS-Start)
-[![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/nico-castell/PopOS-Start/latest?color=yellow&label=Commits%20since%20last%20release)](https://github.com/nico-castell/PopOS-Start/commits)
+[![GitHub repo size](https://img.shields.io/github/repo-size/nico-castell/PopOS-Setup?color=yellow&label=Repository%20Size)](https://github.com/nico-castell/PopOS-Start)
+[![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?color=yellow&label=Commits%20since%20last%20release)](https://github.com/nico-castell/PopOS-Setup/commits)
 [![GitHub](https://img.shields.io/github/license/nico-castell/PopOS-Start?color=yellow&label=License)](LICENSE)
 
 This script was born from a desire to set up
