@@ -103,6 +103,9 @@ Animate() {
     done
 }
 
+pushd . >/dev/null
+cd ~
+
 # Setting the destination folder name.
 TODAY=$( date +"%Y-%m-%d_%H-%M" )
 
@@ -272,5 +275,6 @@ done
 
 #===========================================================================
 #endregion Making the BackUp
+popd >/dev/null
 
 # Thanks for downloading, and enjoy!
