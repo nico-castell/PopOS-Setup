@@ -1,5 +1,5 @@
 <h1 align="center">
-    <br><img src="assets/logo.png" width="319" height="220">
+    <br><img src="assets/logo.png" width="317" height="230">
     <br><br>Pop!_OS Setup<br>
 </h1>
 <p align="center">
