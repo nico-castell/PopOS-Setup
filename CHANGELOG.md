@@ -7,9 +7,18 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
+### Version [0.1.3](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.2) - *2021-02-05*
+#### Changed
+* Major changes in all comments.
+* Some `tput setaf` commands were changed from ANSI escape codes.
+
+#### Fixed
+[back_me_up](back_me_up.sh): No longer errors when not running from ~.
+
 ### Version [0.1.2](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.2) - *2021-01-31*
 #### Changed
 Now the project is hosted on a new repository.
+
 #### Deprecated
 The old repository is deprecated and will be removed within the next 14 days.
 
