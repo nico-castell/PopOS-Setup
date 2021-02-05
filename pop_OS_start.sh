@@ -26,30 +26,19 @@
 #region Options
 while [ -n "$1" ]; do
     case "$1" in
-        # User options ==========================
-        # Load from temporary file.
-        --from-temp-file) load_tmp_file=true ;;
-
-        # Disable rebooting in the script.
-        --disable-reboot) disable_reboot=true ;;
-
-        # Help menu.
-        --help)
+        --from-temp-file) load_tmp_file=true ;;  # Load from temporary file.
+        --disable-reboot) disable_reboot=true ;; # Disable rebooting in the script.
+        --help)                                  # Help menu.
         echo "This script sets up a Pop!_OS installation as best as possible."
         echo "Options are:"
         echo "  --from-temp-file) Loads previous choices."
         echo "  --disable-reboot) Stops the script from rebooting the computer."
         exit
         ;;
-
         # Internal options ======================
-        # Make the script persist at the end.
-        -p) persist_at_the_end=true ;;
-
+        -p) persist_at_the_end=true ;;           # Make the script persist at the end.
         *) echo "ERROR: Option $1 not recognized" && exit 1 ;;
-    esac
-    shift
-done
+esac; shift; done
 #endregion Options
 
 # Getting script's absolute location for later.
