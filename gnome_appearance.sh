@@ -40,7 +40,7 @@ fi
 # Prepare the destionation folders.
 echo "Creating destination directories..."
 if [ ! -d ~/.themes ]; then mkdir ~/.themes; fi
-if [ ! -d ~/.icons ]; then mkdir ~/.icons; fi
+if [ ! -d ~/.icons ];  then mkdir ~/.icons;  fi
 
 echo "=================="
 
@@ -57,18 +57,14 @@ for d in icons themes; do
     LIST=$(ls *.zip)
     echo "------------------"
     for i in ${LIST[@]}; do
-
         # Copy the file, only if it hasn't already been installed.
         if [ ! -d ~/.$d/${i/".zip"/""} ]; then
-
             echo "Unziping $i..."
             unzip $i > /dev/null
 
             echo "Moving ${i/".zip"/""}..."
             mv ${i/".zip"/""} ~/.$d/
-
         fi
-
     done
     cd ..
     echo "=================="

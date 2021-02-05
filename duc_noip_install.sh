@@ -28,51 +28,33 @@
 # Checking options internet and installation.
 
 while [ -n "$1" ]; do
-
     case "$1" in
-
-        # Create a start menu entry.
-        -e) ENTRY=true ;;
-
-        # Use crontab to autostart the DUC at start-up.
-        # -a) AUTOSTART=true ;;
-
-        # Offer a help message.
-        -h)
+        -e) ENTRY=true ;;        # Create a start menu entry.
+        # -a) AUTOSTART=true ;;  # Use crontab to autostart the DUC at start-up.
+        -h)                      # Offer a help message.
             echo "This script installs No-Ip's DUC on your computer."
             echo "The options are:"
             echo "  -e) Create a start menu entry."
             echo "  -h) Show this menu."
             exit
             ;;
-
         *) echo "Option $1 not recognized" && exit 1 ;;
+esac; shift; done
 
-    esac
-
-    shift
-
-done
-
-# This test for an internet connection and exits if it cannot find one.
-wget -q --spider www.google.com
+# Test for an internet connection and exit if none is found.
+ping -c 1 google.com &>/dev/null
 if [ ! $? -eq 0 ]; then
-
-    echo >&2 "`tput setaf 1`ERROR: Internet not found`tput sgr0`"
+    echo -e >&2 "\e[31mERROR: No internet\e[00m"
     exit 1
-
 fi
 
 # Checking if the DUC is already installed.
 FINDDUC=$(which noip2)
 FINDDUC=${FINDDUC/"/usr/local/bin/"/""}
-
 if [ $FINDDUC = "noip2" ]; then
-
-    echo "`tput setaf 2`No-Ip's DUC is already installed`tput sgr0`, exiting..."
+    echo -e "\e[32mNo-Ip's DUC is already installed\e[00m, exiting..."
     echo "run 'sudo noip2 -S' if it's not already configured"
-    exit
-
+    exit 0
 fi
 
 #===========================================================================
@@ -98,22 +80,19 @@ FINDWGET=$(which wget)
 FINDWGET=${FINDWGET/"/usr/bin/"/""}
 
 if [ $FINDWGET != "wget" ]; then
-
-    echo "`tput setaf 1`ERROR: You need to install the package 'wget' to download the file`tput sgr0`"
+    echo -e "\e[31mERROR: You need to install the package 'wget' to download the file\e[00m" >&2
     exit 1
-
 fi
 
 # Actually downloads the file.
 sudo wget http://www.noip.com/client/linux/noip-duc-linux.tar.gz
 
 echo "Unpacking the file"
-sudo tar xf noip-duc-linux.tar.gz
+sudo tar -xf noip-duc-linux.tar.gz
 
-# This will open a text editor to type your password,
-#   It's necessary because tping to the installer can
-#   cause certain symbols to be written incorrectly and
-#   cause a "Wrong password" error.
+# This will open a text editor to type your password, It's necessary because
+#   typing to the installer can cause certain symbols to be written incorrectly
+#   and cause a "Wrong password" error.
 (gedit ) &
 cd noip-2*
 
@@ -124,21 +103,15 @@ echo "Attempting Installation"
 FINDMAKE=$(which make)
 
 if [[ ! $FINDMAKE = *"make"* ]]; then
-
-    echo "`tput setaf 1`ERROR: You need to install the package 'make' to install the DUC.`tput sgr0`"
+    echo -e "\e[31mERROR: You need to install the package 'make' to install the DUC.\e[00m" 2>/dev/null
     exit 1
-
 fi
 
 # This will actually install the program.
 sudo make install
-echo
-
-echo "Creating configuration file..."
+echo -e "\nCreating configuration file..."
 sudo /usr/local/bin/noip2 -C
-echo
-
-echo "Removing lefover .tar.gz file..."
+echo -e "\nRemoving lefover .tar.gz file..."
 sudo rm /usr/local/src/noip*.tar.gz
 
 #===========================================================================
@@ -154,23 +127,18 @@ if [ $ENTRY ]; then
 
     cd ~
     if [ ! -d ~/.mydock/ ]; then
-
         mkdir ~/.mydock
-
     fi
 
     # Download the logo only if there isn't yet another one.
     cd ~/.mydock/
     if [ ! -f ~/.mydock/noiplogo.png ]; then
-
         echo "Downloading logo..."
         wget -q https://www.dropbox.com/s/g55zl9q9uc2a1pw/noiplogo.png?dl=1
         mv ./noiplogo* ./noiplogo.png
-
     fi
 
     if [ ! -f ./noip_duc ]; then
-
         echo "Making target file..."
         #region File ============================================================
         echo "#!/bin/bash" >> noip_duc
@@ -225,15 +193,12 @@ if [ $ENTRY ]; then
         echo >> noip_duc
         echo "if [ ! \$SHOW ]; then sleep 1.5; fi" >> noip_duc
         #endregion File ============================================================
-
     fi
-
     chmod +x ./noip_duc
 
     # This will create the .desktop file.
     cd /usr/share/applications/
     if [ ! -f ./noip_duc.desktop ]; then
-
         echo "Creating noip_duc.desktop file..."
         #region File ============================================================
         echo "[Desktop Entry]" | sudo tee -a ./noip_duc.desktop > /dev/null
@@ -261,37 +226,12 @@ if [ $ENTRY ]; then
         echo "Exec=/home/$USER/.mydock/noip_duc -k" | sudo tee -a ./noip_duc.desktop > /dev/null
         echo "Icon=/home/$USER/.mydock/noiplogo.png" | sudo tee -a ./noip_duc.desktop > /dev/null
         #endregion File ============================================================
-
     fi
-
     echo "Press 'Alt+F2' and run 'r' if the entry doesn't yet load."
-
 fi
 
 #===========================================================================
 #endregion Start menu entry
 
-
-#region Autostart
-#===========================================================================
-# Use crontab to autostart the DUC at start-up.
-
-# FINDCRON=$(which crontab)
-# if [ -z $FINDCRON ]; then
-
-#     echo "`tput setaf 1`ERROR: You need cron installed to autostart the DUC at system start-up`tput sgr0`"
-
-# else
-
-#     echo "Automating initialization of the DUC..."
-#     echo "@reboot su -l $USER && sudo noip2" | sudo tee -a /var/spool/cron/crontabs/root > /dev/null
-#     if [ $? -eq 0 ]; then echo "Automation was successful."; fi
-
-# fi
-
-#===========================================================================
-#endregion Autostart
-# The script has ended.
 echo "`tput setaf 2`No-Ip's DUC has been installed!`tput sgr0`"
-
 # Thanks for downloading, and enjoy!

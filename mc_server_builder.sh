@@ -30,23 +30,12 @@
 # Assigning booleans to the options.
 while [ -n "$1" ]; do
     case "$1" in
-        # This option is there to delete the server.
-        -d | --delete) REMOVE=true ;;
-
-        # This is option is for a full removal of the server.
-        -fd | --full-delete) REMOVE=true && FULL=true ;;
-
-        # This option is to skip the user settings.
-        -s | --skip) SKIP=true ;;
-
-        # This will only run the user settings.
-        -us | --user-config-only) USERCONFIGONLY=true ;;
-
-        # Not hide .mcserver folder.
-        -mc | --not-hide-mc) NOTHIDEMCFOLDER=true ;;
-
-        # Offer help.
-        -h | --help)
+        -d | --delete) REMOVE=true ;;                     # This option is there to delete the server.
+        -fd | --full-delete) REMOVE=true && FULL=true ;;  # This is option is for a full removal of the server.
+        -s | --skip) SKIP=true ;;                         # This option is to skip the user settings.
+        -us | --user-config-only) USERCONFIGONLY=true ;;  # This will only run the user settings.
+        -mc | --not-hide-mc) NOTHIDEMCFOLDER=true ;;      # Not hide .mcserver folder.
+        -h | --help)                                      # Offer help.
             echo "This script deploys a Minecraft Java Server in you computer."
             echo "Options are:"
             echo "  -d | --delete) Delete the server."
@@ -57,7 +46,6 @@ while [ -n "$1" ]; do
             echo "  -mc | --not-hide-mc) Not hide server directory."
             exit
             ;;
-
         *) echo >&2 "Option \"$1\" not recognized." && exit 1 ;;
 esac; shift; done
 
@@ -79,25 +67,22 @@ if [ $REMOVE ]; then
 
             # When the -fd option is used, it will delete everything it originally created.
             if [ $FULL ]; then
-
                 echo "Deleting start menu entry..."
-                if [ -f /usr/share/applications/mcserver.desktop ]; then sudo rm /usr/share/applications/mcserver.desktop; fi
-                echo
+                if [ -f /usr/share/applications/mcserver.desktop ]; then
+                    sudo rm /usr/share/applications/mcserver.desktop
+                fi
 
-                echo "Choose the rule/s for port 25565 # MC-SERVER"
+                echo -e "\nChoose the rule/s for port 25565 # MC-SERVER"
                 sudo ufw status numbered
                 while [ true ]; do
-
                     read -p "> "
                     if [ -z $REPLY ]; then break; fi
                     sudo ufw delete $REPLY
-
                 done
+
                 # Ensure changes take place.
                 sudo ufw reload
-
-                echo
-                echo "`tput setaf 3`The firewall will not be disabled.`tput sgr0`"
+                echo -e "\n\e[33mThe firewall will not be disabled.\e[00m"
                 echo "Run 'sudo ufw disable' to disable it"
             fi
         fi
@@ -140,7 +125,7 @@ if [ $USERCONFIGONLY ]; then
 fi
 
 # Test for an internet connection and exit if none is found.
-ping -c 1 google.com > /dev/null 2> /dev/null
+ping -c 1 google.com &>/dev/null
 if [ ! $? -eq 0 ]; then
     echo -e >&2 "\e[31mERROR: No internet\e[00m"
     exit 1
@@ -155,18 +140,18 @@ if [ ! -d ~/"$MCFOLDER" ]; then
     echo "Creating ~/$MCFOLDER directory..."
     mkdir ~/"$MCFOLDER"
 else
-    echo "`tput setaf 2`~/$MCFOLDER already present`tput sgr0`"
+    echo -e "\e[32m~/$MCFOLDER already present\e[00m"
 fi
 
 echo "Accesing ~/$MCFOLDER/..."
 cd ~/"$MCFOLDER"/
-# Now it's downloading the latest minecraft server from mojang.
+# Now it's downloading a minecraft server from mojang.
 if [ ! -f ./server*.jar ]; then
     echo "Getting minecraft server 1.16.4 from Mojang..."
     # Copy the download link from https://www.minecraft.net/en-us/download/server if there's a newer version.
     wget https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
 else
-    echo "`tput setaf 2`Server already present`tput sgr0`"
+    echo -e "\e[32mServer already present\e[00m"
 fi
 
 # If there's no server icon present this will download one from the author's dropbox.
@@ -177,13 +162,13 @@ if [ ! -f ./server-icon.png ]; then
 fi
 
 if [ ! -f ./run ]; then
-    # This will create the the file to run the server from now on.
+    # This will create the file to run the server from now on.
     echo "Creating run file..."
 
     # It'll aks the user about the usage of RAM and if they don't answer it'll default to 1G.
-    echo "How much `tput setaf 3`RAM`tput sgr0` do you want the server to use?"
-    echo "If you leave this blank the server will use 1G"
-    read -p "`tput setaf 3`> `tput sgr0`"
+    echo -e "How much \e[33mRAM\e[00m do you want the server to use?"
+    echo -e "If you leave this blank the server will use 1G"
+    read -p "> "
 
     if [[ -z $REPLY ]]; then RAM=1G; else RAM=$REPLY; fi
 
@@ -194,50 +179,39 @@ if [ ! -f ./run ]; then
     echo "# The .desktop file should be in /usr/share/applications/mcserver.desktop" >> run
     echo >> run
     echo "while [ -n \"\$1\" ]; do" >> run
-    echo >> run
     echo "    case \"\$1\" in" >> run
+    echo "        -s) SLEEP=true   ;; # Skip the final timer (Useful when running this script from a terminal)." >> run
+    echo "        -p) PERSIST=true ;; # Persist at the end, useful for debugging." >> run
+    echo "        *) echo \"ERROR: Option \$1 not recongized\" >&2 && exit 1 ;;" >> run
+    echo "esac; shift; done" >> run
     echo >> run
-    echo "        # Skip the final timer (Useful when running this script from a terminal)." >> run
-    echo "        -s) SLEEP=true ;;" >> run
-    echo >> run
-    echo "        # Persist at the end, useful for debugging." >> run
-    echo "        -p) PERSIST=true ;;" >> run
-    echo >> run
-    echo "        *) echo >&2 \"ERROR: Option \$1 not recongized\" && exit 1 ;;" >> run
-    echo >> run
-    echo "    esac" >> run
-    echo >> run
-    echo "    shift" >> run
-    echo >> run
-    echo "done" >> run
-    echo >> run
-    echo "# Separates actions being executed by the script." >> run
-    echo "separate () {" >> run
-    echo "    let NCOLS=\$(tput cols); tput setaf 4" >> run
-    echo "    for ((i = 0; i < \$NCOLS; i++)); do echo -e \"=\c\"; done" >> run
-    echo "    echo; tput sgr0" >> run
+    echo "# Function to draw a line across the width of the console." >> run
+    echo "Separate () {" >> run
+    echo "    if [ ! -z \$1 ]; then tput setaf \$1; fi" >> run
+    echo "    printf \"\n\n%\`tput cols\`s\n\" |tr \" \" \"=\"" >> run
+    echo "    tput sgr0" >> run
     echo "}" >> run
     echo >> run
     echo "# Verbosing the options." >> run
-    echo "if [ \$PERSIST ]; then echo \"The window will stay open after stopping the server.\"; fi" >> run
+    echo "if [ \$PERSIST ]; then echo \"\" \"The window will stay open after stopping the server.\"; fi" >> run
     echo >> run
-    echo "echo \"Accessing the server folder...\"" >> run
-    echo "cd \`dirname \"\$0\"\`" >> run
-    echo "echo \"Starting the server...\"" >> run
+    echo "printf \"\nAccessing the server folder...\n\"" >> run
+    echo "cd \"\$(dirname \"\$0\")\"" >> run
+    echo "printf \"\nStarting the server...\"\n" >> run
     echo >> run
     echo "# This actually runs the server." >> run
-    echo "separate" >> run
-    echo "java -Xmx$RAM -Xms$RAM -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:G1HeapRegionSize=32M -XX:MaxGCPauseMillis=50 -jar server*.jar --nogui" >> run
-    echo "separate" >> run
+    echo "Separate 6" >> run
+    echo "java -Xmx\$RAM -Xms\$RAM -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:G1HeapRegionSize=32M -XX:MaxGCPauseMillis=50 -jar server*.jar --nogui" >> run
+    echo "Separate 6" >> run
     echo >> run
-    echo "echo \"Server has stopped.\"" >> run
+    echo "printf \"\nServer has stopped.\"\n" >> run
     echo >> run
     echo "# The options take effect here." >> run
-    echo "if [ \$SLEEP ]; then sleep 1.5; fi" >> run
+    echo "if [ \$SLEEP ];   then sleep 1.5; fi" >> run
     echo "if [ \$PERSIST ]; then read -p \"Persisting, press ENTER to exit.\"; fi" >> run
     #endregion Target File ============================================================
 else
-    echo "`tput setaf 2`run already present`tput sgr0`"
+    echo -e "\e[32mrun already present`tput sgr0`"
 fi
 
 # Adding executable permissions to 'run'.
@@ -255,7 +229,7 @@ chmod +x ./run
 if [ ! -f /usr/bin/java ]; then
     echo >&2 "`tput setaf 1`You need java installed to proceed.`tput sgr0`"
 
-    # Offer to install default-jre.
+    # Offer to install java.
     read -p "Do you want to install \"default-jre\"? (Y/n) "
     if [[ ${REPLY,,} == "y" ]] || [[ -z $REPLY ]]; then
         echo "Installing..."
@@ -281,15 +255,12 @@ if [ -f eula.txt ]; then
     fi
 else
     # Starting the server for the first time and then agreeing to the eula.
-    echo
-    echo "First server start, expect eula error..."
+    echo -e "\nFirst server start, expect eula error..."
     java -jar server.jar --nogui --initSettings
-    echo "Server exited..."
-    echo
+    echo -e "\nServer exited..."
 
     # Agreeing to the eula in eula.txt is necessary to run the server.
-    echo "Modifying eula.txt..."
-    echo
+    echo -e "Modifying eula.txt...\n"
     sed -i 's/eula=false/eula=true/' eula.txt
 fi
 
@@ -333,7 +304,7 @@ echo
 echo "The server is built, only steps remaining are:"
 echo "    1. Creating start menu entry"
 echo "    2. Updating the firewall"
-echo "--> `tput setaf 3`sudo`tput sgr0` privileges will be required <--"
+echo -e "--> \e[33msudo\e[00m privileges will be required <--"
 read -p "Do you want to continue? (Y/n) "
 if [[ ${REPLY,,} == "n" ]]; then exit; fi
 
@@ -369,19 +340,17 @@ if [ ! -f /usr/share/applications/mcserver.desktop ]; then
     echo "Icon=/home/$USER/$MCFOLDER/server-icon.png" | sudo tee -a ./mcserver.desktop > /dev/null
     #endregion Target File ============================================================
 
-    echo
-    echo "`tput setaf 2`Entry created.`tput sgr0`"
+    echo .e "\n\e[32mEntry created.\e[00m"
 else
     # If the file is already there, it will just say it's already there.
-    echo "`tput setaf 2`Entry is already created.`tput sgr0`"
+    echo -e "\e[32mEntry is already created.\e[00m"
 fi
 
-echo "`tput setaf 3`You should press Alt+F2 and run 'r' if the server entry doesn't load`tput sgr0`"
-echo "`tput setaf 3`The entry icon will be \"server-icon.png\" in ~/.mcserver/.`tput sgr0`"
+echo -e "\e[33mYou should press Alt+F2 and run 'r' if the server entry doesn't load\e[00m"
+echo -e "\e[33mThe entry icon will be \"server-icon.png\" in ~/.mcserver/.\e[00m"
 
 # Now it's updating the firewall rules.
-echo
-echo "Allowing traffic on port 25565 through the firewall..."
+echo -e "\nAllowing traffic on port 25565 through the firewall..."
 sudo ufw allow 25565 comment 'MC-SERVER'
 
 # This checks the firewall activation and outputs in red if it's inactive.
@@ -390,23 +359,19 @@ FIREWALL=${FIREWALL/"Status: "/""}
 
 if [[ $FIREWALL = "inactive" ]]; then
     echo
-    echo "`tput setaf 1`Firewall is disabled`tput sgr0`"
+    echo -e "\e[31mFirewall is disabled\e[00m"
     read -p "Do you want to enable it? (Y/n) "
 
     # If the firewall is off, then the script will offer to activate it.
     if [[ ${REPLY,,} == "y" ]] || [[ $REPLY = $null ]]; then
-
         echo "Enabling firewall..."
         sudo ufw enable
-
     fi
 fi
-
 # Ensure changes take place.
 sudo ufw reload
 
-echo
-echo "`tput setaf 2`Congratulations! You now have a minecraft server.`tput sgr0`"
+echo -e "\n\e[32mCongratulations! You now have a minecraft server.\e[00m"
 
 #===========================================================================
 #endregion Final touches

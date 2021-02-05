@@ -26,24 +26,12 @@
 #region Options
 while [ -n "$1" ]; do
     case "$1" in
-
-        # Remove previous backups.
-        -r | --remove-previous) REMOVEPREV=true ;;
-
-        # Skip minecraft server.
-        -sms | --skip-minecraft-server) SKIPMCSERVER=true ;;
-
-        # Skip minecraft.
-        -smc | --skip-minecraft-client) SKIPMCCLIENT=true ;;
-
-        # Include VirtualBox VM's
-        -vms | --virtual-machines) INCLUDEVMS=true ;;
-
-        # Include files from the root directory.
-        -root) INCLUDEROOT=true ;;
-
-        # Offer help text.
-        -h | --help)
+        -r | --remove-previous) REMOVEPREV=true ;;           # Remove previous backups.
+        -sms | --skip-minecraft-server) SKIPMCSERVER=true ;; # Skip minecraft server.
+        -smc | --skip-minecraft-client) SKIPMCCLIENT=true ;; # Skip minecraft.
+        -vms | --virtual-machines) INCLUDEVMS=true ;;        # Include VirtualBox VM's
+        -root) INCLUDEROOT=true ;;                           # Include files from the root directory.
+        -h | --help)                                         # Offer help text.
             echo "This script creates a backup of your files in the secondary drive."
             echo "Options:"
             echo "  -r | --remove-previous)"
@@ -62,26 +50,22 @@ while [ -n "$1" ]; do
             echo "  Use \"--\" to specify a drive in the first position"
             echo "  Use the other positions to specify folders to copy from the home directory."
             echo "  Note: When specifying folders, you must also specify the drive."
-            exit
+            exit 0
             ;;
 
         --) shift && break ;;
-
         *) echo "ERROR: Option $1 not recognized" && exit 1 ;;
-    esac
-    shift
-done
+esac; shift; done
 #endregion Options
 
-# Default to the following Drive, unless the user passed another one as an argument.
+
+# Set all defaults, unless the user overrides them.
 if [ -z $1 ]; then
     DESTINATION=("/media/$USER/Data & BackUps")
 else
     DESTINATION=("/media/$USER/$1")
 fi
 shift
-
-# Default to the following list, unless the user passed arguments.
 if [ -z $1 ]; then
     LIST=("Desktop" "Documents" "Development" "Templates" "GIMP" ".mydock" "Pictures" "Music" "Videos" ".bashrc" ".zshrc" ".zsh_aliases" ".vimrc")
 else
@@ -142,13 +126,11 @@ fi
 if [ ! -d "$DESTINATION"/Backings/$TODAY/ ]; then mkdir "$DESTINATION/Backings/$TODAY"; fi
 DESTINATION=("$DESTINATION/Backings/$TODAY")
 
-# Adding minecraft options to the list.
-if [ ! "$SKIPMCSERVER" ]; then LIST+=(".mcserver" "mcserver"); fi
-if [ ! "$SKIPMCCLIENT" ]; then LIST+=(".minecraft"); fi
-if [ "$INCLUDEVMS" ]; then LIST+=(".vms" "VirtualBox VMs"); fi
-
-# Files to copty from the root home directory must have the 'root-' prefix.
-if [ "$INCLUDEROOT" ]; then LIST+=("root-.bashrc" "root-.zshrc" "root-.zsh_aliases" "root-.vimrc"); fi
+# Add extra folders to the lists
+if [ ! "$SKIPMCSERVER" ]; then LIST+=(".mcserver" "mcserver"); fi                                          # Minecraft Server
+if [ ! "$SKIPMCCLIENT" ]; then LIST+=(".minecraft"); fi                                                    # Minecraft Client
+if [ "$INCLUDEVMS" ];     then LIST+=(".vms" "VirtualBox VMs"); fi                                         # VirtualBox
+if [ "$INCLUDEROOT" ];    then LIST+=("root-.bashrc" "root-.zshrc" "root-.zsh_aliases" "root-.vimrc"); fi  # Root user
 
 #===========================================================================
 #endregion Preparations
@@ -158,7 +140,7 @@ if [ "$INCLUDEROOT" ]; then LIST+=("root-.bashrc" "root-.zshrc" "root-.zsh_alias
 #===========================================================================
 # Copy the files and handle special instructions.
 
-# Show an animation while waiting for a process to finish (usage: Animate & pid=$!; kill $pid)
+# Override the animation while waiting for a process to finish (usage: Animate & pid=$!; kill $pid)
 Animate() {
     CICLE=('|' '/' '-' '\')
     while true; do
@@ -195,6 +177,7 @@ for d in ${LIST[@]}; do
 
     # If the file is prefixed by 'root-0', find it in the root home directory.
     if [[ "$d" == "root-"* ]]; then
+        #          Check it's a file                         Check it's directory and it's not empty.
         if sudo [ -f /root/${d/"root-"/""} ] || ( sudo [ -d /root/${d/"root-"/""} ] && [ ! -z "$(sudo ls -A /root/${d/"root-"/""}/)" ] ); then
             FOUND=true
         fi
@@ -239,7 +222,7 @@ for d in ${LIST[@]}; do
         kill $PID; printf "Copying \e[33m%s\e[00m, \e[32mDone\e[00m\n" $d
         ;;
 
-        Documents) # Avoid copying directories marked as GitHub repositories and delete the .vscode folder in Programs.
+        Documents) # Avoid copying .git folders and folders marked as 'Repo'.
         Animate "$d" & PID=$!
         rsync -r --exclude 'Repo' --exclude '.git' "$d" "$DESTINATION"
         kill $PID; printf "Copying \e[33m%s\e[00m, \e[32mDone\e[00m\n" $d
@@ -248,10 +231,10 @@ for d in ${LIST[@]}; do
         Development) # Avoid copying node modules and .git folders, make the process much faster.
         #region Exclude file ============================================================
         echo "node_modules" >> "`dirname "$0"`/.tmp_exclude"
-        echo ".git" >> "`dirname "$0"`/.tmp_exclude"
-        echo "out" >> "`dirname "$0"`/.tmp_exclude"
-        echo "bin" >> "`dirname "$0"`/.tmp_exclude"
-        echo "obj" >> "`dirname "$0"`/.tmp_exclude"
+        echo ".git"         >> "`dirname "$0"`/.tmp_exclude"
+        echo "out"          >> "`dirname "$0"`/.tmp_exclude"
+        echo "bin"          >> "`dirname "$0"`/.tmp_exclude"
+        echo "obj"          >> "`dirname "$0"`/.tmp_exclude"
         #endregion Exclude file ============================================================
         Animate "$d" & PID=$!
         rsync -r --exclude-from "`dirname "$0"`/.tmp_exclude" "$d" "$DESTINATION/"

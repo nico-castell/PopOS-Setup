@@ -1,5 +1,4 @@
 #!/bin/bash
-# Script to set up Pop!_OS in the best way possible.
 
 # MIT License
 
@@ -23,101 +22,75 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#region Options
 while [ -n "$1" ]; do
     case "$1" in
-        # User options ==========================
-        # Load from temporary file.
-        --from-temp-file) load_tmp_file=true ;;
-
-        # Disable rebooting in the script.
-        --disable-reboot) disable_reboot=true ;;
-
-        # Help menu.
-        --help)
+        --from-temp-file) load_tmp_file=true ;;  # Load from temporary file
+        --disable-reboot) disable_reboot=true ;; # Stop the script from rebooting
+        --help)                                  # Show help menu.
         echo "This script sets up a Pop!_OS installation as best as possible."
         echo "Options are:"
         echo "  --from-temp-file) Loads previous choices."
         echo "  --disable-reboot) Stops the script from rebooting the computer."
         exit
         ;;
-
-        # Internal options ======================
-        # Make the script persist at the end.
-        -p) persist_at_the_end=true ;;
-
+        -p) persist_at_the_end=true ;;           # Don't exit at the end of the script.
         *) echo "ERROR: Option $1 not recognized" && exit 1 ;;
-    esac
-    shift
-done
-#endregion Options
+esac; shift; done
 
-# Getting script's absolute location for later.
+# Head to the script's directory and store it for later
 pushd . > /dev/null
-cd "$(dirname "$0")" # Stay in this directory.
+cd "$(dirname "$0")"
 script_location="$(pwd)"
 choices_file=("$script_location/.tmp_choices")
 
-# Function to draw a line across the width of the console.
+# Draw a line accross the width of the console
 Separate () {
     if [ ! -z $1 ]; then tput setaf $1; fi
     printf "\n\n%`tput cols`s\n" |tr " " "="
     tput sgr0
 }
 
-# Now the script will branch in two directions, before continuing and using
-# variables set by either one of the branches.
 
-#region Choices
-#===========================================================================
-# 2 Branches to load choices from the user of from a file
-
-#region Prompting the user ============================================================
-# Branch 1, prompt the user.
+#region Asking user about programs to install
 if [ -z $load_tmp_file ]; then
 
-    # Confirm items in a list. Goes through a list, and prompts about each item,
-    # then outputs the chosen ones.
+    # Go through a list asking the user to confirm each element.
     Confirm_from_list () {
         unset Confimed
         for i in ${To_Confirm[@]}; do
-
-            # Colored prompt with a 10 second time-out
-            read -p "Confirm `tput setaf 3`\"$i\"`tput sgr0` (Y/n) " -t 10
+            read -p "Confirm \e[33m\"$i\"\e[00m (Y/n) " -t 10
             O=$?
 
-            # Make yes the default answer, only when pressing ENTER.
+            # User presses ENTER --> YES
+            # Times out          --> NO
             if [ $O -eq 0 ] && [ -z $REPLY ]; then REPLY=("y"); fi
-            # When read times out, default to no, as the answer.
-            if [ $O -gt 128 ]; then echo; REPLY=("n"); fi # echo to create consistent new line behaviour.
+            if [ $O -gt 128 ]; then echo; REPLY=("n"); fi
 
+            # Append confirmed items to the list.
             if [[ ${REPLY,,} == "y" ]]; then
-                Confimed+=("$i") # Append to the list.
+                Confimed+=("$i")
             fi
-
         done
     }
 
-    # Remove previous choices, as this branch will create a new one.
+    # Remove previous choices file, we're about to make a new one.
     if [ -f "$choices_file" ]; then rm "$choices_file"; fi
 
-    # Confirm packages to remove.
     echo "Confirm packages to remove:"
     To_Confirm=("geary" "libreoffice*")
     Confirm_from_list
-    TO_REMOVE=(${Confimed[@]}) # Packages that will be removed.
+    TO_REMOVE=(${Confimed[@]})
     echo "TO_REMOVE- ${TO_REMOVE[@]}" >> "$choices_file"
     Separate 4
 
-    # Confirm packages to install.
     echo "Confirm packages to install:"
-     To_Confirm=("audacity" "code" "zsh" "dconf-editor" "gimp" "gnome-tweaks" "brave-browser" "google-chrome-stable"
-    To_Confirm+=("vivaldi" "lm-sensors" "hddtemp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord"
+     To_Confirm=("audacity" "code" "zsh" "dconf-editor" "gimp" "gnome-tweaks" "brave-browser" "google-chrome-stable")
+    To_Confirm+=("vivaldi" "lm-sensors" "hddtemp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord")
     To_Confirm+=("gparted" "spotify-client" "glade" "htop" "obs-studio" "pavucontrol" "virtualbox" "gnome-chess")
     To_Confirm+=("signal-desktop" "gnome-mines" "steam" "cmatrix")
     Confirm_from_list
-    TO_APT=(${Confimed[@]}) # Packages that will be installed.
-    # Append packages that are essential, so they should always be installed.
+    TO_APT=(${Confimed[@]})
+    # Append essential packages that should always be installed.
     TO_APT+=("build-essential" "gnome-shell-extensions" "neofetch" "ubuntu-restricted-extras" "xclip" "vim" "gawk")
     if [[ "${TO_APT[@]}" == *"zsh"* ]]; then
         TO_APT+=("zsh-syntax-highlighting" "zsh-autosuggestions" "fonts-powerline" "python3-pip")
@@ -125,15 +98,13 @@ if [ -z $load_tmp_file ]; then
     echo "TO_APT- ${TO_APT[@]}" >> "$choices_file"
     Separate 4
 
-    # Confirm flatpaks to install.
     echo "Confirm flatpaks to install:"
-    To_Confirm=("com.dropbox.Client" "com.Spotify.Client" "org.kde.kdenlive")
+    To_Confirm=("com.dropbox.Client" "com.Spotify.Client" "org.kde.kdenlive" "com.axosoft.GitKraken")
     Confirm_from_list
     TO_FLATPAK=(${Confimed[@]})
     echo "TO_FLATPAK- ${TO_FLATPAK[@]}" >> "$choices_file"
     Separate 4
 
-    # Choose an item from the list of options.
     Choose_driver () {
     select c in $@ none; do
         case $c in
@@ -150,18 +121,17 @@ if [ -z $load_tmp_file ]; then
     done
     }
     echo "Choose an NVIDIA driver:"
-    Choose_driver system76-driver-nvidia nvidia-driver-390 nvidia-driver-455
+    Choose_driver system76-driver-nvidia nvidia-driver-360 nvidia-driver-390 nvidia-driver-455
     echo "NVIDIA_DRIVER- $NVIDIA_DRIVER" >> "$choices_file"
     Separate 4
 
-    # Offer to update recovery partition at the end of the script.
     read -p "Do you want to update the recovery partition? (y/N) "
     if [[ ${REPLY,,} == "y" ]]; then
         UPDATE_RECOVERY=true
         echo "UPDATE_RECOVERY" >> "$choices_file"
     else UPDATE_RECOVERY=false; fi
 
-    # Promt the user for confirmation to run a script, if the script is present.
+    # Ask the user for confirmation to run a script, if said script is present.
     prompt_user () {
         unset Confirmed
         if [ -f "$script_location/$1" ]; then
@@ -172,14 +142,12 @@ if [ -z $load_tmp_file ]; then
         else Confirmed=false; fi
     }
 
-    # Offer to install No-Ip's DUC.
     prompt_user "duc_noip_install" "install No-Ip's DUC"
     INSTALL_DUC=("$Confimed")
     if [ "$INSTALL_DUC" = true ]; then
         echo "INSTALL_DUC" >> "$choices_file"
     fi
 
-    # If java is going to be installed, offer to build a minecraft server.
     if [[ ${TO_APT[@]} == *"default-jre"* ]]; then
         prompt_user "mc_server_builder.sh" "build a minecraft server"
         BUILD_MC_SERVER=("$Confimed")
@@ -187,24 +155,22 @@ if [ -z $load_tmp_file ]; then
             echo "BUILD_MC_SERVER" >> "$choices_file"
         fi
     fi
-
     Separate 4
 fi
-#endregion Prompting the user ============================================================
+#endregion
 
-#region Loading previous choices ============================================================
-# Branch 2, load previous choices.
+
+#region Loading choices from temporary file.
 if [ "$load_tmp_file" = true ]; then
-
-    # If there are previous choices, load them, else exit.
+    # Error if there aren't previous choices.
     if [ ! -f "$choices_file" ]; then
-        echo >&2 "`tput setaf 1`ERROR: Previous choices are not available.`tput sgr0`"
+        echo -e -e "\e[31mERROR: Previous choices are not available.\e[00m" >&2
         exit 1
     else
-        echo "`tput setaf 3`Loading previous choices...`tput sgr0`"
+        echo -e "\e[33mLoading previous choices...\e[00m"
     fi
 
-    # Function to load choices into variables.
+    # Load lists into their variables.
     Load_choices () {
         Load=$(cat "$choices_file" | grep "$1")
         Load=${Load/"$1"/""}
@@ -224,7 +190,7 @@ if [ "$load_tmp_file" = true ]; then
 
     unset Load
 
-    # Find if the name of a choice is in the file, if it is, return true, else return false.
+    # Load true/false choices.
     Check_choices () {
         if [ ! -z $(cat "$choices_file" | grep "$1") ]; then
             Check=true
@@ -241,22 +207,17 @@ if [ "$load_tmp_file" = true ]; then
     INSTALL_DUC=($Check)
 
 fi
-#endregion Loading previous choices ============================================================
+#endregion
 
-#===========================================================================
-#endregion Choices
 
-# Now carry on using variables from the branches.
+# Execution begins here.
 
 #region Preparing the environment.
-#===========================================================================
-# Handle relevant folders, firewall and .bashrc aliases
-
-# Ensure the following folders are present.
+# Ensure this folder is present.
 if [ ! -d ~/.mydock ] && [ -d ~/mydock ]; then mv ~/mydock ~/.mydock; fi
 if [ ! -d ~/.mydock ]; then mkdir ~/.mydock; fi
 
-# Test firewall and activate it.
+# Ensure the firewall is on.
 echo "Checking firewall..."
 FIREWALL=$(sudo ufw status | grep "Status: ")
 FIREWALL=${FIREWALL/"Status: "/""}
@@ -265,9 +226,9 @@ if [[ $FIREWALL = "inactive" ]]; then
     sudo ufw enable
 fi
 
-# Make the backup alias for the backup script
+# Make the alias for the backup script.
 Make_backup_alias () {
-    # If there is a backup script, make an alias for it, but only, if an alias hasn't already been made.
+
     if [ -f "$script_location/back_me_up.sh" ] && [ -z "$(cat $1 | grep "alias backup")" ]; then
         echo >> $1
         echo "alias backup=\"$script_location/back_me_up.sh\"" >> $1
@@ -278,24 +239,18 @@ Make_backup_alias ~/.bashrc
 
 Separate 4
 
-# This tests for an internet connection and exits if it cannot find one.
-wget -q --spider www.google.com
+# Test for an internet connection and exit if none is found.
+ping -c 1 google.com &>/dev/null
 if [ ! $? -eq 0 ]; then
-    echo >&2 "`tput setaf 1`ERROR: Internet not found`tput sgr0`"
+    echo -e >&2 "\e[31mERROR: No internet\e[00m"
     exit 1
 fi
-
-#===========================================================================
-#endregion Preparing the environment.
+#endregion
 
 
-#region Major software
-#===========================================================================
-# Update everything (inc. kernel) and install nvidia driver.
+#region Functions
 
-#region Functions ============================================================
-
-# Show an animation while waiting for a process to finish (usage: Animate & pid=$!; kill $pid)
+# Show an animation while waiting for a process to finish.
 Animate() {
     CICLE=('|' '/' '-' '\')
     while true; do
@@ -306,30 +261,28 @@ Animate() {
     done
 }
 
-# Function to use the package manager to clean up.
+# Use the package manager to clean up.
 Clean_up () {
     echo; echo "Cleaning..."
-    sudo apt-get autopurge -y -qq # Silently.
+    sudo apt-get autopurge -y -qq
     sudo apt-get autoclean -y -qq
 }
 
-# Make the system reboot and restart this script after log in.
+# Make the system reboot and the script resume after login.
 Custom_reboot_resume () {
     ###########################################################################
     #     WARNING: check for $disable_reboot BEFORE running this function.    #
     ###########################################################################
 
-    # Ensure autostart directory is available.
+    # Ensure directory is ready.
     if [ ! -d ~/.config/autostart/ ]; then
         mkdir ~/.config/autostart
     fi
-
-    # Ensure that the file wasn't already present.
     if [ -f ~/.config/autostart/continue_pop_OS_start.desktop ]; then
         rm ~/.config/autostart/continue_pop_OS_start.desktop
     fi
 
-    #region .desktop to autorun this script. ============================================================
+    #region .desktop to autorun this script.
     echo "[Desktop Entry]" >> ~/.config/autostart/continue_pop_OS_start.desktop
     echo "Name=TMP Continue pop_OS_start" >> ~/.config/autostart/continue_pop_OS_start.desktop
     echo "Exec=$script_location/pop_OS_start --from-temp-file -p" >> ~/.config/autostart/continue_pop_OS_start.desktop
@@ -337,60 +290,61 @@ Custom_reboot_resume () {
     echo "StartUpNotify=true" >> ~/.config/autostart/continue_pop_OS_start.desktop
     echo "Terminal=true" >> ~/.config/autostart/continue_pop_OS_start.desktop
     echo "X-Desktop-File-Install-Version=0.24" >> ~/.config/autostart/continue_pop_OS_start.desktop
-    #endregion .desktop to autorun this script. ============================================================
+    #endregion
 
-    # Tell user that the computer is going to reboot.
-    echo >&2 "`tput setaf 9`Rebooting computer in 15 seconds."
-    echo >&2 "Press ENTER to reboot now."
-    read -p "Press 'C' to cancel `tput sgr0`" -t 15 -n 1 # -n 1 to resume without the user habing to press ENTER.
+    # Give the user an opportunity to cancel the reboot.
+    echo -e "\e[39mRebooting computer in 15 seconds." >&2
+    echo -e "Press ENTER to reboot now." >&2
+    read -p "Press 'C' to cancel `tput sgr0`" -t 15 -n 1
     O=$?
-    # If reply is not empty, it's because the user canceled the reboot.
+
     if [[ ! -z $REPLY ]]; then
         echo
-        return 1 # Returning 1 means the user canceled the reboot.
+        return 1 # This return code means the user canceled the reboot
     fi
-    if [ $O -gt 128 ]; then echo; fi # Create consistent new line behaviour from read -t.
+    if [ $O -gt 128 ]; then echo; fi
 
     sudo reboot
-    exit 2 # Exit code 2 means rebooting.
+    exit 2
 }
 
-# Assist Custom_reboot_continue
+# Test for $DO_REBOOT before rebooting.
 Instruct_system_reboot () {
     if [ "$DO_REBOOT" = true ]; then
         Custom_reboot_resume
-        # Test if the user canceled, and separate if they did.
+        # Draw a line if user canceled.
         if [ $? -eq 1 ]; then
             Separate 4
         fi
     fi
 }
-#endregion Functions ============================================================
+#endregion
 
-# Remove chosen software.
+
+#region Installing updates and NVIDIA Driver
 echo "Removing software..."
 Animate & PID=$!
 sudo apt-get purge ${TO_REMOVE[@]} -y > /dev/null
 kill $PID; echo "Done"
 echo
-# Update repositories to get latest updates.
+
 echo "Updating repositories..."
 Animate & PID=$!
 sudo apt-get update > /dev/null
 kill $PID; echo "Done"
 Separate 4
 
-# Simulate and upgrade using dist-upgrade, if the pattern "linux" is found, assume kernel is being
-# updated and test if rebooting was not disabled, then instruct the script to reboot after upgrading.
+# Simulate and upgrade using dist-upgrade, if the pattern "linux" is found,
+#   assume kernel is being updated and test if rebooting was not disabled,
+#   then instruct the script to reboot after upgrading.
 UPGRADE_SIM=$(apt-get -s dist-upgrade | grep "linux")
 if [ ! -z "$UPGRADE_SIM" ] && [ ! $disable_reboot = true ]; then
     DO_REBOOT=true
-    echo "`tput setaf 9`The system will reboot after upgrading the kernel...`tput sgr0`"
+    echo -e "\e[39mThe system will reboot after upgrading the kernel...\e[00m"
 fi
 
-# Perform the upgrade.
 echo "Upgrading software to the latest version..."
-sudo apt-mark hold firefox* > /dev/null # The script may delete firefox, so it's held back to make it ho faster.
+sudo apt-mark hold firefox* > /dev/null
 sudo apt dist-upgrade -y
 sudo apt-mark unhold firefox* > /dev/null
 Clean_up
@@ -399,22 +353,20 @@ Separate 4
 Instruct_system_reboot
 unset TO_REMOVE UPGRADE_SIM DO_REBOOT
 
-# The script will only run the code pertaining the installation of an nvidia driver, if there is a
-# driver to be installed that either was chosen by the user or loaded from tmp file.
 if [ ! -z $NVIDIA_DRIVER ]; then
 
-    # Check if driver to be installed is not Pop!_OS' custom driver, then check if reboot was disabled,
-    # only then, instruct the script to reboot to load proper display settings.
+
+
     if [[ ! $NVIDIA_DRIVER == *"system76-driver-nvidia"* ]] && [ ! "$disable_reboot" = true ]; then
         DO_REBOOT=true
         echo "The system will reboot after installing the nvidia driver..."
     fi
 
-    # Install the driver.
-    echo "Installing NVIDIA driver `tput setaf 3`\"$NVIDIA_DRIVER\"`tput sgr0`..."
+
+    echo -e "Installing NVIDIA driver \e[33m\"$NVIDIA_DRIVER\"\e[00m..."
     sudo apt install $NVIDIA_DRIVER -y
 
-    # Replace driver in tmp_file with 'Already installed driver' to avoid a boot loop.
+
     REPLACE=$(cat "$choices_file" | grep "^NVIDIA_DRIVER- ")
     sed -i "s/$REPLACE/ALREADY_INSTALLED_DRIVER/" "$choices_file"
 
@@ -426,35 +378,22 @@ if [ ! -z $NVIDIA_DRIVER ]; then
 
 fi
 unset NVIDIA_DRIVER
-
-#===========================================================================
-#endregion Major software
-
+#endregion
 
 #region Installing programs
-#===========================================================================
-# Intall packages, flatpaks and downloaded packages
 
 # Notes about some packages:
-# Teamviewer can only be downloaded from the website.
-# Dropbox is not found using apt, you have to download it, and the installer sets up their repo.
-# Zoom is available as a flatpak, but it very bad. It's recommended to download the .deb package.
+# * Teamviewer can only be downloaded from the website.
+# * Dropbox is not found using apt, you have to download it, and the installer
+#     sets up their repo.
+# * Zoom is available as a flatpak, but it very bad. It's recommended to
+#     download the .deb package.
 
-# Stop gnome package kit, it holds the update process and causes most apt-get updates to fail.
+# Stop gnome package kit, it holds the update process and causes most apt-get
+#   updates to fail.
 sudo systemctl stop packagekit
 
-# CONFIGURE THE SYSTEM MIRRORS.
-NEW_MIRR=("http://ubuntu.mirror.constant.com/")
-MIRR_FILE=("/etc/apt/sources.list.d/system.sources")
-# Escape special characters in the mirror and then replace in the file.
-echo "Changing mirror to `tput setaf 3`$NEW_MIRR`tput sgr0`,"
-echo "edit `tput setaf 3`$MIRR_FILE`tput sgr0` to change it..."
-echo
-NEW_MIRR=$(printf '%s\n' "$NEW_MIRR" | sed -e 's/[\/&]/\\&/g')
-sudo sed -i "s/^URIs:.*/URIs: $NEW_MIRR/" $MIRR_FILE
-unset MIRR NEW_MIRR MIRR_FILE
-
-# Prepare keys and repositories for some packages with proprietary repositories.
+# Prepare proprietary repositories.
 for i in ${TO_APT[@]}; do
     case $i in
         spotify-client)
@@ -494,23 +433,22 @@ for i in ${TO_APT[@]}; do
     esac
 done
 
-# Update repositories.
+# Update all repositories.
 echo "Updating repositories..."
 Animate & PID=$!
 sudo apt-get update > /dev/null
 kill $PID; echo "Done"
 Separate 4
 
-# Install all choses packages in one command.
 echo "Installing packages..."
 sudo apt install ${TO_APT[@]} -y
 
-# Check if the previous command ran successsfully, then start handling special instructions for
-# some of the installed packages.
+# Do post-installation instructions if the installation was successful.
 if [ $? -eq 0 ]; then
 for i in ${TO_APT[@]}; do
     case $i in
-        # Assume that installing a web browser means the user won't use firefox, so remove it.
+        # If the user chooses one of these web browsers, assume Firefox won't
+        #   be used and unistall it.
         google-chrome-stable | brave-browser | vivaldi)
         if [ ! "$ALREADY_REMOVED_FIREFOX" ]; then
             ALREADY_REMOVED_FIREFOX=true
@@ -518,12 +456,13 @@ for i in ${TO_APT[@]}; do
             echo -e "\"\e[36m$i\e[00m\" was installed, removing \e[33mFirefox\e[00m..."
             Animate & PID=$!
             sudo apt-get purge firefox* -y > /dev/null 2> /dev/null
+            rm -rf ~/.mozilla
             Clean_up > /dev/null 2> /dev/null
             kill $PID
         fi
         ;;
 
-        # Offer a list of instructions to prepare common developer tools.
+        # Offer to prepare some common developer tools.
         code)
         Separate 4
         echo -e "\e[36mVisual Studio Code\e[00m was successfully installed,"
@@ -536,10 +475,9 @@ for i in ${TO_APT[@]}; do
         LIST+=("SSH")
         LIST+=("VS Code Extension development")
 
-        # Offer a select menu for the user to set up different tools.
         select c in "${LIST[@]}" exit; do
         case $c in
-            Git) # Set up git repository.
+            Git)
             echo "Adding git ppa repository..."
             Animate & PID=$!
             sudo apt-add-repository -y ppa:git-core/ppa > /dev/null
@@ -550,44 +488,44 @@ for i in ${TO_APT[@]}; do
                 echo -e "\e[31mFailed to add repository\e[00m"
             fi
 
-            # Set up user to make commits.
+            # Configure user to make commits.
             echo "Configure git:"
             read -p "What's your GitHub username? " USERNAME
             git config --global user.name "$USERNAME"
             read -p "What's your GitHub email? " EMAIL
             git config --global user.email "$EMAIL"
 
-            # Set up initial branch name
             read -p "What do you want to call the default branch? " DEF_BRANCH
             if [ ! -z $DEF_BRANCH ]; then
                 git config --global init.defaultBranch "$DEF_BRANCH"
             fi
             unset USERNAME EMAIL DEF_BRANCH
 
-            # Set vscode as the default merge tool to resolve conflicts.
+            # Integrave vscode in some common Git operations.
             printf "Setting \e[01mVS Code\e[00m as the default merge tool...\n"
             git config --global merge.tool vscode
             git config --global mergetool.vscode.cmd 'code --wait $MERGED'
-            # Set vscode as the default diff tool.
             git config --global diff.tool vscode
             git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
-            # Set vim as the default text editor.
-            printf "Setting \e[01mvim\e[00m as the default text editor...\n"
 
-            # Configure default pull behaviour.
+            printf "Setting \e[01mvim\e[00m as the default text editor...\n"
+            git config --global core.editor vim
+
             echo "Configuring pull behaviour..."
             git config --global pull.rebase false
             git config --global pull.ff only
 
-            # Set up some aliases to explore commits.
-            printf "Setting up \e[01m'flog'\e[00m and \e[01m'slog'\e[00m aliases...\n"
+            # Set up aliases
+            printf "Setting up some Git aliases...\n"
             git config --global alias.flog 'log --color --decorate --oneline'
             git config --global alias.slog 'slog --show-signature -1'
+            git config --global alias.mkst 'stash push -u'
+            git config --global alias.popst 'stash pop "stash@{0}" -q'
 
             echo
             ;;
 
-            "GDB Debugger") # Install a C++ debugger.
+            "GDB Debugger")
             echo "Installing gdb debugger for C++..."
             Animate & PID=$!
             sudo apt-get install gdb -y > /dev/null
@@ -600,8 +538,7 @@ for i in ${TO_APT[@]}; do
             echo
             ;;
 
-            ".NET Core 3.1") # Install the .NET Core framework.
-            # Get and add the microsoft signing key and repository to the trusted keys.
+            ".NET Core 3.1")
             echo "Adding microsoft repository..."
             Animate & PID=$!
             wget -q https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O .packages-microsoft-prod.deb &>/dev/null
@@ -633,7 +570,7 @@ for i in ${TO_APT[@]}; do
             echo
             ;;
 
-            "Java JDK") # Install developer tools for Java.
+            "Java JDK")
             echo "Installing JDK..."
             Animate & PID=$!
             sudo apt-get install $c -y > /dev/null
@@ -646,38 +583,27 @@ for i in ${TO_APT[@]}; do
             echo
             ;;
 
-            SSH) # Create an ssh key to use with GitHub.
+            SSH)
             echo "Set up an SSH key pair to use with GitHub"
-            read -p "Input a password: " -s PASS; echo # read -s does not print a new line, so print it manually.
+            read -p "Input a password: " -s PASS; echo # echo to fix read -s not printing a new line.
 
-            # Generate the key pair.
             ssh-keygen -t rsa -b 4096 -C "GitHub-Key" -N "$PASS" -f ~/.ssh/id_GitHub-Key_main
             unset PASS
 
-            # Start the ssh agent, add the key, and stop the agent.
-            SSHAGENTID=$(eval "$(ssh-agent -s)")
-            ssh-add ~/.ssh/id_GitHub-Key_main
-            SSHAGENTID=${SSHAGENTID/"Agent pid "/""}
-            kill $SSHAGENTID
-            unset SSHAGENTID
-
-            # Copy the public key to the clipboard, so the user can copy it into GitHub.
-            echo "`tput setaf 6`Adding public key to the clipboard, link it to your GitHub account.`tput sgr0`"
+            echo -e "\e[36mAdding public key to the clipboard...\e[00m"
             xclip -selection clipboard < ~/.ssh/id_GitHub-Key_main.pub
-            sleep 1.5 # Give the user time to read.
+            sleep 1.5
             echo
             ;;
 
-            "VS Code Extension development") # Install everything necessary to code VS Code extensions.
-            # Install Node.js
+            "VS Code Extension development")
             echo "Installing Node.js 15..."
             Animate & PID=$!
             curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash - >/dev/null
             sudo apt-get install -y nodejs >/dev/null
             kill $PID
 
-            # Install Yeoman and VS Code Extension Generator
-            echo "Installing VS Code extension generator"
+            echo "Installing VS Code extension generator..."
             Animate & PID=$!
             sudo npm install -g yo generator-code vsce >/dev/null
             kill $PID
@@ -691,7 +617,7 @@ for i in ${TO_APT[@]}; do
         unset LIST
         ;;
 
-        lm-sensors) # Configure sensors.
+        lm-sensors)
         Separate 4
         echo "Configure \"lm-sensors\":"
         sleep 1.5 # Time for the user to read.
@@ -702,45 +628,39 @@ for i in ${TO_APT[@]}; do
         sudo rm /usr/share/applications/cmatrix.desktop 2> /dev/null
         ;;
 
-        vim) # Make the ~/.vimrc file
-        cp /usr/share/vim/vim82/vimrc_example.vim ~/.vimrc
-        sudo cp /usr/share/vim/vim82/vimrc_example.vim /root/.vimrc
-        echo >> ~/.vimrc
-        echo "set number" >> ~/.vimrc
-        sudo echo >> /root/.vimrc
-        sudo echo "set number" >> /root/.vimrc
+        vim) # Make a ~/.vimrc from the sample.
+        cat $script_location/samples/vimrc | sudo tee -a ~/.vimrc /root/.vimrc >/dev/null
+        echo -e "\nset number" | sudo tee -a ~/.vimrc /root/.vimrc >/dev/null
         ;;
 
-        zsh) # Install and configure powerline prompt for zsh
+        zsh) # Install Powerline.
         Separate 4
         echo -e "Successfully installed \e[34mzsh\e[00m"
 
         echo -e "Preparing \e[33m.zshrc\e[00m files..."
-        # Only copy the files if there aren't any previous copies.
+
         if [ -f "$script_location/samples/zshrc" ]; then
             if [ ! -f ~/.zshrc ]; then
-                cp "$script_location/samples/zshrc" ~/.zshrc
-                cp "$script_location/samples/zshrc" ~/.zshrc-backup
+                cat "$script_location/samples/zshrc" | tee -a ~/.zshrc ~/.zshrc-backup >/dev/null
             fi
             if [ ! -f /root/.zshrc ]; then
-                sudo cp "$script_location/samples/zshrc" /root/.zshrc
-                sudo cp "$script_location/samples/zshrc" /root/.zshrc-backup
+                cat "$script_location/samples/zshrc" | sudo tee -a /root/.zshrc /root/.zshrc-backup >/dev/null
             fi
         fi
 
         echo -e "Installing \e[33mPowerline Shell\e[00m..."
         Animate & PID=$!
-        sudo pip3 install powerline-shell > /dev/null 2> /dev/null
+        sudo pip3 install powerline-shell &>/dev/null
         O=$?; kill $PID
 
         if [ $O -eq 0 ]; then
             echo -e "\e[32mInstallation successful\e[00m, making configurations..."
             Animate & PID=$!
-            # Uncomment functions .zshrc files to enable powerline.
+            # Enable powerline in the .zshrc files.
             sed -i "s/# use_powerline/use_powerline/" ~/.zshrc
             sudo sed -i "s/# use_powerline/use_powerline/" /root/.zshrc
 
-            # Clone the powerline fonts repository and install all the fonts, then remove the repo.
+            # Install fonts from the repository.
             cd
             git clone https://github.com/powerline/fonts.git ".PLfonts" > /dev/null
             if [ $? -eq 0 ]; then
@@ -753,7 +673,7 @@ for i in ${TO_APT[@]}; do
             # Configure the powerline theme.
             mkdir -p ~/.config/powerline-shell
             sudo mkdir -p /root/.config/powerline-shell
-            #region file ============================================================
+            #region file
             echo "{" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
             echo "  \"segments\": [" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
             echo "    \"virtual_env\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
@@ -770,7 +690,7 @@ for i in ${TO_APT[@]}; do
             echo "    \"max_depth\" : 3" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
             echo "  }" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
             echo "}" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-            #endregion file ============================================================
+            #endregion
 
             kill $PID
             echo "Done"
@@ -778,11 +698,10 @@ for i in ${TO_APT[@]}; do
             echo -e "\e[31mInstallation failed\e[00m"
         fi
 
-        # Make the back_me_up alias in the new rc file.
+        # We need to remake this alias.
         echo "Making new alias for the backup script..."
-        Make_backup_alias ~/.zshrc
+        Make_backup_alias ~/.zsh_aliases
 
-        # Make zsh the default shell.
         echo -e "Setting \e[34mzsh\e[00m as the new \e[33mdefault shell\e[00m..."
         chsh -s $(which zsh)
         ;;
@@ -792,7 +711,6 @@ fi
 unset ALREADY_REMOVED_FIREFOX
 Separate 4
 
-# Install all flatpaks with one command.
 if [ ! -z ${TO_FLATPAK[@]} ]; then
     echo "Installing flatpaks..."
     flatpak install ${TO_FLATPAK[@]} -y
@@ -800,23 +718,17 @@ if [ ! -z ${TO_FLATPAK[@]} ]; then
 fi
 unset TO_FLATPAK
 
-# Test for debian packages in Downloads folder and install them.
+
 if [ "$(ls -A ~/Downloads/ | grep ".deb")" ]; then
     echo "Installing downloaded packages..."
     sudo apt install ~/Downloads/*.deb -y -q
     rm ~/Downloads/*.deb
     Separate 4
 fi
-
-#===========================================================================
-#endregion Installing programs
+#endregion
 
 
 #region Finalizing
-#===========================================================================
-# Secondary scripts, final touches and recovery update.
-
-# Ensure everything is updated.
 echo "Ensuring packages are up to date..."
 Animate & PID=$!
 if [ "$(sudo apt-get update | grep "apt list --upgradable")" ]]; then
@@ -828,25 +740,20 @@ echo "Ensuring flatpaks are up to date..."
 flatpak update -y
 Separate 4
 
-# Install DUC.
+# Run secondary scripts.
 if [ "$INSTALL_DUC" = true ]; then
-    "$script_location"/duc_noip_install -e # -e is to create an app meny entry.
+    "$script_location"/duc_noip_install -e # -e to create an app menu entry.
     Separate 4
 fi
-
-# Build minecraft server.
 if [ "$BUILD_MC_SERVER" = true ]; then
     "$script_location"/mc_server_builder.sh
     Separate 4
 fi
 unset BUILD_MC_SERVER INSTALL_DUC
-
-# Configure gnome using secondary scripts.
 if [ -f "$script_location/gnome_settings.sh" ]; then
     "$script_location"/gnome_settings.sh
     Separate 4
 fi
-
 if [ -f "$script_location/gnome_appearance.sh" ]; then
     echo "Restarting gnome shell..."
     busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting…")' > /dev/null
@@ -855,17 +762,16 @@ if [ -f "$script_location/gnome_appearance.sh" ]; then
     Separate 4
 fi
 
-# Find the deskcuts folder and copy its .desktop files.
-# These files use the icons found in a .mydock folder in the user's home directory.
+# Copy deskcuts.
+#   These files use icons found in a .mydock folder at /home/user/.mydock
 if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A $script_location/deskcuts/ | grep ".desktop")" ]; then
     echo "Copying deskcuts..."
-    # Get all of the items and then look at the prefixes of each file, if they match one of the patterns
-    # in the case statement, see if the requires package was installed. Only then, copy the deskcut.
-    # In the case of the browsers, only copy deskcuts for one of them.
+    # Use the prefixes of the files to determine wether the package was
+    #   installed, if so, copy the deskcut. For browsers only copy once.
     LIST=$(ls -AR "$script_location"/deskcuts/ | grep ".desktop")
     for i in ${LIST[@]}; do
         case $i in
-            chr*) # These deskcuts rely on Google chrome.
+            chr*) # Relies on Google Chrome.
             if [ $COPIED_BROWSER_DESKCUTS == true ]; then continue; fi
             COPIED_BROWSER_DESKCUTS=true
             if [[ ${TO_APT[@]} == *"google-chrome-stable"* ]]; then
@@ -873,7 +779,7 @@ if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A $script_location/deskcu
             fi
             ;;
 
-            bra*) # These deskcuts rely on Brave Browser.
+            bra*) # Relies on Brave Browser.
             if [ $COPIED_BROWSER_DESKCUTS == true ]; then continue; fi
             COPIED_BROWSER_DESKCUTS=true
             if [[ ${TO_APT[@]} == *"brave-browser"* ]]; then
@@ -881,13 +787,13 @@ if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A $script_location/deskcu
             fi
             ;;
 
-            code*) # These deskcuts rely on Visual Studio Code.
+            code*) # Relies on vscode.
             if [[ ${TO_APT[@]} == *"code"* ]]; then
                 sudo cp "$script_location"/deskcuts/code* /usr/share/applications/
             fi
             ;;
 
-            launcher_fenix.desktop) # This deskcut relies on Java.
+            launcher_fenix.desktop) # Relies on Java.
             if [[ ${TO_APT[@]} == *"default-jre"* ]]; then
                 sudo cp "$script_location"/deskcuts/launcher_fenix.desktop /usr/share/applications/
             fi
@@ -898,42 +804,40 @@ if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A $script_location/deskcu
 fi
 unset TO_APT
 
-# Test for and empty file template and create it if absent.
+# Create an empty file template.
 if [ ! -f ~/Templates/Empty ]; then
     echo "Creating empty file template..."
     touch ~/Templates/Empty
     chmod -x ~/Templates/Empty
 fi
 
-# Clean and organize the appmenu alphabetically.
+# Clean and organize the app menu alphabetically.
 Clean_up
 gsettings reset org.gnome.shell app-picker-layout
 gsettings reset org.gnome.gedit.state.window size
 
-# If the user chose to, update the recovery partition using Pop!_OS' API. Do this last, as the tool
-# downloads a full image of the OS and that can take a very long time.
+# If the user chose to, update the recovery partition using Pop!_OS' API. Do
+#   this last, as the tool downloads a full image of the OS and that can take
+#   a very long time.
 if [ "$UPDATE_RECOVERY" = true ]; then
     Separate 4
     echo "Upgrading recovery partition..."
     pop-upgrade recovery upgrade from-release
 fi
 unset UPDATE_RECOVERY
-
 Separate 4
 
-#===========================================================================
-#endregion Finalizing
-
+# Restart GNOME's package kit.
 sudo systemctl start packagekit
+#endregion
 
-# When the script is finished, remove the autostart file.
+# Clean dependency files.
 if [ -f ~/.config/autostart/continue_pop_OS_start.desktop ]; then
     rm ~/.config/autostart/continue_pop_OS_start.desktop
 fi
-# Remove the choices file at the end of the script.
 if [ -f "$choices_file" ]; then rm "$choices_file"; fi
 
-echo "It's highly recommended to `tput setaf 3`reboot`tput sgr0` now."
+echo -e "It's highly recommended to \e[33mreboot\e[00m now."
 
 if [ "$persist_at_the_end" = true ]; then
     read -p "Press any key to finish." -n 1
