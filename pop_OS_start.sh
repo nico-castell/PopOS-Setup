@@ -111,10 +111,10 @@ if [ -z $load_tmp_file ]; then
 
     # Confirm packages to install.
     echo "Confirm packages to install:"
-     To_Confirm=("audacity" "code" "zsh" "dconf-editor" "gimp" "gnome-tweaks" "brave-browser" "google-chrome-stable")
-    To_Confirm+=("lm-sensors" "hddtemp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord" "gparted")
-    To_Confirm+=("spotify-client" "glade" "htop" "obs-studio" "pavucontrol" "virtualbox" "gnome-chess" "signal-desktop")
-    To_Confirm+=("gnome-mines" "steam" "cmatrix")
+     To_Confirm=("audacity" "code" "zsh" "dconf-editor" "gimp" "gnome-tweaks" "brave-browser" "google-chrome-stable"
+    To_Confirm+=("vivaldi" "lm-sensors" "hddtemp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord"
+    To_Confirm+=("gparted" "spotify-client" "glade" "htop" "obs-studio" "pavucontrol" "virtualbox" "gnome-chess")
+    To_Confirm+=("signal-desktop" "gnome-mines" "steam" "cmatrix")
     Confirm_from_list
     TO_APT=(${Confimed[@]}) # Packages that will be installed.
     # Append packages that are essential, so they should always be installed.
@@ -486,6 +486,11 @@ for i in ${TO_APT[@]}; do
         curl -sS https://updates.signal.org/desktop/apt/keys.asc | sudo apt-key add - &>/dev/null
         echo "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main" | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list &>/dev/null
         ;;
+
+        vivaldi)
+        wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add - &>/dev/null
+        echo 'deb https://repo.vivaldi.com/archive/deb/ stable main' | sudo tee -a /etc/apt/sources.list.d/vivaldi.list &>/dev/null
+        ;;
     esac
 done
 
@@ -505,8 +510,8 @@ sudo apt install ${TO_APT[@]} -y
 if [ $? -eq 0 ]; then
 for i in ${TO_APT[@]}; do
     case $i in
-        # Assume that installing chrome or brave means the user won't use firefox, so remove it.
-        google-chrome-stable | brave-browser)
+        # Assume that installing a web browser means the user won't use firefox, so remove it.
+        google-chrome-stable | brave-browser | vivaldi)
         if [ ! "$ALREADY_REMOVED_FIREFOX" ]; then
             ALREADY_REMOVED_FIREFOX=true
             Separate 4
