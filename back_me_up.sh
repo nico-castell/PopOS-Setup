@@ -67,7 +67,7 @@ else
 fi
 shift
 if [ -z $1 ]; then
-    LIST=("Desktop" "Documents" "Development" "Templates" "GIMP" ".mydock" "Pictures" "Music" "Videos" ".bashrc" ".zshrc" ".zsh_aliases" ".vimrc")
+    LIST=("Desktop" "Documents" "Development" "Templates" "GIMP" ".mydock" "Pictures" "Music" "Videos" ".bashrc" ".zshrc" ".zsh_aliases" ".vimrc" ".clang-format")
 else
     LIST=("$@")
 fi
