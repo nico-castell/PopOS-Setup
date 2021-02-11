@@ -469,7 +469,7 @@ for i in ${TO_APT[@]}; do
         echo "Choose some developer tools to prepare:"
 
         LIST+=("Git")
-        LIST+=("GDB Debugger")
+        LIST+=("C++ Tools")
         LIST+=(".NET Core 3.1")
         LIST+=("Java JDK")
         LIST+=("SSH")
@@ -525,10 +525,10 @@ for i in ${TO_APT[@]}; do
             echo
             ;;
 
-            "GDB Debugger")
-            echo "Installing gdb debugger for C++..."
+            "C++ Tools")
+            echo -e "Installing \e[36mgdb\e[00m and \e[36mclang-format\e[00m.."
             Animate & PID=$!
-            sudo apt-get install gdb -y > /dev/null
+            sudo apt-get install gdb clang-format -y > /dev/null
             O=$?; kill $PID
             if [ $O -eq 0 ]; then
                 echo -e "\e[32mSuccess\e[00m"
