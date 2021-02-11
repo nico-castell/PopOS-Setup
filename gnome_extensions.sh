@@ -53,4 +53,15 @@ if [[ ${REPLY,,} == "y" ]] || [[ -z $REPLY ]]; then
     gsettings --schemadir ~/.local/share/gnome-shell/extensions/sound-output-device-chooser*/schemas/ set org.gnome.shell.extensions.sound-output-device-chooser hide-on-single-device true
 fi
 
+read -p "Did you install \"Clipboard Indicator\"? (Y/n) "
+if [[ ${REPLY,,} == "y" ]] || [[ -z $REPLY ]]; then
+    printf "Configuring \e[33mClipboard Indicator\e[00m...\n"
+    gsettings --schemadir ~/.local/share/gnome-shell/extensions/clipboard-indicator*/schemas set org.gnome.shell.extensions.clipboard-indicator clear-history "['<Super>F10']"
+    gsettings --schemadir ~/.local/share/gnome-shell/extensions/clipboard-indicator*/schemas set org.gnome.shell.extensions.clipboard-indicator disable-down-arrow true
+    gsettings --schemadir ~/.local/share/gnome-shell/extensions/clipboard-indicator*/schemas set org.gnome.shell.extensions.clipboard-indicator move-item-first true
+    gsettings --schemadir ~/.local/share/gnome-shell/extensions/clipboard-indicator*/schemas set org.gnome.shell.extensions.clipboard-indicator next-entry "['<Super>F12']"
+    gsettings --schemadir ~/.local/share/gnome-shell/extensions/clipboard-indicator*/schemas set org.gnome.shell.extensions.clipboard-indicator prev-entry "['<Super>F11']"
+    gsettings --schemadir ~/.local/share/gnome-shell/extensions/clipboard-indicator*/schemas set org.gnome.shell.extensions.clipboard-indicator toggle-menu "['<Super>F9']"
+fi
+
 # Thanks for downloading, and enjoy!
