@@ -235,6 +235,7 @@ for d in ${LIST[@]}; do
         echo "out"          >> "`dirname "$0"`/.tmp_exclude"
         echo "bin"          >> "`dirname "$0"`/.tmp_exclude"
         echo "obj"          >> "`dirname "$0"`/.tmp_exclude"
+        echo "build"        >> "`dirname "$0"`/.tmp_exclude"
         #endregion Exclude file ============================================================
         Animate "$d" & PID=$!
         rsync -r --exclude-from "`dirname "$0"`/.tmp_exclude" "$d" "$DESTINATION/"

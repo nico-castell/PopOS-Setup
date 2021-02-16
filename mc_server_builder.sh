@@ -147,9 +147,9 @@ echo "Accesing ~/$MCFOLDER/..."
 cd ~/"$MCFOLDER"/
 # Now it's downloading a minecraft server from mojang.
 if [ ! -f ./server*.jar ]; then
-    echo "Getting minecraft server 1.16.4 from Mojang..."
+    echo "Getting minecraft server 1.16.5 from Mojang..."
     # Copy the download link from https://www.minecraft.net/en-us/download/server if there's a newer version.
-    wget https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
+    wget https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 else
     echo -e "\e[32mServer already present\e[00m"
 fi
