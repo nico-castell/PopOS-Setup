@@ -167,7 +167,7 @@ code_2=0
 cp "$script_location/assets/mcserver/server-icon.png" . ; code_2=$?
 
 #region run_file =============================================================
-run_file="#\!/bin/bash
+run_file="#!/bin/bash
 
 # The desktop file should be in $mc_entry
 
@@ -176,7 +176,7 @@ if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
     exit 1
 fi
 
-if [[ \$(ps aux | grep '$mc_folder/compress.sh' | grep -v grep) ]]; then
+if [[ \$(ps aux | grep 'compress.sh' | grep -v grep) ]]; then
     printf \"\\e[32mERROR: The server cannot while it's being backed up\\e[00m\\n\"
     exit 1
 fi
@@ -190,7 +190,7 @@ while [ -n \"\$1\" ]; do
         *) printf \"ERROR: Option\\e[01m\$1\\e[00m not recognized\\n\" >&2 && exit 1 ;;
 esac; shift; done
 
-# Draw a line across the width fo the console.
+# Draw a line across the width of the console.
 Separate () {
     printf \"\\e[36m\"
     printf \"%\`tput cols\`s\\n\" | tr \" \" \"=\"
@@ -205,8 +205,8 @@ Separate
 printf \"Server has stopped.\\n\"
 
 # Options take effect here
-if [ \$SLEEP ];   then sleep 1.5; fi
-if [ \$PERSIST ]; then read -p \"Press ENTER to exit.\"; fi
+if \$SLEEP;   then sleep 1.5; fi
+if \$PERSIST; then read -p \"Press ENTER to exit...\"; fi
 exit 0"
 #endregion ===================================================================
 code_3=0
@@ -214,7 +214,7 @@ printf "%s\n" "$run_file" > run.sh ; code_3=$?
 chmod +x run.sh
 
 #region compress_file ========================================================
-compress_file="#\!/bin/bash
+compress_file="#!/bin/bash
 
 pushd . >/dev/null
 cd \"$mc_folder\"
@@ -267,10 +267,10 @@ kill \$pid
 popd >/dev/null
 
 if [ \$O -eq 0 ]; then
-    printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[32mSuccess\\e[00m\\n\"
+    printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[32mSuccess\\e[00m\\n\" \$ARCHIVE
     exit 0
 else
-    printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[31mFail\\e[00m\\n\"
+    printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[31mFail\\e[00m\\n\" \$ARCHIVE
     exit 1
 fi"
 #endregion ===================================================================
