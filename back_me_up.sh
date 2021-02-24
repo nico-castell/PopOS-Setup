@@ -231,11 +231,11 @@ for d in ${LIST[@]}; do
         Development) # Avoid copying node modules and .git folders, make the process much faster.
         #region Exclude file ============================================================
         echo "node_modules" >> "`dirname "$0"`/.tmp_exclude"
-        echo ".git"         >> "`dirname "$0"`/.tmp_exclude"
+        echo "obj"          >> "`dirname "$0"`/.tmp_exclude"
         echo "out"          >> "`dirname "$0"`/.tmp_exclude"
         echo "bin"          >> "`dirname "$0"`/.tmp_exclude"
-        echo "obj"          >> "`dirname "$0"`/.tmp_exclude"
         echo "build"        >> "`dirname "$0"`/.tmp_exclude"
+        # echo ".git"         >> "`dirname "$0"`/.tmp_exclude"
         #endregion Exclude file ============================================================
         Animate "$d" & PID=$!
         rsync -r --exclude-from "`dirname "$0"`/.tmp_exclude" "$d" "$DESTINATION/"
