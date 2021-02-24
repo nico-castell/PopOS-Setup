@@ -41,6 +41,9 @@ home_folder="$(pwd)"
 
 # Request root privileges now
 sudo echo >/dev/null
+if [ ! $? -eq 0 ]; then
+    exit 1
+fi
 
 #region Options
 while [ -n "$1" ]; do
