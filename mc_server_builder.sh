@@ -175,29 +175,29 @@ run_file="#!/bin/bash
 # The desktop file should be in $mc_entry
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
-    printf \"\\e[32mERROR: The server is already running\\e[00m\\n\"
-    exit 1
+	printf \"\\e[32mERROR: The server is already running\\e[00m\\n\"
+	exit 1
 fi
 
 if [[ \$(ps aux | grep 'compress.sh' | grep -v grep) ]]; then
-    printf \"\\e[32mERROR: The server cannot while it's being backed up\\e[00m\\n\"
-    exit 1
+	printf \"\\e[32mERROR: The server cannot while it's being backed up\\e[00m\\n\"
+	exit 1
 fi
 
 SLEEP=false
 PERSIST=false
 while [ -n \"\$1\" ]; do
-    case \"\$1\" in
-        -s) SLEEP=true   ;; # Don't skip final timer
-        -p) PERSIST=true  ;; # Persist open at the end.
-        *) printf \"ERROR: Option\\e[01m\$1\\e[00m not recognized\\n\" >&2 && exit 1 ;;
+	case \"\$1\" in
+		-s) SLEEP=true   ;; # Don't skip final timer
+		-p) PERSIST=true  ;; # Persist open at the end.
+		*) printf \"ERROR: Option\\e[01m\$1\\e[00m not recognized\\n\" >&2 && exit 1 ;;
 esac; shift; done
 
 # Draw a line across the width of the console.
 Separate () {
-    printf \"\\e[36m\"
-    printf \"%\`tput cols\`s\\n\" | tr \" \" \"=\"
-    printf \"\\e[00m\"
+	printf \"\\e[36m\"
+	printf \"%\`tput cols\`s\\n\" | tr \" \" \"=\"
+	printf \"\\e[00m\"
 }
 
 cd \"\$(dirname \"\$0\")\"
@@ -223,59 +223,62 @@ pushd . >/dev/null
 cd \"$mc_folder\"
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
-    printf \"\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n\"
-    exit 1
+	printf \"\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n\"
+	exit 1
 fi
 
-if [ ! \$# -eq 1 ]; then
-    printf \"\\e[31mERROR: You must use one argument\\e[00m\\n\" >&2
-    printf \"\\e[33mUsage:\\e[00m ./%s (-xz | -gz | -zip)\\n\" \`basename \"\$0\"\` >&2
-    exit 1
+if [ \$# -lt 1 ]; then
+	printf \"\\e[31mERROR: You must use one argument\\e[00m\\n\" >&2
+	printf \"\\e[33mUsage:\\e[00m ./%s (-xz | -gz | -zip)\\n\" \`basename \"\$0\"\` >&2
+	exit 1
 fi
 
-while [ -n \"\$1\" ]; do
-    case \"\$1\" in
-        -xz)  ARCHIVE=\"xz\"  ;; # Use tar.xz
-        -gz)  ARCHIVE=\"gz\"  ;; # Use tar.gz
-        -zip) ARCHIVE=\"zip\" ;; # Use .zip
-        *) printf \"ERROR: Option \\e[01m\$1\\e[00m not reconognized\\n\"; exit 1 ;;
-esac; shift; done
+case \"\$1\" in
+	-xz)  ARCHIVE=\"xz\"  ;; # Use tar.xz
+	-gz)  ARCHIVE=\"gz\"  ;; # Use tar.gz
+	-zip) ARCHIVE=\"zip\" ;; # Use .zip
+	*) printf \"ERROR: Option \\e[01m\$1\\e[00m not reconognized\\n\"; exit 1 ;;
+esac
 
 Animate() {
-    CICLE=('|' '/' '-' '\')
-    while true; do
-        for i in \"\${CICLE[@]}\"; do
-            printf \"Compressing the server (\\e[36m%s\\e[00m) %s\\r\" \$ARCHIVE \$i
-            sleep 0.2
-        done
-    done
+	CICLE=('|' '/' '-' '\')
+	while true; do
+		for i in \"\${CICLE[@]}\"; do
+			printf \"Compressing the server (\\e[36m%s\\e[00m) %s\\r\" \$ARCHIVE \$i
+			sleep 0.2
+		done
+	done
 }
 
 old_backups=\"\$(ls | grep -e '\\.tar\\...\$' -e '\\.zip\$')\"
 if [ -n \"\$old_backups\" ]; then
-    printf \"Deleting \\e[31mold\\e[00m backups...\\r\"
-    rm \"\$old_backups\"
+	printf \"Deleting \\e[31mold\\e[00m backups...\\r\"
+	rm \"\$old_backups\"
 fi
 
 DATE=\"\$(date +\"%Y-%m-%d\")\"
 Animate & pid=\$!
 
 case \$ARCHIVE in
-    xz) XZ_OPT=-9 tar -Jcf server_\$DATE.tar.xz * &>/dev/null; O=\$? ;;
-    gz) tar -zcf server_\$DATE.tar.gz * &>/dev/null; O=\$? ;;
-    zip) zip -rq server_\$DATE.zip * &>/dev/null; O=\$? ;;
+	xz) XZ_OPT=-9 tar -Jcf server_\$DATE.tar.xz * &>/dev/null; O=\$? ;;
+	gz) tar -zcf server_\$DATE.tar.gz * &>/dev/null; O=\$? ;;
+	zip) zip -rq server_\$DATE.zip * &>/dev/null; O=\$? ;;
 esac
 
 kill \$pid
 popd >/dev/null
 
 if [ \$O -eq 0 ]; then
-    printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[32mSuccess\\e[00m\\n\" \$ARCHIVE
-    exit 0
+	printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[32mSuccess\\e[00m\\n\" \$ARCHIVE
 else
-    printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[31mFail\\e[00m\\n\" \$ARCHIVE
-    exit 1
-fi"
+	printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[31mFail\\e[00m\\n\" \$ARCHIVE
+fi
+
+if [[ \$2 == \"-p\" ]]; then
+	read -p \"Press ENTER to exit...\"
+fi
+
+exit \$O"
 #endregion ===================================================================
 code_4=0
 printf '%s\n' "$compress_file" > compress.sh ; code_4=$?
@@ -291,7 +294,7 @@ Icon=$mc_folder/server-icon.png
 Type=Application
 Terminal=true
 Categories=Minecraft;Game;Server;
-Actions=open-persistent;open-skipping
+Actions=open-persistent;open-skipping;backup;
 Keywords=Server;Minecraft;
 
 X-Desktop-File-Install-Version=0.24
@@ -304,6 +307,11 @@ Icon=$mc_folder/server-icon.png
 [Desktop Action open-skipping]
 Name=Open skipping close timer
 Exec=$mc_folder/run.sh
+Icon=$mc_folder/server-icon.png
+
+[Desktop Action backup]
+Name=Archive the server
+Exec=$mc_folder/compress.sh -gz -p
 Icon=$mc_folder/server-icon.png"
 #endregion ===================================================================
 code_5=0
