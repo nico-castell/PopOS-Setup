@@ -766,36 +766,17 @@ fi
 #   These files use icons found in a .mydock folder at /home/user/.mydock
 if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A $script_location/deskcuts/ | grep ".desktop")" ]; then
     echo "Copying deskcuts..."
+
+    cp "$script_location/deskcuts/browser-*" ~/.local/share/applications
+
     # Use the prefixes of the files to determine wether the package was
-    #   installed, if so, copy the deskcut. For browsers only copy once.
+    #   installed, if so, copy the deskcut.
     LIST=$(ls -AR "$script_location"/deskcuts/ | grep ".desktop")
     for i in ${LIST[@]}; do
         case $i in
-            chr*) # Relies on Google Chrome.
-            if [ $COPIED_BROWSER_DESKCUTS == true ]; then continue; fi
-            COPIED_BROWSER_DESKCUTS=true
-            if [[ ${TO_APT[@]} == *"google-chrome-stable"* ]]; then
-                sudo cp "$script_location"/deskcuts/chrome/chr*.desktop /usr/share/applications/
-            fi
-            ;;
-
-            bra*) # Relies on Brave Browser.
-            if [ $COPIED_BROWSER_DESKCUTS == true ]; then continue; fi
-            COPIED_BROWSER_DESKCUTS=true
-            if [[ ${TO_APT[@]} == *"brave-browser"* ]]; then
-                sudo cp "$script_location"/deskcuts/brave/bra*.desktop /usr/share/applications/
-            fi
-            ;;
-
-            code*) # Relies on vscode.
-            if [[ ${TO_APT[@]} == *"code"* ]]; then
-                sudo cp "$script_location"/deskcuts/code* /usr/share/applications/
-            fi
-            ;;
-
             launcher_fenix.desktop) # Relies on Java.
             if [[ ${TO_APT[@]} == *"default-jre"* ]]; then
-                sudo cp "$script_location"/deskcuts/launcher_fenix.desktop /usr/share/applications/
+                cp "$script_location"/deskcuts/launcher_fenix.desktop ~/.local/share/applications
             fi
             ;;
         esac

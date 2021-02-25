@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Word
+GenericName=Office
+Comment=Access the Word web app.
+Icon=/home/nicolas/.mydock/msoffice/word.png
+Exec=xdg-open https://www.office.com/launch/word?auth=1
+Categories=Office;
+Keywords=Write;Word;Office;Microsoft

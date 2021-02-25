@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Outlook
+GenericName=Office
+Comment=Access the OutLook web app.
+Icon=/home/nicolas/.mydock/msoffice/outlook.png
+Exec=xdg-open https://office.live.com/start/Outlook.aspx?ui=en%2DUS&rs=US
+Categories=Office;
+Keywords=Mail;Outlook;Office;Microsoft

@@ -1,44 +1,40 @@
 [Desktop Entry]
-Name=Microsoft Office
-Comment=Access the Microsoft Office web apps.
-GenericName=Office
-Exec=google-chrome --app=https://www.office.com/?auth=1
-Icon=/home/nicolas/.mydock/msoffice/msoffice.png
 Type=Application
-StartupNotify=false
-Terminal=false
+Name=Microsoft Office
+GenericName=Office
+Comment=Access the Microsoft Office web apps.
+Icon=/home/nicolas/.mydock/msoffice/msoffice.png
+Exec=xdg-open https://www.office.com/?auth=1
 Categories=Office;
 Actions=word;excel;powerpoint;onedrive;onenote;outlook;
 Keywords=Office;Microsoft;excel;onedrive;onenote;outlook;powerpoint;word;
 
-X-Desktop-File-Install-Version=0.24
-
 [Desktop Action word]
 Name=Word
-Exec=google-chrome --app=https://www.office.com/launch/word?auth=1
 Icon=/home/nicolas/.mydock/msoffice/word.png
+Exec=xdg-open https://www.office.com/launch/word?auth=1
 
 [Desktop Action excel]
 Name=Excel
-Exec=google-chrome --app=https://www.office.com/launch/excel?auth=1
 Icon=/home/nicolas/.mydock/msoffice/excel.png
+Exec=xdg-open https://www.office.com/launch/excel?auth=1
 
 [Desktop Action powerpoint]
 Name=PowerPoint
-Exec=google-chrome --app=https://www.office.com/launch/powerpoint?auth=1
 Icon=/home/nicolas/.mydock/msoffice/powerpoint.png
+Exec=xdg-open https://www.office.com/launch/powerpoint?auth=1
 
 [Desktop Action onedrive]
 Name=OneDrive
-Exec=google-chrome --app=https://onedrive.live.com/
 Icon=/home/nicolas/.mydock/msoffice/onedrive.png
+Exec=xdg-open https://onedrive.live.com/
 
 [Desktop Action onenote]
 Name=OneNote
-Exec=google-chrome --app=https://www.onenote.com/notebooks?auth=1
 Icon=/home/nicolas/.mydock/msoffice/onenote.png
+Exec=xdg-open https://www.onenote.com/notebooks?auth=1
 
 [Desktop Action outlook]
 Name=Outlook
-Exec=google-chrome --app=https://office.live.com/start/Outlook.aspx?ui=en%2DUS&rs=US
 Icon=/home/nicolas/.mydock/msoffice/outlook.png
+Exec=xdg-open https://office.live.com/start/Outlook.aspx?ui=en%2DUS&rs=US

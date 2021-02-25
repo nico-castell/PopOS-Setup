@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=PowerPoint
+GenericName=Office
+Comment=Access the PowerPoint web app.
+Icon=/home/nicolas/.mydock/msoffice/powerpoint.png
+Exec=xdg-open https://www.office.com/launch/powerpoint?auth=1
+Categories=Office;
+Keywords=PowerPoint;Office;Microsoft
