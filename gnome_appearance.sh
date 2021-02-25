@@ -30,49 +30,65 @@
 
 echo "Beginning configuration of user themes..."
 
-# Find drive and folder.
-# FIXME: Don't have a fixed path
-if [ ! -d /media/$USER/Data\ \&\ BackUps/Nico\'s\ Files/Personalization/ ]; then
-    echo >&2 "`tput setaf 1`Source directory or drive not found.`tput sgr0`"
+# TODO: Configure your theme
+# Add this folder structure to the root of this repository to auto-configure your theme.
+# The files must end in '.tar.gz' and there can only be one file in each subfolder of 'themes'.
+# .
+# └── themes
+#     ├── bk
+#     │   └── image.png
+#     ├── cursor
+#     │   └── cursor.tar.gz
+#     ├── icons
+#     │   └── icons.tar.gz
+#     └── theme
+#         └── theme.tar.gz
+#
+# Git will ignore the themes folder.
+# The script assumes the archives' basenames (before '.tar.gz') are the names of the themes.
+
+cd "$(dirname "$0")"
+location="$(pwd)"
+
+if [ ! -d $location/themes ]; then
     exit 1
 fi
 
-# Prepare the destionation folders.
-echo "Creating destination directories..."
-if [ ! -d ~/.themes ]; then mkdir ~/.themes; fi
-if [ ! -d ~/.icons ];  then mkdir ~/.icons;  fi
+pushd . >/dev/null
+cursor_name=""
+if [ -d "$location/themes/cursor" ]; then
+    cd "$location/themes/cursor"
+    f="$(ls)"
+    tar -zxf "$f"
+    mkdir -p ~/.icons
+    cursor_name="${f/".tar.gz"/""}"
+    mv "$cursor_name" ~/.icons
+fi
+unset f
 
-echo "=================="
+icons_name=""
+if [ -d "$location/themes/icons" ]; then
+    cd "$location/themes/icons"
+    f="$(ls)"
+    tar -zxf "$f"
+    mkdir -p ~/.icons
+    icons_name="${f/".tar.gz"/""}"
+    mv "$icons_name" ~/.icons
+fi
+unset f
 
-# Access the directory and unzip the files.
-echo "Accessing source folder..."
-cd /media/$USER/Data\ \&\ BackUps/Nico\'s\ Files/Personalization
+theme_name=""
+if [ -d "$location/themes/theme" ]; then
+    cd "$location/themes/theme"
+    f="$(ls)"
+    tar -zxf "$f"
+    mkdir -p ~/.themes
+    theme_name"${f/".tar.gz"/""}"
+    mv "$theme_name" ~/.themes
+fi
+unset f
 
-for d in icons themes; do
-    echo "Accessing $d..."
-    cd $d/
-
-    # Find .zip files and unzip them.
-    echo "Listing..."
-    LIST=$(ls *.zip)
-    echo "------------------"
-    for i in ${LIST[@]}; do
-        # Copy the file, only if it hasn't already been installed.
-        if [ ! -d ~/.$d/${i/".zip"/""} ]; then
-            echo "Unziping $i..."
-            unzip $i > /dev/null
-
-            echo "Moving ${i/".zip"/""}..."
-            mv ${i/".zip"/""} ~/.$d/
-        fi
-    done
-    cd ..
-    echo "=================="
-done
-
-#===========================================================================
-#endregion Preparing files
-
+popd >/dev/null
 
 #region Configuring gsettings
 #===========================================================================
@@ -83,29 +99,41 @@ echo "Enabling user themes..."
 EXT=$(gnome-extensions list | grep user-theme)
 gnome-extensions enable $EXT
 
-# Enabling shell theme.
-echo "Configuring shell theme..."
-gsettings set org.gnome.shell.extensions.user-theme name "Sweet-mars"
+if [ "$theme_name" ]; then
+    # Enabling shell theme.
+    echo "Configuring shell theme..."
+    gsettings set org.gnome.shell.extensions.user-theme name "$theme_name"
 
-# Enabling application theme.
-echo "Configuring application theme..."
-gsettings set org.gnome.desktop.wm.preferences theme "Sweet-mars"
-gsettings set org.gnome.desktop.interface gtk-theme "Sweet-mars"
+    # Enabling application theme.
+    echo "Configuring application theme..."
+    gsettings set org.gnome.desktop.wm.preferences theme "$theme_name"
+    gsettings set org.gnome.desktop.interface gtk-theme "$theme_name"
+fi
 
-# Setting cursor theme.
-echo "Configuring cursor theme..."
-gsettings set org.gnome.desktop.interface cursor-theme "macOSBigSur"
+if [ "$cursor_name" ]; then
+    # Setting cursor theme.
+    echo "Configuring cursor theme..."
+    gsettings set org.gnome.desktop.interface cursor-theme "$cursor_name"
+fi
 
-# Setting icons theme.
-# echo "Configuring icons theme..."
-# gsettings set org.gnome.desktop.interface icon-theme "Cupertino-Catalina"
+if [ "$icons_name" ]; then
+    Setting icons theme.
+    echo "Configuring icons theme..."
+    gsettings set org.gnome.desktop.interface icon-theme "$icons_name"
+fi
+
+# Configuring background
+bk="$(ls $location/themes/bk | grep -e '\.png$' -e '\.jpg$')"
+if [ "$bk" ]; then
+    echo "Configuring background..."
+    DATE=$(date +"%Y-%m-%d-%H-%M-%S")
+    mkdir -p ~/.local/share/backgounds
+    cp "$bk" ~/.local/share/backgounds
+    gsettings set org.gnome.desktop.background picture-uri "file:///home/$USER/.local/share/backgrounds/$DATE-$bk"
+fi
 
 # Configuring interface.
 echo "Configuring interface..."
-DATE=$(date +"%Y-%m-%d-%H-%M-%S")
-if [ ! -d ~/.local/share/backgrounds/ ]; then mkdir ~/.local/share/backgrounds; fi
-cp ~/Pictures/Wallpapers/Modern.jpg ~/.local/share/backgrounds/$DATE-Modern.jpg
-gsettings set org.gnome.desktop.background picture-uri "file:///home/$USER/.local/share/backgrounds/$DATE-Modern.jpg"
 gsettings set org.gnome.desktop.calendar show-weekdate true
 gsettings set org.gnome.desktop.interface clock-format 24h
 gsettings set org.gnome.desktop.interface clock-show-weekday true

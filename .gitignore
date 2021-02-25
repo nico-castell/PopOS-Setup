@@ -25,3 +25,6 @@ Backup*/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Ignore the folder structure to auto configure the GNOME theme
+themes/*
