@@ -43,8 +43,8 @@ gsettings set org.gnome.calculator refresh-interval 86400
 echo "Configuring interface..."
 gsettings set org.gnome.desktop.wm.preferences button-layout "close,minimize,maximize:appmenu"
 gsettings set org.gnome.shell favorite-apps "['brave-browser.desktop', 'google-chrome.desktop', 'thunderbird.desktop',\
- 'org.gnome.Geary.desktop', 'chr-wpp.desktop', 'bra-wpp.desktop', 'org.gnome.Calendar.desktop', 'chr-msoffice.desktop',\
- 'bra-msoffice.desktop', 'code.desktop', 'org.gnome.Nautilus.desktop', 'com.spotify.Client.desktop', 'spotify.desktop']"
+ 'org.gnome.Geary.desktop', 'browser-whatsapp.desktop', 'org.gnome.Calendar.desktop', 'browser-msoffice.desktop',\
+ 'code.desktop', 'org.gnome.Nautilus.desktop', 'com.spotify.Client.desktop', 'spotify.desktop']"
 echo "Configuring interface behaviour..."
 gsettings set org.gnome.mutter center-new-windows true
 gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar minimize

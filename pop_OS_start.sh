@@ -517,7 +517,7 @@ for i in ${TO_APT[@]}; do
 
             # Set up aliases
             printf "Setting up some Git aliases...\n"
-            git config --global alias.flog 'log --color --decorate --oneline'
+            git config --global alias.flog "log --graph --oneline --format=format:'%C(bold white)%h%C(r) -- %C(blue)%an (%ar)%C(r): %s %C(auto)%d%C(r)'"
             git config --global alias.slog 'slog --show-signature -1'
             git config --global alias.mkst 'stash push -u'
             git config --global alias.popst 'stash pop "stash@{0}" -q'
