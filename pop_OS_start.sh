@@ -469,6 +469,7 @@ for i in ${TO_APT[@]}; do
         echo "Choose some developer tools to prepare:"
 
         LIST+=("Git")
+        LIST+=("GPG - User assisted")
         LIST+=("C++ Tools")
         LIST+=(".NET Core 3.1")
         LIST+=("Java JDK")
@@ -481,7 +482,7 @@ for i in ${TO_APT[@]}; do
             echo "Adding git ppa repository..."
             Animate & PID=$!
             sudo apt-add-repository -y ppa:git-core/ppa > /dev/null
-            O=$!; kill $PID
+            O=$?; kill $PID
             if [ $O -eq 0 ]; then
                 echo -e "\e[32mSuccess\e[00m"
             else
@@ -521,6 +522,27 @@ for i in ${TO_APT[@]}; do
             git config --global alias.slog 'slog --show-signature -1'
             git config --global alias.mkst 'stash push -u'
             git config --global alias.popst 'stash pop "stash@{0}" -q'
+
+            echo
+            ;;
+
+            "GPG - User assisted")
+            printf "Setting up \e[36mGPG\e[00m...\n"
+            printf "\e[33mPlease follow the steps:\e[00m\n"
+            gpg --full-generate-key
+            printf "\e[33mListing keys:\e[00m\n"
+            gpg --list-secret-keys --keyid-format long
+            printf "\e[33mPlease copy the key and paste it here: \e[00m"
+            read KEY
+            printf "\e[33mConfiguring \e[01mgit\e[00;33m to automatically \e[01msign\e[00;33m all your commits...\e[00m\n"
+            git config --global user.signingkey "$KEY"
+            git config --global commit.gpgsign yes
+            printf "\e[33mDo you want to print the public signature to add it to your \e[01mGitHub\e[00;33m? (Y/n) \e[00m"
+            read
+            if [[ ${REPLY,,} == "y" ]] || [[ -z $REPLY ]]; then
+                gpg --armor --export "$KEY"
+            fi
+            unset KEY
 
             echo
             ;;
@@ -573,7 +595,7 @@ for i in ${TO_APT[@]}; do
             "Java JDK")
             echo "Installing JDK..."
             Animate & PID=$!
-            sudo apt-get install $c -y > /dev/null
+            sudo apt-get install default-jdk -y > /dev/null
             O=$?; kill $PID
             if [ $O -eq 0  ]; then
                 echo -e "\e[32mSuccess\e[00m"
