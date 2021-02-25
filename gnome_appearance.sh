@@ -44,7 +44,7 @@
 cd "$(dirname "$0")"
 location="$(pwd)"
 
-if [ ! -d $location/themes ]; then
+if [ ! -d "$location/themes" ]; then
     exit 1
 fi
 
@@ -78,7 +78,7 @@ if [ -d "$location/themes/theme" ]; then
     f="$(ls)"
     tar -zxf "$f"
     mkdir -p ~/.themes
-    theme_name"${f/".tar.gz"/""}"
+    theme_name="${f/".tar.gz"/""}"
     mv "$theme_name" ~/.themes
 fi
 unset f
