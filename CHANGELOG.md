@@ -7,7 +7,22 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
-### Version [0.1.3](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.2) - *2021-02-05*
+### Version [0.1.4](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.4) - *2021-02-24*
+#### Added
+- [back_me_up](back_me_up.sh)
+    - Backup .clang-format from home
+- [mc_server_builder](mc_server_builder.sh)
+    - Adds a compress.sh script to archive the server.
+
+#### Changed
+- [mc_server_builder](mc_server_builder.sh)
+    - The script was rewritten
+    - Improved run.sh
+    - No longer has to download server icon, it just coppies it from the [assets](assets) folder
+- [pop_OS_start](pop_OS_start.sh)
+    - The web browser [deskcuts](deskcuts) were standarized by using `xdg-open`.
+
+### Version [0.1.3](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.3) - *2021-02-05*
 #### Changed
 * Major changes in all comments.
 * Some `tput setaf` commands were changed from ANSI escape codes.

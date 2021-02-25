@@ -69,17 +69,32 @@ I'm asumming that you've already [Pop!_OS](https://pop.system76.com/) successful
     ```bash
     git clone https://github.com/nico-castell/PopOS-Setup.git
     ```
-1. (Optional) The script modifies some files at runtime. You may want to remove the **.git** folder
+2. (Recommended) Change the paths to icons in the files in the [deskcuts](deskcuts) folder.
+2. (Optional) The script modifies some files at runtime. You may want to remove the **.git** folder
     ```bash
     cd "path/to/cloned/repo"
     rm -rf .git
     ```
-1. Run the pop_OS_start.sh script
+3. (Optional) Look at the instuctions in thme [gnome_apperance](gnome_appearance.sh) script, and configure the file structure for the script to set up the GNOME appearance with your themes.
+    ```
+    .
+    └── themes
+        ├── background
+        │   └── image.png
+        ├── cursor
+        │   └── cursor.tar.gz
+        ├── icons
+        │   └── icons.tar.gz
+        └── theme
+            └── theme.tar.gz
+    ```
+4. (Optional) If you plan on building a minecraft server, you should check that the `$download_link` and `$version` variables are up to date.
+5. Run the pop_OS_start.sh script
     ```bash
     ./pop_OS_start.sh
     ```
-1. Answer the questions (they have a 10 second time out and default to no). You'll be asked what software you want to remove and install, and which extras you want to run.
-1. Wait, as the script goes, it prompts for more instructions. It generally takes 10-20 minutes to complete, based on how up-to-date your installation already is, and wether you're installing an NVIDIA driver.
+6. Answer the questions (they have a 10 second time out and default to no). You'll be asked what software you want to remove and install, and which extras you want to run.
+7. Wait, as the script goes, it prompts for more instructions. It generally takes 10-20 minutes to complete, based on how up-to-date your installation already is, and wether you're installing an NVIDIA driver.
 
 ### Keep in mind:
 * You **must** have an internet connection to run the script.
@@ -90,8 +105,7 @@ I'm asumming that you've already [Pop!_OS](https://pop.system76.com/) successful
 ## Known issues
 
 1. [*duc_noip_install*](duc_noip_install): The installer can't seem to understand symbols when typing a password, at least on my tests, the script opens *gedit* for you to copy/paste your password and solve the issue.
-1. [*gnome_apperance*](gnome_apperance): Takes themes and icons from a fixed path, that you're not likely to have. I'd recommend you download the themes you want to use, and set the path in the script to where you downloaded the themes.
-1. [*mc_server_builder*](mc_server_builder): The link to download the latest version of the server must be manually updated for every minecraft release.
+2. [*mc_server_builder*](mc_server_builder): The link to download the latest version of the server must be manually updated for every minecraft release.
 
 ## Licensing
 This repository is available under the [MIT License](LICENSE).

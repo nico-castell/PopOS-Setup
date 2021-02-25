@@ -24,18 +24,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#region Preparing files
-#===========================================================================
-# Unzip files, and move them.
-
-echo "Beginning configuration of user themes..."
-
 # TODO: Configure your theme
 # Add this folder structure to the root of this repository to auto-configure your theme.
 # The files must end in '.tar.gz' and there can only be one file in each subfolder of 'themes'.
 # .
 # └── themes
-#     ├── bk
+#     ├── background
 #     │   └── image.png
 #     ├── cursor
 #     │   └── cursor.tar.gz
@@ -54,6 +48,7 @@ if [ ! -d $location/themes ]; then
     exit 1
 fi
 
+echo "Decompressing user themes..."
 pushd . >/dev/null
 cursor_name=""
 if [ -d "$location/themes/cursor" ]; then
@@ -90,10 +85,6 @@ unset f
 
 popd >/dev/null
 
-#region Configuring gsettings
-#===========================================================================
-# Enable extension and configure the relevant settings.
-
 # Enable user-themes extensions.
 echo "Enabling user themes..."
 EXT=$(gnome-extensions list | grep user-theme)
@@ -123,7 +114,7 @@ if [ "$icons_name" ]; then
 fi
 
 # Configuring background
-bk="$(ls $location/themes/bk | grep -e '\.png$' -e '\.jpg$')"
+bk="$(ls $location/themes/background | grep -e '\.png$' -e '\.jpg$')"
 if [ "$bk" ]; then
     echo "Configuring background..."
     DATE=$(date +"%Y-%m-%d-%H-%M-%S")
@@ -152,8 +143,5 @@ gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profi
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ background-transparency-percent 20
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy "'never'"
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ font "Hack 12"
-
-#===========================================================================
-#endregion Configuring gsettings
 
 # Thanks for downloading, and enjoy!
