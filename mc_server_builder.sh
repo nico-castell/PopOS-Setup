@@ -29,7 +29,7 @@ hide_mc_folder=true
 cWGET=$(which wget)
 cJAVA=$(which java)
 if [ -z $cWGET ] || [ -z $cJAVA ]; then
-    printf "\e[31mERROR: Make sure you have java and wget installed before you run this script\e[00m\n"
+    printf "\e[31mERROR: Make sure you have \e[01mjava\e[00;31m and \e[01mwget\e[00;31m installed before you run this script\e[00m\n" >&2
     exit 1
 fi
 
@@ -39,16 +39,10 @@ script_location="$(pwd)"
 cd ~
 home_folder="$(pwd)"
 
-# Request root privileges now
-sudo echo >/dev/null
-if [ ! $? -eq 0 ]; then
-    exit 1
-fi
-
 #region Options
 while [ -n "$1" ]; do
     case "$1" in
-        -d | --delete) delete_server=true ;;                # Delete the server
+        -d | --delete) delete_server=true ;;         # Delete the server
         -mc | --no-hide-mc) hide_mc_folder=false ;;  # Don't hide server folder
         -h | --help)                                 # Brief help menu
             printf "This script deploys a Minecraft Java server and utilities.\nOptions are:\n  -d  | --delete    ) Delete the server\n  -mc | --no-hide-mc) Don't hide server folder\n"
@@ -58,6 +52,12 @@ while [ -n "$1" ]; do
         *) printf "ERROR: Option \e[01m$1\e[00m not recognized\n" >&2 && exit 1 ;;
 esac; shift; done
 #endregion Options
+
+# Request root privileges now
+sudo echo >/dev/null
+if [ ! $? -eq 0 ]; then
+    exit 1
+fi
 
 # Define script variables here, use them later.
 if $hide_mc_folder; then
@@ -174,7 +174,8 @@ cp "$script_location/assets/mcserver/server-icon.png" . ; code_2=$?
 #region run_file =============================================================
 run_file="#!/bin/bash
 
-# The desktop file should be in $mc_entry
+# The desktop entry file should be in:
+# $mc_entry
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
 	printf \"\\e[32mERROR: The server is already running\\e[00m\\n\"
@@ -191,7 +192,7 @@ PERSIST=false
 while [ -n \"\$1\" ]; do
 	case \"\$1\" in
 		-s) SLEEP=true   ;; # Don't skip final timer
-		-p) PERSIST=true  ;; # Persist open at the end.
+		-p) PERSIST=true ;; # Persist open at the end.
 		*) printf \"ERROR: Option\\e[01m\$1\\e[00m not recognized\\n\" >&2 && exit 1 ;;
 esac; shift; done
 
@@ -277,7 +278,8 @@ else
 fi
 
 if [[ \$2 == \"-p\" ]]; then
-	read -p \"Press ENTER to exit...\"
+	read -sp \"Press ENTER to exit...\"
+    echo
 fi
 
 exit \$O"
@@ -288,18 +290,16 @@ chmod +x compress.sh
 
 #region desktop_file =========================================================
 desktop_file="[Desktop Entry]
-Name=MC Server
-Comment=Start the local minecraft server.
-GenericName=Minecraft;Server;mcserver;
-Exec=$mc_folder/run.sh -s
-Icon=$mc_folder/server-icon.png
 Type=Application
+Name=MC Server
+GenericName=Minecraft;Server;mcserver;
+Comment=Start the local minecraft server.
+Icon=$mc_folder/server-icon.png
+Exec=$mc_folder/run.sh -s
+Actions=open-persistent;open-skipping;backup;
 Terminal=true
 Categories=Minecraft;Game;Server;
-Actions=open-persistent;open-skipping;backup;
 Keywords=Server;Minecraft;
-
-X-Desktop-File-Install-Version=0.24
 
 [Desktop Action open-persistent]
 Name=Open persistent window
@@ -364,8 +364,7 @@ ask_setting "What will be the view distance?"                "7"                
 ask_setting "What will be the player idle timeout?"          "14"                 "player-idle-timeout"
 
 printf "\n\e[01;32mCongratulations! \e[00;32mYou now have a minecraft server.\e[00m\n"
-exit 0
-
 popd >/dev/null
 
+exit 0
 # Thanks for downloading, and enjoy!
