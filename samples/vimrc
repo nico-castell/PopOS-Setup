@@ -51,6 +51,9 @@ if has('syntax') && has('eval')
   packadd! matchit
 endif
 
+set tabstop=4
+set shiftwidth=0
+"set expandtab
 set number
 set nowrap
 set nobackup

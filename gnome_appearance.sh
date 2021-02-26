@@ -45,41 +45,41 @@ cd "$(dirname "$0")"
 location="$(pwd)"
 
 if [ ! -d "$location/themes" ]; then
-    exit 1
+	exit 1
 fi
 
 echo "Decompressing user themes..."
 pushd . >/dev/null
 cursor_name=""
 if [ -d "$location/themes/cursor" ]; then
-    cd "$location/themes/cursor"
-    f="$(ls)"
-    tar -zxf "$f"
-    mkdir -p ~/.icons
-    cursor_name="${f/".tar.gz"/""}"
-    mv "$cursor_name" ~/.icons
+	cd "$location/themes/cursor"
+	f="$(ls)"
+	tar -zxf "$f"
+	mkdir -p ~/.icons
+	cursor_name="${f/".tar.gz"/""}"
+	mv "$cursor_name" ~/.icons
 fi
 unset f
 
 icons_name=""
 if [ -d "$location/themes/icons" ]; then
-    cd "$location/themes/icons"
-    f="$(ls)"
-    tar -zxf "$f"
-    mkdir -p ~/.icons
-    icons_name="${f/".tar.gz"/""}"
-    mv "$icons_name" ~/.icons
+	cd "$location/themes/icons"
+	f="$(ls)"
+	tar -zxf "$f"
+	mkdir -p ~/.icons
+	icons_name="${f/".tar.gz"/""}"
+	mv "$icons_name" ~/.icons
 fi
 unset f
 
 theme_name=""
 if [ -d "$location/themes/theme" ]; then
-    cd "$location/themes/theme"
-    f="$(ls)"
-    tar -zxf "$f"
-    mkdir -p ~/.themes
-    theme_name="${f/".tar.gz"/""}"
-    mv "$theme_name" ~/.themes
+	cd "$location/themes/theme"
+	f="$(ls)"
+	tar -zxf "$f"
+	mkdir -p ~/.themes
+	theme_name="${f/".tar.gz"/""}"
+	mv "$theme_name" ~/.themes
 fi
 unset f
 
@@ -91,36 +91,36 @@ EXT=$(gnome-extensions list | grep user-theme)
 gnome-extensions enable $EXT
 
 if [ "$theme_name" ]; then
-    # Enabling shell theme.
-    echo "Configuring shell theme..."
-    gsettings set org.gnome.shell.extensions.user-theme name "$theme_name"
+	# Enabling shell theme.
+	echo "Configuring shell theme..."
+	gsettings set org.gnome.shell.extensions.user-theme name "$theme_name"
 
-    # Enabling application theme.
-    echo "Configuring application theme..."
-    gsettings set org.gnome.desktop.wm.preferences theme "$theme_name"
-    gsettings set org.gnome.desktop.interface gtk-theme "$theme_name"
+	# Enabling application theme.
+	echo "Configuring application theme..."
+	gsettings set org.gnome.desktop.wm.preferences theme "$theme_name"
+	gsettings set org.gnome.desktop.interface gtk-theme "$theme_name"
 fi
 
 if [ "$cursor_name" ]; then
-    # Setting cursor theme.
-    echo "Configuring cursor theme..."
-    gsettings set org.gnome.desktop.interface cursor-theme "$cursor_name"
+	# Setting cursor theme.
+	echo "Configuring cursor theme..."
+	gsettings set org.gnome.desktop.interface cursor-theme "$cursor_name"
 fi
 
 if [ "$icons_name" ]; then
-    Setting icons theme.
-    echo "Configuring icons theme..."
-    gsettings set org.gnome.desktop.interface icon-theme "$icons_name"
+	Setting icons theme.
+	echo "Configuring icons theme..."
+	gsettings set org.gnome.desktop.interface icon-theme "$icons_name"
 fi
 
 # Configuring background
 bk="$(ls $location/themes/background | grep -e '\.png$' -e '\.jpg$')"
 if [ "$bk" ]; then
-    echo "Configuring background..."
-    DATE=$(date +"%Y-%m-%d-%H-%M-%S")
-    mkdir -p ~/.local/share/backgounds
-    cp "$bk" ~/.local/share/backgounds
-    gsettings set org.gnome.desktop.background picture-uri "file:///home/$USER/.local/share/backgrounds/$DATE-$bk"
+	echo "Configuring background..."
+	DATE=$(date +"%Y-%m-%d-%H-%M-%S")
+	mkdir -p ~/.local/share/backgounds
+	cp "$bk" ~/.local/share/backgounds
+	gsettings set org.gnome.desktop.background picture-uri "file:///home/$USER/.local/share/backgrounds/$DATE-$bk"
 fi
 
 # Configuring interface.
