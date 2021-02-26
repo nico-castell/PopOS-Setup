@@ -104,7 +104,7 @@ I'm asumming that you've already [Pop!_OS](https://pop.system76.com/) successful
 
 ## Known issues
 
-1. [*duc_noip_install*](duc_noip_install): The installer can't seem to understand symbols when typing a password, at least on my tests, the script opens *gedit* for you to copy/paste your password and solve the issue.
+1. [*duc_noip_install*](duc_noip_install): The installer can't seem to understand symbols when typing a password, at least on my tests, the script opens *gedit* for you to copy/paste your password and work around the issue.
 2. [*mc_server_builder*](mc_server_builder): The link to download the latest version of the server must be manually updated for every minecraft release.
 
 ## Licensing

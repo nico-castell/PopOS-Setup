@@ -233,5 +233,5 @@ fi
 #===========================================================================
 #endregion Start menu entry
 
-echo "`tput setaf 2`No-Ip's DUC has been installed!`tput sgr0`"
+printf "\e[32mNo-Ip's DUC has been installed!\e[00m\n"
 # Thanks for downloading, and enjoy!

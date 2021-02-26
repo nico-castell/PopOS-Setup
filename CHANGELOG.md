@@ -1,9 +1,21 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
+1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
+
+## Unreleased
+### Changed
+- General improvements and fixes in [mc_server_builder](mc_server_builder.sh).
+- Favorite apps in [gnome_settings](gnome_settings.sh).
+
+### Fixed
+- Excel browser [shortcut](deskcuts/browser-msexcel.desktop).
+- Java JDK installation in [pop_OS_start](pop_OS_start.sh).
+- Git ppa repository reporting fail after success [pop_OS_start](pop_OS_start.sh).
+- Fixing [gnome_appearance](gnome_appearance.sh).
 
 ## Released
 
@@ -35,10 +47,11 @@ All significant changes to **PopOS Start** will be documented here.
 Now the project is hosted on a new repository.
 
 #### Deprecated
-The old repository is deprecated and will be removed within the next 14 days.
+The old repository is deprecated and will be removed within the next 14 days. ***The repository was deleted on the 25th February, 2021.***
+
+**Reason:** I made a mistake and rewrote the entire git history. This new repository was created from a backup of the project.
 
 ---
-
 ## Previous repository
 
 ### Version 0.1.1 - *2021-01-28*
@@ -63,7 +76,6 @@ This is the first official release, there were other minor and not so minor upgr
 3. Copying deskcuts when accessing a directory containing spaces.
 
 ---
-
 ## Pre-Releases
 
 ### Version 0.0.3
