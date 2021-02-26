@@ -1,11 +1,11 @@
 [Desktop Entry]
+Type=Application
 Name=CMake
 Comment=Toolset for cross-platform development
 Comment[es]=Herramientas para desarrollo multiplataforma
-Exec=/opt/cmake/cmake-3.20/bin/cmake-gui
-Icon=/home/nicolas/.mydock/cmake_logo.png
+Icon=/opt/cmake-3.20/cmake_logo.png
+Exec=/opt/cmake-3.20/bin/cmake-gui
+Terminal=false
 StartupNotify=true
 Categories=Utility;Development;
 Keywords=cmake;
-Terminal=false
-Type=Application

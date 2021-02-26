@@ -1,8 +1,8 @@
 [Desktop Entry]
+Type=Application
 Encoding=UTF-8
 Name=Postman
-Exec=/opt/postman/Postman/app/Postman %U
-Icon=/opt/postman/Postman/app/resources/app/assets/icon.png
+Icon=/opt/Postman/app/resources/app/assets/icon.png
+Exec=/opt/Postman/app/Postman
 Terminal=false
-Type=Application
 Categories=Development;
