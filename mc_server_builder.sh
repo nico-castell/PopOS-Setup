@@ -353,6 +353,7 @@ LAN=${LAN//" "/""}
 sed -i "s/server-ip=/server-ip=$LAN/" server.properties
 
 ask_setting () {
+	printf "%s (\e[35m%s\e[00m) -> " $1 $2
 	read -erp "$1 ($2) "
 	if [[ -z $REPLY ]]; then REPLY=("$2"); fi # Default to the specified value.
 	REPLY="$(printf '%q' "$REPLY")"
@@ -360,6 +361,7 @@ ask_setting () {
 	sed -i "s/$REPLACE/$3=$REPLY/" server.properties
 }
 
+printf "\n"
 ask_setting "Do you want the server to run in online mode?"  "true"               "online-mode"
 ask_setting "What will be the motd of the world?"            "A Minecraft Server" "motd"
 ask_setting "What will be the default gamemode?"             "survival"           "gamemode"
