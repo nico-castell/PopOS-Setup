@@ -226,8 +226,13 @@ pushd . >/dev/null
 cd \"$mc_folder\"
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
-	printf \"\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n\"
+	printf \"\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n\" >&2
 	exit 1
+fi
+
+if [[ \$(ps aux | grep 'compress.sh' | grep -v grep) ]]; then
+	printf \"\\e[31ERROR: You're already backing up the server\\e[00m\\n\" >&2
+    exit 1
 fi
 
 if [ \$# -lt 1 ]; then
