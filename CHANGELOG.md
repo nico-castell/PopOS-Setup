@@ -7,6 +7,10 @@ All significant changes to **PopOS Start** will be documented here.
 1. [Pre Releases](#Pre-Releases)
 
 ## Unreleased
+### Added
+- Git aliases in vscode setup ([pop_OS_start](pop_OS_start.sh))
+- Choice of git core editor in vscode setup ([pop_OS_start](pop_OS_start.sh))
+
 ### Changed
 - General improvements and fixes in [mc_server_builder](mc_server_builder.sh).
 - Favorite apps in [gnome_settings](gnome_settings.sh).

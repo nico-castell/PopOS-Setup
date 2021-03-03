@@ -503,14 +503,26 @@ for i in ${TO_APT[@]}; do
 			unset USERNAME EMAIL DEF_BRANCH
 
 			# Integrave vscode in some common Git operations.
+			printf "Please, select a default editor for \e[36mcommit messages\e[00m:\n"
+			GIT_EDITORS+=("vscode")
+			GIT_EDITORS+=("vim")
+			GIT_EDITORS+=("nano")
+			GIT_EDITORS+=("gedit")
+			select GIT_EDITOR in ${GIT_EDITORS[@]}; do
+			case $GIT_EDITOR in
+				vim)    git config --global core.editor vim            ;;
+				vscode) git config --global core.editor 'code --wait'  ;;
+				nano)   git config --global core.editor nano           ;;
+				gedit)  git config --global core.editor 'gedit -s'     ;;
+				*) echo "Option $GIT_EDITOR not recognized."; continue ;;
+			esac; break; done
+			unset GIT_EDITOR GIT_EDITORS
+
 			printf "Setting \e[01mVS Code\e[00m as the default merge tool...\n"
 			git config --global merge.tool vscode
 			git config --global mergetool.vscode.cmd 'code --wait $MERGED'
 			git config --global diff.tool vscode
 			git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
-
-			printf "Setting \e[01mvim\e[00m as the default text editor...\n"
-			git config --global core.editor vim
 
 			echo "Configuring pull behaviour..."
 			git config --global pull.rebase false
