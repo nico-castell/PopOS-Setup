@@ -10,6 +10,7 @@ All significant changes to **PopOS Start** will be documented here.
 ### Changed
 - General improvements and fixes in [mc_server_builder](mc_server_builder.sh).
 - Favorite apps in [gnome_settings](gnome_settings.sh).
+- Now using tabs to indent.
 
 ### Fixed
 - Excel browser [shortcut](deskcuts/browser-msexcel.desktop).
