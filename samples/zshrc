@@ -21,6 +21,7 @@ PROMPT_EOL_MARK=""
 bindkey -e                                      # emacs key bindings
 bindkey ' ' magic-space                         # do history expansion on space
 bindkey '^[[3;5~' kill-word                     # ctrl + Supr
+bindkey '^H' backward-kill-word                 # ctrl + del
 bindkey '^[[3~' delete-char                     # delete
 bindkey '^[[1;5C' forward-word                  # ctrl + ->
 bindkey '^[[1;5D' backward-word                 # ctrl + <-
@@ -161,7 +162,7 @@ if [ "$color_prompt" = yes ]; then
 		fi
 	}
 	# Uncomment this to stop using powerline style shell.
-	use_powerline
+	# use_powerline
 
 else
 	PROMPT="${debian_chroot:+($debian_chroot)}%B%F{green}%n@%m%f%b:%B%F{yellow}\$(find_branch)%b%f %F{blue}%2~%f%# "
