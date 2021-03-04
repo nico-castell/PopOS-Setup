@@ -3,9 +3,10 @@
 	<br><br>Pop!_OS Setup<br>
 </h1>
 <p align="center">
-	<img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&style=flat-square">
-	<img alt="GitHub commits since latest release (by date)" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&style=flat-square">
-	<img alt="GitHub" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=blue&label=License&style=flat-square">
+	<img alt="GitHub commits since latest release (by date)" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&color=informational&logo=linux&logoColor=white&style=flat-square">
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/nico-castell/PopOS-Setup?color=informational&label=Release&logo=linux&logoColor=white&style=flat-square">
+	<img alt="GitHub" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=informational&label=License&logo=linux&logoColor=white&style=flat-square">
+	<img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&color=informational&logo=linux&logoColor=white&style=flat-square">
 </p>
 
 This script was born from a desire to set up [Pop!_OS](https://pop.system76.com/) quickly and without too much fuzz. It focuses on 3 things:
