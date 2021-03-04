@@ -114,13 +114,15 @@ if [ "$icons_name" ]; then
 fi
 
 # Configuring background
-bk="$(ls $location/themes/background | grep -e '\.png$' -e '\.jpg$')"
+bk="$(ls "$location/themes/background" | grep -e '\.png$' -e '\.jpg$')"
 if [ "$bk" ]; then
+	destination="/home/$USER/.local/share/backgrounds"
 	echo "Configuring background..."
-	DATE=$(date +"%Y-%m-%d-%H-%M-%S")
-	mkdir -p ~/.local/share/backgounds
-	cp "$bk" ~/.local/share/backgounds
-	gsettings set org.gnome.desktop.background picture-uri "file:///home/$USER/.local/share/backgrounds/$DATE-$bk"
+	DATE="$(date +"%Y-%m-%d-%H-%M-%S")"
+	mkdir -p "$destination"
+	cp "$location/themes/background/$bk" "$destination/$DATE-$bk"
+	gsettings set org.gnome.desktop.background picture-uri "file://$destination/$DATE-$bk"
+	unset destination
 fi
 
 # Configuring interface.
