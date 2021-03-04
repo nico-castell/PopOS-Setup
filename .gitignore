@@ -8,7 +8,6 @@ $RECYCLE.BIN/
 
 # Exclude test and tmp files
 *test*
-*temp*
 *tmp*
 
 # Ignore vim files

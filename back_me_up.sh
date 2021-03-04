@@ -30,26 +30,20 @@ while [ -n "$1" ]; do
 		-sms | --skip-minecraft-server) SKIPMCSERVER=true ;; # Skip minecraft server.
 		-smc | --skip-minecraft-client) SKIPMCCLIENT=true ;; # Skip minecraft.
 		-vms | --virtual-machines) INCLUDEVMS=true ;;        # Include VirtualBox VM's
-		-root) INCLUDEROOT=true ;;                           # Include files from the root directory.
+		-s | --root) INCLUDEROOT=true ;;                     # Include files from the root directory.
 		-h | --help)                                         # Offer help text.
-			echo "This script creates a backup of your files in the secondary drive."
-			echo "Options:"
-			echo "  -r | --remove-previous)"
-			echo "      Remove previous backups."
-			echo "  -smc | --skip-minecraft-client)"
-			echo "      Skip minecraft."
-			echo "  -sms | --skip-minecraft-server)"
-			echo "      Skip minecraft server."
-			echo "  -vms | --vitual-machines)"
-			echo "      Include VirtualBox VMs."
-			echo "  -root)"
-			echo "      Include files from root directory."
-			echo "  -h)"
-			echo "      Show this menu."
-			echo "Using arguments for the destination drive and folders:"
-			echo "  Use \"--\" to specify a drive in the first position"
-			echo "  Use the other positions to specify folders to copy from the home directory."
-			echo "  Note: When specifying folders, you must also specify the drive."
+			printf "\e[01mThis script creates a backup of your files in the secondary drive.\e[00m\n"
+			printf "\e[01;32mOptions\e[00m:\n"
+			printf "  \e[33m-r   | --remove-previous)       \e[00mRemove previous backups.\n"
+			printf "  \e[33m-smc | --skip-minecraft-client) \e[00mSkip minecraft.\n"
+			printf "  \e[33m-sms | --skip-minecraft-server) \e[00mSkip minecraft server.\n"
+			printf "  \e[33m-vms | --vitual-machines)       \e[00mInclude VirtualBox VMs.\n"
+			printf "  \e[33m-s   | --root)                  \e[00mInclude files from root directory.\n"
+			printf "  \e[33m-h   | --help)                  \e[00mShow this menu.\n"
+			printf "\e[01;32mUsing arguments for the destination drive and folders\e[00m:\n"
+			printf "  Use \"\e[01m--\e[00m\" to specify a drive in the first position\n"
+			printf "  Use the other positions to specify folders to copy from the home directory.\n"
+			printf "  \e[01;32mNote\e[00m: When specifying folders, you must also specify the drive.\n"
 			exit 0
 			;;
 
@@ -230,11 +224,12 @@ for d in ${LIST[@]}; do
 
 		Development) # Avoid copying node modules and .git folders, make the process much faster.
 		#region Exclude file ============================================================
-		echo "node_modules" >> "`dirname "$0"`/.tmp_exclude"
-		echo "obj"          >> "`dirname "$0"`/.tmp_exclude"
-		echo "out"          >> "`dirname "$0"`/.tmp_exclude"
-		echo "bin"          >> "`dirname "$0"`/.tmp_exclude"
-		echo "build"        >> "`dirname "$0"`/.tmp_exclude"
+		exclude_file="`dirname "$0"`/.tmp_exclude"
+		echo "node_modules" >> "$exclude_file"
+		echo "obj"          >> "$exclude_file"
+		echo "out"          >> "$exclude_file"
+		echo "bin"          >> "$exclude_file"
+		echo "build"        >> "$exclude_file"
 		# echo ".git"         >> "`dirname "$0"`/.tmp_exclude"
 		#endregion Exclude file ============================================================
 		Animate "$d" & PID=$!
