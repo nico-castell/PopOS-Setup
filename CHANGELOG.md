@@ -7,25 +7,41 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
-### Version [0.1.4](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.4) - *2021-02-24*
+### Version [0.1.5](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.5) - *2021-03-04*
+#### Added
+- Git aliases in vscode setup ([pop_OS_start](pop_OS_start.sh))
+- Choice of git core editor in vscode setup ([pop_OS_start](pop_OS_start.sh))
+
+#### Changed
+- General improvements and fixes in [mc_server_builder](mc_server_builder.sh).
+- Favorite apps in [gnome_settings](gnome_settings.sh).
+- Now using tabs to indent.
+
+#### Fixed
+- Excel browser [shortcut](deskcuts/browser-msexcel.desktop).
+- Java JDK installation in [pop_OS_start](pop_OS_start.sh).
+- Git ppa repository reporting fail after success [pop_OS_start](pop_OS_start.sh).
+- Fixed bugs in [gnome_appearance](gnome_appearance.sh).
+
+### Version [0.1.4](https://github.com/nico-castell/PopOS-Setup/tree/0.1.4) [YANKED] - *2021-02-24*
 #### Added
 - [back_me_up](back_me_up.sh)
-    - Backup .clang-format from home
+	- Backup .clang-format from home
 - [mc_server_builder](mc_server_builder.sh)
-    - Adds a compress.sh script to archive the server.
+	- Adds a compress.sh script to archive the server.
 
 #### Changed
 - [mc_server_builder](mc_server_builder.sh)
-    - The script was rewritten
-    - Improved run.sh
-    - No longer has to download server icon, it just coppies it from the [assets](assets) folder
+	- The script was rewritten
+	- Improved run.sh
+	- No longer has to download server icon, it just coppies it from the [assets](assets) folder
 - [pop_OS_start](pop_OS_start.sh)
-    - The web browser [deskcuts](deskcuts) were standarized by using `xdg-open`.
+	- The web browser [deskcuts](deskcuts) were standarized by using `xdg-open`.
 
 ### Version [0.1.3](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.3) - *2021-02-05*
 #### Changed
 * Major changes in all comments.
-* Some `tput setaf` commands were changed from ANSI escape codes.
+* Some `tput setaf` commands were changed for ANSI escape codes.
 
 #### Fixed
 [back_me_up](back_me_up.sh): No longer errors when not running from ~.
@@ -35,10 +51,11 @@ All significant changes to **PopOS Start** will be documented here.
 Now the project is hosted on a new repository.
 
 #### Deprecated
-The old repository is deprecated and will be removed within the next 14 days.
+The old repository is deprecated and will be removed within the next 14 days. ***The repository was deleted on the 25th February, 2021.***
+
+**Reason:** I made a mistake and rewrote the entire git history. This new repository was created from a backup of the project.
 
 ---
-
 ## Previous repository
 
 ### Version 0.1.1 - *2021-01-28*
@@ -63,7 +80,6 @@ This is the first official release, there were other minor and not so minor upgr
 3. Copying deskcuts when accessing a directory containing spaces.
 
 ---
-
 ## Pre-Releases
 
 ### Version 0.0.3

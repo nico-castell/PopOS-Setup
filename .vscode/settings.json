@@ -1,11 +1,13 @@
 {
-    // BashIDE extension settings:
-    "bashIde.explainshellEndpoint": "http://localhost:5000",
-    // Configure git to autofetch:
-    "git.autofetch": true,
-    // Use these rulers to know when to type a new line: (Prefer 78)
-    "editor.rulers": [
-        78,
-        120
-    ]
+	// BashIDE extension settings:
+	"bashIde.explainshellEndpoint": "http://localhost:5000",
+	// Configure git to autofetch:
+	"git.autofetch": true,
+	// Use these rulers to know when to type a new line: (Prefer 78)
+	"editor.rulers": [
+		78,
+		120
+	],
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false
 }

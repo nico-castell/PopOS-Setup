@@ -1,11 +1,12 @@
 <h1 align="center">
-    <br><img src="assets/logo.png" width="317" height="230">
-    <br><br>Pop!_OS Setup<br>
+	<br><img src="assets/logo.png" width="317" height="230">
+	<br><br>Pop!_OS Setup<br>
 </h1>
 <p align="center">
-    <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&style=flat-square">
-    <img alt="GitHub commits since latest release (by date)" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&style=flat-square">
-    <img alt="GitHub" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=blue&label=License&style=flat-square">
+	<img alt="GitHub commits since latest release (by date)" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&color=informational&logo=linux&logoColor=white&style=flat-square">
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/nico-castell/PopOS-Setup?color=informational&label=Release&logo=linux&logoColor=white&style=flat-square">
+	<img alt="GitHub" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=informational&label=License&logo=linux&logoColor=white&style=flat-square">
+	<img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&color=informational&logo=linux&logoColor=white&style=flat-square">
 </p>
 
 This script was born from a desire to set up [Pop!_OS](https://pop.system76.com/) quickly and without too much fuzz. It focuses on 3 things:
@@ -17,46 +18,46 @@ This script was born from a desire to set up [Pop!_OS](https://pop.system76.com/
 <h2 align="center">The steps of the <a href="pop_OS_start.sh">script</a></h2>
 
 1. Process options.
-    * --disable-reboot) Not allow the script to reboot the computer.
-    * --from-temp-file) Load previous choices.
+	* --disable-reboot) Not allow the script to reboot the computer.
+	* --from-temp-file) Load previous choices.
 1. Get script location for use throughout the program.
 1. Get location of the file to save choices to.
 1. This step can go two ways:
-    * Prompt the user about how to set up the system.
-    * Load previous choices and skip the prompting.
+	* Prompt the user about how to set up the system.
+	* Load previous choices and skip the prompting.
 1. Preparing the environment to set up programs. This includes:
-    * Handling .mydock and .ssh.
-    * Firewall.
-    * Aliases.
-    * Test for internet connection.
+	* Handling .mydock and .ssh.
+	* Firewall.
+	* Aliases.
+	* Test for internet connection.
 1. Add universe component to package manager.
 1. Remove chosen software.
 1. Perform complete upgrade. This step includes:
-    * Find if kernel is being updated.
-    * Update everything.
-    * Reboot if kernel was updated.
+	* Find if kernel is being updated.
+	* Update everything.
+	* Reboot if kernel was updated.
 1. Install nvidia driver. This step includes:
-    * Check if not installing [Pop!_OS](https://pop.system76.com/)' driver
-    and, if that's the case, reboot to ad proper
-    display settings.
-    * Install driver.
-    * Reboot if necessary.
+	* Check if not installing [Pop!_OS](https://pop.system76.com/)' driver
+	and, if that's the case, reboot to ad proper
+	display settings.
+	* Install driver.
+	* Reboot if necessary.
 1. Install user-selected packages. This step includes:
-    * Swithcing the default mirror to a faster one.
-    * Preparing installation of some packages.
-    * Installing packages.
-    * Handling post-installation instructions for some packages.
+	* Swithcing the default mirror to a faster one.
+	* Preparing installation of some packages.
+	* Installing packages.
+	* Handling post-installation instructions for some packages.
 1. Install user-selected flatpaks.
 1. Install downloaded packages.
 1. Run secondary scripts. Including:
-    * duc_noip_install
-    * mc_server_builder
-    * gnome_settings
-    * gnome_apperance
+	* duc_noip_install
+	* mc_server_builder
+	* gnome_settings
+	* gnome_apperance
 1. Give the final touches. Including:
-    * Ensure everything is up to date.
-    * Copy deskcuts.
-    * Organize app menu.
+	* Ensure everything is up to date.
+	* Copy deskcuts.
+	* Organize app menu.
 1. If user chose so, update recovery partition.
 
 For more information on the versions, see the [changelog](CHANGELOG.md).
@@ -66,33 +67,33 @@ For more information on the versions, see the [changelog](CHANGELOG.md).
 I'm asumming that you've already [Pop!_OS](https://pop.system76.com/) successfully.
 
 1. Clone this repo
-    ```bash
-    git clone https://github.com/nico-castell/PopOS-Setup.git
-    ```
+	```bash
+	git clone https://github.com/nico-castell/PopOS-Setup.git
+	```
 2. (Recommended) Change the paths to icons in the files in the [deskcuts](deskcuts) folder.
 2. (Optional) The script modifies some files at runtime. You may want to remove the **.git** folder
-    ```bash
-    cd "path/to/cloned/repo"
-    rm -rf .git
-    ```
+	```bash
+	cd "path/to/cloned/repo"
+	rm -rf .git
+	```
 3. (Optional) Look at the instuctions in thme [gnome_apperance](gnome_appearance.sh) script, and configure the file structure for the script to set up the GNOME appearance with your themes.
-    ```
-    .
-    └── themes
-        ├── background
-        │   └── image.png
-        ├── cursor
-        │   └── cursor.tar.gz
-        ├── icons
-        │   └── icons.tar.gz
-        └── theme
-            └── theme.tar.gz
-    ```
+	```
+	.
+	└── themes
+		├── background
+		│   └── image.png
+		├── cursor
+		│   └── cursor.tar.gz
+		├── icons
+		│   └── icons.tar.gz
+		└── theme
+			└── theme.tar.gz
+	```
 4. (Optional) If you plan on building a minecraft server, you should check that the `$download_link` and `$version` variables are up to date.
 5. Run the pop_OS_start.sh script
-    ```bash
-    ./pop_OS_start.sh
-    ```
+	```bash
+	./pop_OS_start.sh
+	```
 6. Answer the questions (they have a 10 second time out and default to no). You'll be asked what software you want to remove and install, and which extras you want to run.
 7. Wait, as the script goes, it prompts for more instructions. It generally takes 10-20 minutes to complete, based on how up-to-date your installation already is, and wether you're installing an NVIDIA driver.
 
@@ -104,7 +105,7 @@ I'm asumming that you've already [Pop!_OS](https://pop.system76.com/) successful
 
 ## Known issues
 
-1. [*duc_noip_install*](duc_noip_install): The installer can't seem to understand symbols when typing a password, at least on my tests, the script opens *gedit* for you to copy/paste your password and solve the issue.
+1. [*duc_noip_install*](duc_noip_install): The installer can't seem to understand symbols when typing a password, at least on my tests, the script opens *gedit* for you to copy/paste your password and work around the issue.
 2. [*mc_server_builder*](mc_server_builder): The link to download the latest version of the server must be manually updated for every minecraft release.
 
 ## Licensing

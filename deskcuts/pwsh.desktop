@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=PowerShell 7
+Comment=A powerfull cross-platform shell.
+Icon=/opt/pwsh/pwsh_logo.png
+Exec=/opt/pwsh/pwsh
+Terminal=true
+StartupNotify=true
+Categories=shell;
+Keywords=shell;cli;console;terminal;

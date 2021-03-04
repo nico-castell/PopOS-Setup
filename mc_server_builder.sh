@@ -29,8 +29,8 @@ hide_mc_folder=true
 cWGET=$(which wget)
 cJAVA=$(which java)
 if [ -z $cWGET ] || [ -z $cJAVA ]; then
-    printf "\e[31mERROR: Make sure you have java and wget installed before you run this script\e[00m\n"
-    exit 1
+	printf "\e[31mERROR: Make sure you have \e[01mjava\e[00;31m and \e[01mwget\e[00;31m installed before you run this script\e[00m\n" >&2
+	exit 1
 fi
 
 pushd . >/dev/null
@@ -39,31 +39,31 @@ script_location="$(pwd)"
 cd ~
 home_folder="$(pwd)"
 
-# Request root privileges now
-sudo echo >/dev/null
-if [ ! $? -eq 0 ]; then
-    exit 1
-fi
-
 #region Options
 while [ -n "$1" ]; do
-    case "$1" in
-        -d | --delete) delete_server=true ;;                # Delete the server
-        -mc | --no-hide-mc) hide_mc_folder=false ;;  # Don't hide server folder
-        -h | --help)                                 # Brief help menu
-            printf "This script deploys a Minecraft Java server and utilities.\nOptions are:\n  -d  | --delete    ) Delete the server\n  -mc | --no-hide-mc) Don't hide server folder\n"
-            exit 0
-        ;;
+	case "$1" in
+		-d | --delete) delete_server=true ;;         # Delete the server
+		-mc | --no-hide-mc) hide_mc_folder=false ;;  # Don't hide server folder
+		-h | --help)                                 # Brief help menu
+			printf "This script deploys a Minecraft Java server and utilities.\nOptions are:\n  -d  | --delete    ) Delete the server\n  -mc | --no-hide-mc) Don't hide server folder\n"
+			exit 0
+		;;
 
-        *) printf "ERROR: Option \e[01m$1\e[00m not recognized\n" >&2 && exit 1 ;;
+		*) printf "ERROR: Option \e[01m$1\e[00m not recognized\n" >&2 && exit 1 ;;
 esac; shift; done
 #endregion Options
 
+# Request root privileges now
+sudo echo >/dev/null
+if [ ! $? -eq 0 ]; then
+	exit 1
+fi
+
 # Define script variables here, use them later.
 if $hide_mc_folder; then
-    mc_folder=("$home_folder/.mcserver")
+	mc_folder=("$home_folder/.mcserver")
 else
-    mc_folder=("$home_folder/mcserver")
+	mc_folder=("$home_folder/mcserver")
 fi
 
 appmenu=("$home_folder/.local/share/applications")
@@ -71,66 +71,66 @@ mc_entry=("$appmenu/mcserver.desktop")
 
 #region Deleting the server
 if $delete_server; then
-    printf "Are you sure you want to \e[01mdelete the server \e[31mpermanently\e[00m? (y/N) "
-    read
-    if [[ ${REPLY,,} == "y" ]]; then
-        if [ ! -d "$mc_folder" ]; then
-            printf "Server was deleted previously\n";
-        else
-            # Show an animation while waiting for a process to finish (usage: Animate & pid=$!; kill $pid)
-            Animate() {
-                CICLE=('|' '/' '-' '\')
-                while true; do
-                    for i in "${CICLE[@]}"; do
-                        printf "Deleting server files %s\r" $i
-                        sleep 0.2
-                    done
-                done
-            }
+	printf "Are you sure you want to \e[01mdelete the server \e[31mpermanently\e[00m? (y/N) "
+	read
+	if [[ ${REPLY,,} == "y" ]]; then
+		if [ ! -d "$mc_folder" ]; then
+			printf "Server was deleted previously\n";
+		else
+			# Show an animation while waiting for a process to finish (usage: Animate & pid=$!; kill $pid)
+			Animate() {
+				CICLE=('|' '/' '-' '\')
+				while true; do
+					for i in "${CICLE[@]}"; do
+						printf "Deleting server files %s\r" $i
+						sleep 0.2
+					done
+				done
+			}
 
-            Animate & pid=$!
-            # Delete server contents
-            code_1=0
-            rm -r "$mc_folder"; code_1=$?
+			Animate & pid=$!
+			# Delete server contents
+			code_1=0
+			rm -r "$mc_folder"; code_1=$?
 
-            # Delete app menu entries
-            code_2=0
-            if [ -f "$mc_entry" ]; then
-                rm "$mc_entry"; code_2=$?
-            fi
-            kill $pid
+			# Delete app menu entries
+			code_2=0
+			if [ -f "$mc_entry" ]; then
+				rm "$mc_entry"; code_2=$?
+			fi
+			kill $pid
 
-            # Print results
-            if [ $code_1 -eq 0 ] && [ $code_2 -eq 0 ]; then
-                printf "Deleting server files, \e[32mSuccess\e[00m\n"
-            else
-                printf "Deleting server files, \e[31mFailed\e[00m\n"
-            fi
+			# Print results
+			if [ $code_1 -eq 0 ] && [ $code_2 -eq 0 ]; then
+				printf "Deleting server files, \e[32mSuccess\e[00m\n"
+			else
+				printf "Deleting server files, \e[31mFailed\e[00m\n"
+			fi
 
-            # Delete firewall rules (user assisted)
-            printf "Choose the rules for port 25565 # MC-SERVER, press ENTER without typing a rule when you're done."
-            sudo ufw status numbered
-            while [ true ]; do
-                read -p "> "
-                if [ -z $REPLY ]; then break; fi
-                sudo ufw delete $REPLY
-            done
-        fi
-    fi
-    exit 0
+			# Delete firewall rules (user assisted)
+			printf "Choose the rules for port 25565 # MC-SERVER, press ENTER without typing a rule when you're done."
+			sudo ufw status numbered
+			while [ true ]; do
+				read -p "> "
+				if [ -z $REPLY ]; then break; fi
+				sudo ufw delete $REPLY
+			done
+		fi
+	fi
+	exit 0
 fi
 #endregion
 
 if [ -d "$mc_folder" ]; then
-    printf "\e[31mERROR: Server already exists, cannot re-create it\e[00m\n"
-    exit 1
+	printf "\e[31mERROR: Server already exists, cannot re-create it\e[00m\n"
+	exit 1
 fi
 
 # Test for an internet connection and exit if none is found.
 ping -c 1 google.com &>/dev/null
 if [ ! $? -eq 0 ]; then
-    printf "\e[31mERROR: No internet\e[00m\n" >&2
-    exit 1
+	printf "\e[31mERROR: No internet\e[00m\n" >&2
+	exit 1
 fi
 
 mkdir -p "$mc_folder"
@@ -141,7 +141,7 @@ RAM=512M
 printf "How much \e[33mRAM\e[00m do you want the server to use? "
 read
 if [ ! -z $REPLY ]; then
-    RAM=$REPLY
+	RAM=$REPLY
 fi
 
 # Download server and icon
@@ -152,13 +152,13 @@ version="1.16.5"
 download_link="https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar"
 
 Animate() {
-    CICLE=('|' '/' '-' '\')
-    while true; do
-        for i in "${CICLE[@]}"; do
-            printf "Setting up minecraft server \e[01m%s\e[00m %s\r" $version $i
-            sleep 0.2
-        done
-    done
+	CICLE=('|' '/' '-' '\')
+	while true; do
+		for i in "${CICLE[@]}"; do
+			printf "Setting up minecraft server \e[01m%s\e[00m %s\r" $version $i
+			sleep 0.2
+		done
+	done
 }
 
 Animate & pid=$!
@@ -174,7 +174,8 @@ cp "$script_location/assets/mcserver/server-icon.png" . ; code_2=$?
 #region run_file =============================================================
 run_file="#!/bin/bash
 
-# The desktop file should be in $mc_entry
+# The desktop entry file should be in:
+# $mc_entry
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
 	printf \"\\e[32mERROR: The server is already running\\e[00m\\n\"
@@ -191,7 +192,7 @@ PERSIST=false
 while [ -n \"\$1\" ]; do
 	case \"\$1\" in
 		-s) SLEEP=true   ;; # Don't skip final timer
-		-p) PERSIST=true  ;; # Persist open at the end.
+		-p) PERSIST=true ;; # Persist open at the end.
 		*) printf \"ERROR: Option\\e[01m\$1\\e[00m not recognized\\n\" >&2 && exit 1 ;;
 esac; shift; done
 
@@ -225,7 +226,12 @@ pushd . >/dev/null
 cd \"$mc_folder\"
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
-	printf \"\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n\"
+	printf \"\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n\" >&2
+	exit 1
+fi
+
+if [[ \$(ps aux | grep 'compress.sh' | grep -v grep) ]]; then
+	printf \"\\e[31ERROR: You're already backing up the server\\e[00m\\n\" >&2
 	exit 1
 fi
 
@@ -277,7 +283,8 @@ else
 fi
 
 if [[ \$2 == \"-p\" ]]; then
-	read -p \"Press ENTER to exit...\"
+	read -sp \"Press ENTER to exit...\"
+	echo
 fi
 
 exit \$O"
@@ -288,18 +295,16 @@ chmod +x compress.sh
 
 #region desktop_file =========================================================
 desktop_file="[Desktop Entry]
-Name=MC Server
-Comment=Start the local minecraft server.
-GenericName=Minecraft;Server;mcserver;
-Exec=$mc_folder/run.sh -s
-Icon=$mc_folder/server-icon.png
 Type=Application
+Name=MC Server
+GenericName=Minecraft;Server;mcserver;
+Comment=Start the local minecraft server.
+Icon=$mc_folder/server-icon.png
+Exec=$mc_folder/run.sh -s
+Actions=open-persistent;open-skipping;backup;
 Terminal=true
 Categories=Minecraft;Game;Server;
-Actions=open-persistent;open-skipping;backup;
 Keywords=Server;Minecraft;
-
-X-Desktop-File-Install-Version=0.24
 
 [Desktop Action open-persistent]
 Name=Open persistent window
@@ -335,10 +340,10 @@ kill $pid
 # Announce status of the setup
 if [[ $code_1 -eq 0 ]] && [[ $code_2 -eq 0 ]] && [[ $code_3 -eq 0 ]] && \
    [[ $code_4 -eq 0 ]] && [[ $code_5 -eq 0 ]] && [[ $code_6 -eq 0 ]]; then
-    printf "Setting up minecraft server \e[01m%s\e[00m, \e[32mSuccess\e[00m\n" $version
+	printf "Setting up minecraft server \e[01m%s\e[00m, \e[32mSuccess\e[00m\n" $version
 else
-    printf "Setting up minecraft server \e[01m%s\e[00m, \e[31mFail\e[00m\n" $version
-    exit 1
+	printf "Setting up minecraft server \e[01m%s\e[00m, \e[31mFail\e[00m\n" $version
+	exit 1
 fi
 
 # Configure some "defaults"
@@ -348,13 +353,15 @@ LAN=${LAN//" "/""}
 sed -i "s/server-ip=/server-ip=$LAN/" server.properties
 
 ask_setting () {
-    read -erp "$1 ($2) "
-    if [[ -z $REPLY ]]; then REPLY=("$2"); fi # Default to the specified value.
-    REPLY="$(printf '%q' "$REPLY")"
-    REPLACE=$(cat server.properties | grep "^$3=")
-    sed -i "s/$REPLACE/$3=$REPLY/" server.properties
+	printf "%s (\e[35m%s\e[00m) -> " $1 $2
+	read -erp "$1 ($2) "
+	if [[ -z $REPLY ]]; then REPLY=("$2"); fi # Default to the specified value.
+	REPLY="$(printf '%q' "$REPLY")"
+	REPLACE=$(cat server.properties | grep "^$3=")
+	sed -i "s/$REPLACE/$3=$REPLY/" server.properties
 }
 
+printf "\n"
 ask_setting "Do you want the server to run in online mode?"  "true"               "online-mode"
 ask_setting "What will be the motd of the world?"            "A Minecraft Server" "motd"
 ask_setting "What will be the default gamemode?"             "survival"           "gamemode"
@@ -364,8 +371,7 @@ ask_setting "What will be the view distance?"                "7"                
 ask_setting "What will be the player idle timeout?"          "14"                 "player-idle-timeout"
 
 printf "\n\e[01;32mCongratulations! \e[00;32mYou now have a minecraft server.\e[00m\n"
-exit 0
-
 popd >/dev/null
 
+exit 0
 # Thanks for downloading, and enjoy!
