@@ -1,28 +1,27 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
-1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
 
-## Unreleased
-### Added
+## Released
+
+### Version [0.1.5](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.5) - *2021-03-04*
+#### Added
 - Git aliases in vscode setup ([pop_OS_start](pop_OS_start.sh))
 - Choice of git core editor in vscode setup ([pop_OS_start](pop_OS_start.sh))
 
-### Changed
+#### Changed
 - General improvements and fixes in [mc_server_builder](mc_server_builder.sh).
 - Favorite apps in [gnome_settings](gnome_settings.sh).
 - Now using tabs to indent.
 
-### Fixed
+#### Fixed
 - Excel browser [shortcut](deskcuts/browser-msexcel.desktop).
 - Java JDK installation in [pop_OS_start](pop_OS_start.sh).
 - Git ppa repository reporting fail after success [pop_OS_start](pop_OS_start.sh).
-- Fixing [gnome_appearance](gnome_appearance.sh).
-
-## Released
+- Fixed bugs in [gnome_appearance](gnome_appearance.sh).
 
 ### Version [0.1.4](https://github.com/nico-castell/PopOS-Setup/tree/0.1.4) [YANKED] - *2021-02-24*
 #### Added
