@@ -1,9 +1,14 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
+1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
+
+## Unreleased
+### Changed
+- Minor improvements to [back_me_up](back_me_up.sh)
 
 ## Released
 
