@@ -24,7 +24,7 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
-### Version [0.1.4](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.4) - *2021-02-24*
+### Version [0.1.4](https://github.com/nico-castell/PopOS-Setup/tree/0.1.4) [YANKED] - *2021-02-24*
 #### Added
 - [back_me_up](back_me_up.sh)
 	- Backup .clang-format from home
@@ -42,7 +42,7 @@ All significant changes to **PopOS Start** will be documented here.
 ### Version [0.1.3](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.3) - *2021-02-05*
 #### Changed
 * Major changes in all comments.
-* Some `tput setaf` commands were changed from ANSI escape codes.
+* Some `tput setaf` commands were changed for ANSI escape codes.
 
 #### Fixed
 [back_me_up](back_me_up.sh): No longer errors when not running from ~.
