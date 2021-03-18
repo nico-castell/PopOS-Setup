@@ -183,7 +183,7 @@ if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
 fi
 
 if [[ \$(ps aux | grep 'compress.sh' | grep -v grep) ]]; then
-	printf \"\\e[32mERROR: The server cannot while it's being backed up\\e[00m\\n\"
+	printf \"\\e[32mERROR: The server cannot be run while it's being backed up\\e[00m\\n\"
 	exit 1
 fi
 
