@@ -7,8 +7,16 @@ All significant changes to **PopOS Start** will be documented here.
 1. [Pre Releases](#Pre-Releases)
 
 ## Unreleased
+### Added
+- Added more packages for the user to select in [pop_OS_start](pop_OS_start.sh).
+- The [.zshrc](samples/zshrc) file now binds `ctrl+del` to delete a whole word.
+
 ### Changed
-- Minor improvements to [back_me_up](back_me_up.sh)
+- Minor improvements to [back_me_up](back_me_up.sh).
+
+### Fixed
+- Fixed APT's preconfigured preference to install and update **google-chrome-stable** and **code** from Pop!_OS' PPA instead of the respective package's official repository. ([pop_OS_start](pop_OS_start.sh))
+- Minor fixes in [mc_server_builder](mc_server_builder.sh).
 
 ## Released
 
