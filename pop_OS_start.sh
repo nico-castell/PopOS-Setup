@@ -412,7 +412,7 @@ for i in ${TO_APT[@]}; do
 		echo "Preparing Google Chrome repository..."
 		wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - &>/dev/null
 		echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list &>/dev/null
-		# Configure apt preference to update google-chrome from the google's repo instead of Pop!_OS' PPA
+		# Configure apt preference to update google-chrome from google's repo instead of Pop!_OS' PPA
 		printf '# Prefer Google Chrome from the google repository' | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
 		printf 'Package: google-chrome-stable'                     | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
 		printf 'Pin: origin dl.google.com'                         | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
@@ -465,9 +465,9 @@ for i in ${TO_APT[@]}; do
 			Separate 4
 			echo -e "\"\e[36m$i\e[00m\" was installed, removing \e[33mFirefox\e[00m..."
 			Animate & PID=$!
-			sudo apt-get purge firefox* -y >/dev/null 2>/dev/null
+			sudo apt-get purge firefox* -y &>/dev/null
 			rm -rf ~/.mozilla
-			Clean_up >/dev/null 2>/dev/null
+			Clean_up &>/dev/null
 			kill $PID
 		fi
 		;;
