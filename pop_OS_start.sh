@@ -142,7 +142,7 @@ if [ -z $load_tmp_file ]; then
 		else Confirmed=false; fi
 	}
 
-	prompt_user "duc_noip_install" "install No-Ip's DUC"
+	prompt_user "duc_noip_install.sh" "install No-Ip's DUC"
 	INSTALL_DUC=("$Confimed")
 	if [ "$INSTALL_DUC" = true ]; then
 		echo "INSTALL_DUC" >> "$choices_file"
@@ -275,21 +275,16 @@ Custom_reboot_resume () {
 	###########################################################################
 
 	# Ensure directory is ready.
-	if [ ! -d ~/.config/autostart/ ]; then
-		mkdir ~/.config/autostart
-	fi
-	if [ -f ~/.config/autostart/continue_pop_OS_start.desktop ]; then
-		rm ~/.config/autostart/continue_pop_OS_start.desktop
-	fi
+	mkdir -p ~/.config/autostart
 
 	#region .desktop to autorun this script.
-	echo "[Desktop Entry]" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Name=TMP Continue pop_OS_start" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Exec=$script_location/pop_OS_start --from-temp-file -p" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Type=Application" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "StartUpNotify=true" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Terminal=true" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "X-Desktop-File-Install-Version=0.24" >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "[Desktop Entry]\n"                                           > ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Name=TMP Continue pop_OS_start\n"                            >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Exec=$script_location/pop_OS_start.sh --from-temp-file -p\n" >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Type=Application\n"                                          >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "StartUpNotify=true\n"                                        >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Terminal=true\n"                                             >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "X-Desktop-File-Install-Version=0.24\n"                       >> ~/.config/autostart/continue_pop_OS_start.desktop
 	#endregion
 
 	# Give the user an opportunity to cancel the reboot.
@@ -354,18 +349,13 @@ Instruct_system_reboot
 unset TO_REMOVE UPGRADE_SIM DO_REBOOT
 
 if [ ! -z $NVIDIA_DRIVER ]; then
-
-
-
 	if [[ ! $NVIDIA_DRIVER == *"system76-driver-nvidia"* ]] && [ ! "$disable_reboot" = true ]; then
 		DO_REBOOT=true
 		echo "The system will reboot after installing the nvidia driver..."
 	fi
 
-
 	echo -e "Installing NVIDIA driver \e[33m\"$NVIDIA_DRIVER\"\e[00m..."
 	sudo apt install $NVIDIA_DRIVER -y
-
 
 	REPLACE=$(cat "$choices_file" | grep "^NVIDIA_DRIVER- ")
 	sed -i "s/$REPLACE/ALREADY_INSTALLED_DRIVER/" "$choices_file"
@@ -375,7 +365,6 @@ if [ ! -z $NVIDIA_DRIVER ]; then
 
 	Instruct_system_reboot
 	unset DO_REBOOT REPLACE
-
 fi
 unset NVIDIA_DRIVER
 #endregion
@@ -438,6 +427,7 @@ for i in ${TO_APT[@]}; do
 		;;
 
 		vivaldi)
+		echo "Preparing Vivaldi repository..."
 		wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add - &>/dev/null
 		echo 'deb https://repo.vivaldi.com/archive/deb/ stable main' | sudo tee -a /etc/apt/sources.list.d/vivaldi.list &>/dev/null
 		;;
@@ -765,7 +755,6 @@ if [ ! -z ${TO_FLATPAK[@]} ]; then
 fi
 unset TO_FLATPAK
 
-
 if [ "$(ls -A ~/Downloads/ | grep ".deb")" ]; then
 	echo "Installing downloaded packages..."
 	sudo apt install ~/Downloads/*.deb -y -q
@@ -789,7 +778,7 @@ Separate 4
 
 # Run secondary scripts.
 if [ "$INSTALL_DUC" = true ]; then
-	"$script_location"/duc_noip_install -e # -e to create an app menu entry.
+	"$script_location"/duc_noip_install.sh -e # -e to create an app menu entry.
 	Separate 4
 fi
 if [ "$BUILD_MC_SERVER" = true ]; then
@@ -841,6 +830,7 @@ fi
 
 # Clean and organize the app menu alphabetically.
 Clean_up
+# FIXME: Fix organizing the app menu alphabetically.
 # gsettings reset org.gnome.shell app-picker-layout # (broken in GNOME 3.38.3)
 gsettings reset org.gnome.gedit.state.window size
 
