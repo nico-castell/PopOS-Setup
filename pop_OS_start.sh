@@ -84,9 +84,9 @@ if [ -z $load_tmp_file ]; then
 	Separate 4
 
 	echo "Confirm packages to install:"
-	 To_Confirm=("audacity" "code" "zsh" "dconf-editor" "gimp" "gnome-tweaks" "brave-browser" "google-chrome-stable")
-	To_Confirm+=("vivaldi" "lm-sensors" "hddtemp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord")
-	To_Confirm+=("gparted" "spotify-client" "glade" "htop" "obs-studio" "pavucontrol" "virtualbox" "gnome-chess")
+	 To_Confirm=("audacity" "code" "zsh" "dconf-editor" "gimp" "inkscape" "gnome-tweaks" "brave-browser" "google-chrome-stable")
+	To_Confirm+=("vivaldi" "lm-sensors" "hddtemp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord" "gparted")
+	To_Confirm+=("genisoimage" "spotify-client" "glade" "htop" "tree" "obs-studio" "pavucontrol" "virtualbox" "gnome-chess")
 	To_Confirm+=("signal-desktop" "gnome-mines" "steam" "cmatrix")
 	Confirm_from_list
 	TO_APT=(${Confimed[@]})
@@ -536,6 +536,7 @@ for i in ${TO_APT[@]}; do
 			git config --global alias.fflog 'log --graph'
 			git config --global alias.mkst 'stash push -u'
 			git config --global alias.popst 'stash pop "stash@{0}" -q'
+			git config --global alias.unstage 'reset -q HEAD -- .'
 
 			echo
 			;;
