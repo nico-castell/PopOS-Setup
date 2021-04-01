@@ -38,7 +38,7 @@ while [ -n "$1" ]; do
 esac; shift; done
 
 # Head to the script's directory and store it for later
-pushd . > /dev/null
+pushd . >/dev/null
 cd "$(dirname "$0")"
 script_location="$(pwd)"
 choices_file=("$script_location/.tmp_choices")
@@ -324,13 +324,13 @@ Instruct_system_reboot () {
 #region Installing updates and NVIDIA Driver
 echo "Removing software..."
 Animate & PID=$!
-sudo apt-get purge ${TO_REMOVE[@]} -y > /dev/null
+sudo apt-get purge ${TO_REMOVE[@]} -y >/dev/null
 kill $PID; echo "Done"
 echo
 
 echo "Updating repositories..."
 Animate & PID=$!
-sudo apt-get update > /dev/null
+sudo apt-get update >/dev/null
 kill $PID; echo "Done"
 Separate 4
 
@@ -344,9 +344,9 @@ if [ ! -z "$UPGRADE_SIM" ] && [ ! $disable_reboot = true ]; then
 fi
 
 echo "Upgrading software to the latest version..."
-sudo apt-mark hold firefox* > /dev/null
+sudo apt-mark hold firefox* >/dev/null
 sudo apt dist-upgrade -y
-sudo apt-mark unhold firefox* > /dev/null
+sudo apt-mark unhold firefox* >/dev/null
 Clean_up
 Separate 4
 
@@ -436,7 +436,7 @@ done
 # Update all repositories.
 echo "Updating repositories..."
 Animate & PID=$!
-sudo apt-get update > /dev/null
+sudo apt-get update >/dev/null
 kill $PID; echo "Done"
 Separate 4
 
@@ -455,9 +455,9 @@ for i in ${TO_APT[@]}; do
 			Separate 4
 			echo -e "\"\e[36m$i\e[00m\" was installed, removing \e[33mFirefox\e[00m..."
 			Animate & PID=$!
-			sudo apt-get purge firefox* -y > /dev/null 2> /dev/null
+			sudo apt-get purge firefox* -y >/dev/null 2>/dev/null
 			rm -rf ~/.mozilla
-			Clean_up > /dev/null 2> /dev/null
+			Clean_up >/dev/null 2>/dev/null
 			kill $PID
 		fi
 		;;
@@ -481,7 +481,7 @@ for i in ${TO_APT[@]}; do
 			Git)
 			echo "Adding git ppa repository..."
 			Animate & PID=$!
-			sudo apt-add-repository -y ppa:git-core/ppa > /dev/null
+			sudo apt-add-repository -y ppa:git-core/ppa >/dev/null
 			O=$?; kill $PID
 			if [ $O -eq 0 ]; then
 				echo -e "\e[32mSuccess\e[00m"
@@ -565,7 +565,7 @@ for i in ${TO_APT[@]}; do
 			"C++ Tools")
 			echo -e "Installing \e[36mgdb\e[00m and \e[36mclang-format\e[00m.."
 			Animate & PID=$!
-			sudo apt-get install gdb clang-format -y > /dev/null
+			sudo apt-get install gdb clang-format -y >/dev/null
 			O=$?; kill $PID
 			if [ $O -eq 0 ]; then
 				echo -e "\e[32mSuccess\e[00m"
@@ -579,14 +579,14 @@ for i in ${TO_APT[@]}; do
 			echo "Adding microsoft repository..."
 			Animate & PID=$!
 			wget -q https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O .packages-microsoft-prod.deb &>/dev/null
-			sudo dpkg -i .packages-microsoft-prod.deb 2> /dev/null > /dev/null
-			rm .packages-microsoft-prod.deb 2> /dev/null > /dev/null
+			sudo dpkg -i .packages-microsoft-prod.deb &>/dev/null
+			rm .packages-microsoft-prod.deb &>/dev/null
 			kill $PID
 			echo "Done"
 
 			echo "Updating repositories..."
 			Animate & PID=$!
-			sudo apt-get update 2> /dev/null > /dev/null
+			sudo apt-get update &>/dev/null
 			O=$?; kill $PID
 			if [ $O -eq 0 ]; then
 				echo -e "\e[32mSuccess\e[00m"
@@ -610,7 +610,7 @@ for i in ${TO_APT[@]}; do
 			"Java JDK")
 			echo "Installing JDK..."
 			Animate & PID=$!
-			sudo apt-get install default-jdk -y > /dev/null
+			sudo apt-get install default-jdk -y >/dev/null
 			O=$?; kill $PID
 			if [ $O -eq 0  ]; then
 				echo -e "\e[32mSuccess\e[00m"
@@ -662,12 +662,11 @@ for i in ${TO_APT[@]}; do
 		;;
 
 		cmatrix) # Remove unnecessary .desktop file.
-		sudo rm /usr/share/applications/cmatrix.desktop 2> /dev/null
+		sudo rm /usr/share/applications/cmatrix.desktop 2>/dev/null
 		;;
 
 		vim) # Make a ~/.vimrc from the sample.
 		cat $script_location/samples/vimrc | sudo tee -a ~/.vimrc /root/.vimrc >/dev/null
-		echo -e "\nset number" | sudo tee -a ~/.vimrc /root/.vimrc >/dev/null
 		;;
 
 		zsh) # Install Powerline.
@@ -699,10 +698,10 @@ for i in ${TO_APT[@]}; do
 
 			# Install fonts from the repository.
 			cd
-			git clone https://github.com/powerline/fonts.git ".PLfonts" > /dev/null
+			git clone https://github.com/powerline/fonts.git ".PLfonts" >/dev/null
 			if [ $? -eq 0 ]; then
 				cd .PLfonts
-				./install.sh > /dev/null
+				./install.sh >/dev/null
 			fi
 			if [ -d ~/.PLfonts ]; then rm -rf ~/.PLfonts; fi
 			cd "$script_location"
@@ -711,22 +710,22 @@ for i in ${TO_APT[@]}; do
 			mkdir -p ~/.config/powerline-shell
 			sudo mkdir -p /root/.config/powerline-shell
 			#region file
-			echo "{" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "  \"segments\": [" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"virtual_env\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"username\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"hostname\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"ssh\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"cwd\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"git\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"hg\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"jobs\"," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"root\"" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "  ]," | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "  \"cwd\": {" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "    \"max_depth\" : 3" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "  }" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
-			echo "}" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json > /dev/null
+			echo "{"                     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "  \"segments\": ["     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"virtual_env\","  | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"username\","     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"hostname\","     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"ssh\","          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"cwd\","          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"git\","          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"hg\","           | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"jobs\","         | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"root\""          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "  ],"                  | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "  \"cwd\": {"          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "    \"max_depth\" : 3" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "  }"                   | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "}"                     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
 			#endregion
 
 			kill $PID
@@ -770,7 +769,7 @@ echo "Ensuring packages are up to date..."
 Animate & PID=$!
 if [ "$(sudo apt-get update | grep "apt list --upgradable")" ]]; then
 	echo -e "Some packages can be upgraded, \e[36mupgrading...\e[00m"
-	sudo apt-get upgrade -y > /dev/null
+	sudo apt-get upgrade -y >/dev/null
 fi
 O=$?; kill $PID
 echo "Ensuring flatpaks are up to date..."
@@ -793,7 +792,7 @@ if [ -f "$script_location/gnome_settings.sh" ]; then
 fi
 if [ -f "$script_location/gnome_appearance.sh" ]; then
 	echo "Restarting gnome shell..."
-	busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting…")' > /dev/null
+	busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting…")' >/dev/null
 	sleep 8 # Wait for the refresh to be over before continuing
 	"$script_location"/gnome_appearance.sh
 	Separate 4
@@ -861,7 +860,7 @@ if [ "$persist_at_the_end" = true ]; then
 	read -p "Press any key to finish." -n 1
 fi
 
-popd > /dev/null
+popd >/dev/null
 exit 0
 
 # Thanks for downloading, and enjoy!
