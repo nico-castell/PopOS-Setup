@@ -7,11 +7,15 @@ All significant changes to **PopOS Start** will be documented here.
 1. [Pre Releases](#Pre-Releases)
 
 ## Unreleased
+### Added
+- Added [.editorconfig](.editorconfig) for previewing files on GitHub.
+
 ### Changed
 - [mc_server_builder](mc_server_builder.sh) now prompts the user to agree to the EULA.
 
 ### Fixed
 - Fixed the prompt when [mc_server_builder](mc_server_builder.sh) asked the user for some configurations.
+- Fixed calling [duc_noip_install](duc_noip_install.sh) from the [pop_OS_start](pop_OS_start.sh) script.
 
 ## Released
 
