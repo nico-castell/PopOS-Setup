@@ -1,16 +1,25 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
-1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
 
-## Unreleased
-### Changed
-- Minor improvements to [back_me_up](back_me_up.sh)
-
 ## Released
+
+### Version [0.1.6](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.6) - *2021-04-01*
+#### Added
+- Added more packages for the user to select in [pop_OS_start](pop_OS_start.sh).
+- The [.zshrc](samples/zshrc) file now binds `ctrl+del` to delete a whole word.
+
+#### Changed
+- Minor improvements to [back_me_up](back_me_up.sh).
+- Some improvements to the look of the code for writing files in [duc_noip_install](duc_noip_install.sh) and [pop_OS_start](pop_OS_start.sh).
+- Updated the setup for the vscode repository. ([pop_OS_start](pop_OS_start.sh))
+
+#### Fixed
+- Fixed APT's preconfigured preference to install and update **google-chrome-stable** and **code** from Pop!_OS' PPA instead of the respective package's official repository. ([pop_OS_start](pop_OS_start.sh))
+- Minor fixes in [mc_server_builder](mc_server_builder.sh).
 
 ### Version [0.1.5](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.5) - *2021-03-04*
 #### Added

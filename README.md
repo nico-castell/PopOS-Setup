@@ -20,45 +20,43 @@ This script was born from a desire to set up [Pop!_OS](https://pop.system76.com/
 1. Process options.
 	* --disable-reboot) Not allow the script to reboot the computer.
 	* --from-temp-file) Load previous choices.
-1. Get script location for use throughout the program.
-1. Get location of the file to save choices to.
-1. This step can go two ways:
+2. Get script location for use throughout the program.
+3. Get location of the file to save choices to.
+4. This step can go two ways:
 	* Prompt the user about how to set up the system.
 	* Load previous choices and skip the prompting.
-1. Preparing the environment to set up programs. This includes:
+5. Preparing the environment to set up programs. This includes:
 	* Handling .mydock and .ssh.
 	* Firewall.
 	* Aliases.
 	* Test for internet connection.
-1. Add universe component to package manager.
-1. Remove chosen software.
-1. Perform complete upgrade. This step includes:
+6. Add universe component to package manager.
+7. Remove chosen software.
+8. Perform complete upgrade. This step includes:
 	* Find if kernel is being updated.
 	* Update everything.
 	* Reboot if kernel was updated.
-1. Install nvidia driver. This step includes:
+9. Install nvidia driver. This step includes:
 	* Check if not installing [Pop!_OS](https://pop.system76.com/)' driver
 	and, if that's the case, reboot to ad proper
 	display settings.
 	* Install driver.
 	* Reboot if necessary.
-1. Install user-selected packages. This step includes:
-	* Swithcing the default mirror to a faster one.
-	* Preparing installation of some packages.
+10. Install user-selected packages. This step includes:
+	* Preparing repositories for some packages.
 	* Installing packages.
 	* Handling post-installation instructions for some packages.
-1. Install user-selected flatpaks.
-1. Install downloaded packages.
-1. Run secondary scripts. Including:
+11. Install user-selected flatpaks.
+12. Install downloaded packages.
+13. Run secondary scripts. Including:
 	* duc_noip_install
 	* mc_server_builder
 	* gnome_settings
 	* gnome_apperance
-1. Give the final touches. Including:
+14. Give the final touches. Including:
 	* Ensure everything is up to date.
 	* Copy deskcuts.
-	* Organize app menu.
-1. If user chose so, update recovery partition.
+15. If user chose so, update recovery partition.
 
 For more information on the versions, see the [changelog](CHANGELOG.md).
 

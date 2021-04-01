@@ -88,7 +88,7 @@ cd ~
 TODAY=$( date +"%Y-%m-%d_%H-%M" )
 
 if [ "$INCLUDEROOT" ]; then
-	sudo echo > /dev/null
+	sudo echo >/dev/null
 	if [ ! $? -eq 0 ]; then exit 1; fi
 fi
 
