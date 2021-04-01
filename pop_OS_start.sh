@@ -412,13 +412,18 @@ for i in ${TO_APT[@]}; do
 		echo "Preparing Google Chrome repository..."
 		wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - &>/dev/null
 		echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list &>/dev/null
+		# Configure apt preference to update google-chrome from the google's repo instead of Pop!_OS' PPA
+		printf '# Prefer Google Chrome from the google repository' | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Package: google-chrome-stable'                     | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Pin: origin dl.google.com'                         | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Pin-Priority: 1002'                                | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
 		;;
 
 		code)
 		echo "Preparing Visual Studio Code repository..."
 		wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/packages.microsoft.gpg add - &>/dev/null
 		echo "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
-		# Configure apt preference to update vscode from microsoft's repo instead of Pop!_OS PPA
+		# Configure apt preference to update vscode from microsoft's repo instead of Pop!_OS' PPA
 		printf '# Prefer vscode from the microsoft repo' | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
 		printf 'Package: code'                           | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
 		printf 'Pin: origin packages.microsoft.com'      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
