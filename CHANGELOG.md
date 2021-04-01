@@ -13,6 +13,7 @@ All significant changes to **PopOS Start** will be documented here.
 
 ### Changed
 - Minor improvements to [back_me_up](back_me_up.sh).
+- Some improvements to the look of the code for writing files in [duc_noip_install](duc_noip_install.sh) and [pop_OS_start](pop_OS_start.sh).
 
 ### Fixed
 - Fixed APT's preconfigured preference to install and update **google-chrome-stable** and **code** from Pop!_OS' PPA instead of the respective package's official repository. ([pop_OS_start](pop_OS_start.sh))
