@@ -1,9 +1,17 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
+1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
+
+## Unreleased
+### Changed
+- [mc_server_builder](mc_server_builder.sh) now prompts the user to agree to the EULA.
+
+### Fixed
+- Fixed the prompt when [mc_server_builder](mc_server_builder.sh) asked the user for some configurations.
 
 ## Released
 

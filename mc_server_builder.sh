@@ -36,8 +36,6 @@ fi
 pushd . >/dev/null
 cd "`dirname "$0"`"
 script_location="$(pwd)"
-cd ~
-home_folder="$(pwd)"
 
 #region Options
 while [ -n "$1" ]; do
@@ -61,12 +59,12 @@ fi
 
 # Define script variables here, use them later.
 if $hide_mc_folder; then
-	mc_folder=("$home_folder/.mcserver")
+	mc_folder=("$HOME/.mcserver")
 else
-	mc_folder=("$home_folder/mcserver")
+	mc_folder=("$HOME/mcserver")
 fi
 
-appmenu=("$home_folder/.local/share/applications")
+appmenu=("$HOME/.local/share/applications")
 mc_entry=("$appmenu/mcserver.desktop")
 
 #region Deleting the server
@@ -331,9 +329,8 @@ code_6=0
 sudo ufw allow 25565 comment 'MC-SERVER' &>/dev/null ; code_6=$?
 sudo ufw reload &>/dev/null
 
-# Run the server and agree to the EULA
+# Run the server for the first time and perform initial settings.
 java -jar server.jar --nogui --initSettings &>/dev/null
-sed -i 's/eula=false/eula=true/' eula.txt
 
 kill $pid
 
@@ -346,6 +343,11 @@ else
 	exit 1
 fi
 
+# Promt the user to agree to the EULA
+printf 'Do you agree to the \e[35mEULA\e[00m (https://account.mojang.com/documents/minecraft_eula)? (Y/n) -> '
+read -er
+[[ ${REPLY,,} == "y" ]] && sed -i 's/eula=false/eula=true/' eula.txt
+
 # Configure some "defaults"
 sed -i 's/enable-command-block=false/enable-command-block=true/' server.properties
 LAN=$(hostname -I)
@@ -353,9 +355,9 @@ LAN=${LAN//" "/""}
 sed -i "s/server-ip=/server-ip=$LAN/" server.properties
 
 ask_setting () {
-	printf "%s (\e[35m%s\e[00m) -> " $1 $2
-	read -erp "$1 ($2) "
-	if [[ -z $REPLY ]]; then REPLY=("$2"); fi # Default to the specified value.
+	printf "%s (\e[35m%s\e[00m) -> " "$1" "$2"
+	read -er
+	if [[ -z $REPLY ]]; then echo; REPLY=("$2"); fi # Default to the specified value.
 	REPLY="$(printf '%q' "$REPLY")"
 	REPLACE=$(cat server.properties | grep "^$3=")
 	sed -i "s/$REPLACE/$3=$REPLY/" server.properties
