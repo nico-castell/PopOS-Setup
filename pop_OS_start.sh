@@ -245,6 +245,7 @@ if [ ! $? -eq 0 ]; then
 	echo -e >&2 "\e[31mERROR: No internet\e[00m"
 	exit 1
 fi
+
 #endregion
 
 
@@ -381,6 +382,9 @@ unset NVIDIA_DRIVER
 # Stop gnome package kit, it holds the update process and causes most apt-get
 #   updates to fail.
 sudo systemctl stop packagekit
+
+# Prepare 'https://' repositories
+sudo apt-get install apt-transport-https -y &>/dev/null
 
 # Prepare proprietary repositories.
 for i in ${TO_APT[@]}; do
