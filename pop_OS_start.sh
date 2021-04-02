@@ -332,7 +332,7 @@ Separate 4
 # Simulate and upgrade using dist-upgrade, if the pattern "linux" is found,
 #   assume kernel is being updated and test if rebooting was not disabled,
 #   then instruct the script to reboot after upgrading.
-UPGRADE_SIM=$(apt-get -s dist-upgrade | grep "linux")
+UPGRADE_SIM=$(apt-get -s dist-upgrade | grep -e "linux" -e "kernel")
 if [ ! -z "$UPGRADE_SIM" ] && [ ! $disable_reboot = true ]; then
 	DO_REBOOT=true
 	echo -e "\e[39mThe system will reboot after upgrading the kernel...\e[00m"
@@ -393,8 +393,8 @@ for i in ${TO_APT[@]}; do
 
 		brave-browser)
 		echo "Preparing Brave Browser repository..."
-		curl -sS https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add - &>/dev/null
-		echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list &>/dev/null
+		sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg &>/dev/null
+		echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list &>/dev/null
 		;;
 
 		google-chrome-stable)
@@ -402,22 +402,22 @@ for i in ${TO_APT[@]}; do
 		wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - &>/dev/null
 		echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list &>/dev/null
 		# Configure apt preference to update google-chrome from google's repo instead of Pop!_OS' PPA
-		printf '# Prefer Google Chrome from the google repository' | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-		printf 'Package: google-chrome-stable'                     | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-		printf 'Pin: origin dl.google.com'                         | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-		printf 'Pin-Priority: 1002'                                | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf '# Prefer Google Chrome from the google repository\n' | sudo tee /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Package: google-chrome-stable\n'                     | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Pin: origin dl.google.com\n'                         | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Pin-Priority: 1002\n'                                | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
 		;;
 
 		code)
 		echo "Preparing Visual Studio Code repository..."
 		wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg &>/dev/null
-		sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ &>/dev/null && rm packages.microsoft.gpg
-		echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
+		sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ &>/dev/null
+		sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list' && rm packages.microsoft.gpg
 		# Configure apt preference to update vscode from microsoft's repo instead of Pop!_OS' PPA
-		printf '# Prefer vscode from the microsoft repo' | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-		printf 'Package: code'                           | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-		printf 'Pin: origin packages.microsoft.com'      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-		printf 'Pin-Priority: 1002'                      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf '# Prefer vscode from the microsoft repo\n' | sudo tee /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf 'Package: code\n'                           | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf 'Pin: origin packages.microsoft.com\n'      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf 'Pin-Priority: 1002\n'                      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
 		;;
 
 		signal-desktop)
