@@ -833,8 +833,7 @@ fi
 
 # Clean and organize the app menu alphabetically.
 Clean_up
-# FIXME: Fix organizing the app menu alphabetically.
-# gsettings reset org.gnome.shell app-picker-layout # (broken in GNOME 3.38.3)
+gsettings reset org.gnome.shell app-picker-layout
 gsettings reset org.gnome.gedit.state.window size
 
 # If the user chose to, update the recovery partition using Pop!_OS' API. Do
