@@ -804,7 +804,7 @@ fi
 
 # Copy deskcuts.
 #   These files use icons found in a .mydock folder at /home/user/.mydock
-if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A $script_location/deskcuts/ | grep ".desktop")" ]; then
+if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A "$script_location"/deskcuts/ | grep ".desktop")" ]; then
 	echo "Copying deskcuts..."
 
 	cp "$script_location/deskcuts/browser-*" ~/.local/share/applications
