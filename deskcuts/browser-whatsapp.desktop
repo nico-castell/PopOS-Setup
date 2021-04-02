@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=WhatsApp
-GenericName=Chat;
-Comment=Chat with other people.
-Icon=/home/nicolas/.mydock/whatsapp.png
-Exec=xdg-open https://web.whatsapp.com/
-Categories=Chat;
-Keywords=Chat;

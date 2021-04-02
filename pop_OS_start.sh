@@ -330,6 +330,7 @@ sudo apt-get update >/dev/null
 kill $PID; echo "Done"
 Separate 4
 
+# FIXME: Upgrade simulation fails to detect kernel upgrade.
 # Simulate and upgrade using dist-upgrade, if the pattern "linux" is found,
 #   assume kernel is being updated and test if rebooting was not disabled,
 #   then instruct the script to reboot after upgrading.

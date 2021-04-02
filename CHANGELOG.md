@@ -12,10 +12,14 @@ All significant changes to **PopOS Start** will be documented here.
 
 ### Changed
 - [mc_server_builder](mc_server_builder.sh) now prompts the user to agree to the EULA.
+- [pop_OS_start](pop_OS_start.sh) now installs *apt-transport-https* before installing https repositories.
 
 ### Fixed
 - Fixed the prompt when [mc_server_builder](mc_server_builder.sh) asked the user for some configurations.
 - Fixed calling [duc_noip_install](duc_noip_install.sh) from the [pop_OS_start](pop_OS_start.sh) script.
+- Fixed new-lines in APT preferences for *google-chrome-stable* and *code*.
+- Returned old setup for the vscode repository, the new one was failing to install the gpg signing key.
+- Fixed bad completion of the script's repository when installing deskcuts. ([pop_OS_start](pop_OS_start.sh))
 
 ## Released
 
