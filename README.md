@@ -3,10 +3,10 @@
 	<br><br>Pop!_OS Setup<br>
 </h1>
 <p align="center">
-    <a href="https://github.com/nico-castell/PopOS-Setup/commits"><img alt="GitHub commits since latest release (by date)" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&color=informational&logo=linux&logoColor=white&style=flat-square"></a>
-    <a href="https://github.com/nico-castell/PopOS-Setup/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/nico-castell/PopOS-Setup?color=informational&label=Release&logo=linux&logoColor=white&style=flat-square"></a>
-    <a href="LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=informational&label=License&logo=linux&logoColor=white&style=flat-square"></a>
-    <a href="https://github.com/nico-castell/PopOS-Setup"><img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&color=informational&logo=linux&logoColor=white&style=flat-square"></a>
+    <a href="https://github.com/nico-castell/PopOS-Setup/commits"><img alt="GitHub commits since latest release (by date)" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&color=informational&logo=git&logoColor=white&style=flat-square"></a>
+    <a href="https://github.com/nico-castell/PopOS-Setup/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/nico-castell/PopOS-Setup?color=informational&label=Release&logo=GitHub&logoColor=white&style=flat-square"></a>
+    <a href="LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=informational&label=License&logo=Open%20Source%20Initiative&logoColor=white&style=flat-square"></a>
+    <a href="https://github.com/nico-castell/PopOS-Setup"><img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&color=informational&logo=GNU%20bash&logoColor=white&style=flat-square"></a>
 </p>
 
 This script was born from a desire to set up [Pop!_OS](https://pop.system76.com/) quickly and without too much fuzz. It focuses on 3 things:
