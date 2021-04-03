@@ -58,7 +58,8 @@ if [ -z $load_tmp_file ]; then
 	Confirm_from_list () {
 		unset Confimed
 		for i in ${To_Confirm[@]}; do
-			read -p "Confirm \e[33m\"$i\"\e[00m (Y/n) " -t 10
+			printf "Confirm \e[33m\"%s\"\e[00m (Y/n) " $i
+			read -r -t 10
 			O=$?
 
 			# User presses ENTER --> YES
