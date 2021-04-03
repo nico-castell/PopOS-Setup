@@ -56,6 +56,7 @@ This script was born from a desire to set up [Pop!_OS](https://pop.system76.com/
 14. Give the final touches. Including:
 	* Ensure everything is up to date.
 	* Copy deskcuts.
+	* Organize app menu alphabetically.
 15. If user chose so, update recovery partition.
 
 For more information on the versions, see the [changelog](CHANGELOG.md).

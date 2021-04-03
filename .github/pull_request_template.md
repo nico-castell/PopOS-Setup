@@ -1,5 +1,3 @@
-# Title of the Pull Request
-
 <!--
 CHECKLIST
 Did you...
@@ -12,14 +10,15 @@ Did you...
 Is...
 - .gitignore ignoring any temporary files you are adding?
 - .gitattributes up to date with your changes?
-
-Now:
-- The commit message for merging the request must follow this structure:
-    PR #X - :coffee: <description> - Merged 'branch' (into 'branch')
 -->
 
-## Brief description of what was done
+## "In a nutshell"
 
 ## Changelog
 
 ## Co-Authors
+
+<!--
+The commit message for merging the request must follow this structure:
+    :coffee: PR #X - <description> - Merged 'branch' (into 'branch')
+-->

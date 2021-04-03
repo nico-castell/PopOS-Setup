@@ -142,7 +142,7 @@ if [ -z $load_tmp_file ]; then
 		else Confirmed=false; fi
 	}
 
-	prompt_user "duc_noip_install" "install No-Ip's DUC"
+	prompt_user "duc_noip_install.sh" "install No-Ip's DUC"
 	INSTALL_DUC=("$Confimed")
 	if [ "$INSTALL_DUC" = true ]; then
 		echo "INSTALL_DUC" >> "$choices_file"
@@ -245,6 +245,7 @@ if [ ! $? -eq 0 ]; then
 	echo -e >&2 "\e[31mERROR: No internet\e[00m"
 	exit 1
 fi
+
 #endregion
 
 
@@ -275,21 +276,16 @@ Custom_reboot_resume () {
 	###########################################################################
 
 	# Ensure directory is ready.
-	if [ ! -d ~/.config/autostart/ ]; then
-		mkdir ~/.config/autostart
-	fi
-	if [ -f ~/.config/autostart/continue_pop_OS_start.desktop ]; then
-		rm ~/.config/autostart/continue_pop_OS_start.desktop
-	fi
+	mkdir -p ~/.config/autostart
 
 	#region .desktop to autorun this script.
-	echo "[Desktop Entry]" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Name=TMP Continue pop_OS_start" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Exec=$script_location/pop_OS_start --from-temp-file -p" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Type=Application" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "StartUpNotify=true" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "Terminal=true" >> ~/.config/autostart/continue_pop_OS_start.desktop
-	echo "X-Desktop-File-Install-Version=0.24" >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "[Desktop Entry]\n"                                           > ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Name=TMP Continue pop_OS_start\n"                            >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Exec=$script_location/pop_OS_start.sh --from-temp-file -p\n" >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Type=Application\n"                                          >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "StartUpNotify=true\n"                                        >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "Terminal=true\n"                                             >> ~/.config/autostart/continue_pop_OS_start.desktop
+	printf "X-Desktop-File-Install-Version=0.24\n"                       >> ~/.config/autostart/continue_pop_OS_start.desktop
 	#endregion
 
 	# Give the user an opportunity to cancel the reboot.
@@ -337,10 +333,10 @@ Separate 4
 # Simulate and upgrade using dist-upgrade, if the pattern "linux" is found,
 #   assume kernel is being updated and test if rebooting was not disabled,
 #   then instruct the script to reboot after upgrading.
-UPGRADE_SIM=$(apt-get -s dist-upgrade | grep "linux")
-if [ ! -z "$UPGRADE_SIM" ] && [ ! $disable_reboot = true ]; then
+apt-get -s dist-upgrade | grep -e "linux" &>/dev/null && \
+if [ ! "$disable_reboot" = true ]; then
 	DO_REBOOT=true
-	echo -e "\e[39mThe system will reboot after upgrading the kernel...\e[00m"
+	echo -e "\e[01;39mThe system will reboot after upgrading the kernel...\e[00m"
 fi
 
 echo "Upgrading software to the latest version..."
@@ -354,18 +350,13 @@ Instruct_system_reboot
 unset TO_REMOVE UPGRADE_SIM DO_REBOOT
 
 if [ ! -z $NVIDIA_DRIVER ]; then
-
-
-
 	if [[ ! $NVIDIA_DRIVER == *"system76-driver-nvidia"* ]] && [ ! "$disable_reboot" = true ]; then
 		DO_REBOOT=true
-		echo "The system will reboot after installing the nvidia driver..."
+		echo "\e[01mThe system will reboot after installing the nvidia driver...\e[00m"
 	fi
-
 
 	echo -e "Installing NVIDIA driver \e[33m\"$NVIDIA_DRIVER\"\e[00m..."
 	sudo apt install $NVIDIA_DRIVER -y
-
 
 	REPLACE=$(cat "$choices_file" | grep "^NVIDIA_DRIVER- ")
 	sed -i "s/$REPLACE/ALREADY_INSTALLED_DRIVER/" "$choices_file"
@@ -375,7 +366,6 @@ if [ ! -z $NVIDIA_DRIVER ]; then
 
 	Instruct_system_reboot
 	unset DO_REBOOT REPLACE
-
 fi
 unset NVIDIA_DRIVER
 #endregion
@@ -393,6 +383,9 @@ unset NVIDIA_DRIVER
 #   updates to fail.
 sudo systemctl stop packagekit
 
+# Prepare 'https://' repositories
+sudo apt-get install apt-transport-https -y &>/dev/null
+
 # Prepare proprietary repositories.
 for i in ${TO_APT[@]}; do
 	case $i in
@@ -404,8 +397,8 @@ for i in ${TO_APT[@]}; do
 
 		brave-browser)
 		echo "Preparing Brave Browser repository..."
-		curl -sS https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add - &>/dev/null
-		echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list &>/dev/null
+		sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg &>/dev/null
+		echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list &>/dev/null
 		;;
 
 		google-chrome-stable)
@@ -413,22 +406,21 @@ for i in ${TO_APT[@]}; do
 		wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - &>/dev/null
 		echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list &>/dev/null
 		# Configure apt preference to update google-chrome from google's repo instead of Pop!_OS' PPA
-		printf '# Prefer Google Chrome from the google repository' | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-		printf 'Package: google-chrome-stable'                     | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-		printf 'Pin: origin dl.google.com'                         | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-		printf 'Pin-Priority: 1002'                                | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf '# Prefer Google Chrome from the google repository\n' | sudo tee /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Package: google-chrome-stable\n'                     | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Pin: origin dl.google.com\n'                         | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
+		printf 'Pin-Priority: 1002\n'                                | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
 		;;
 
 		code)
 		echo "Preparing Visual Studio Code repository..."
-		wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg &>/dev/null
-		sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/ &>/dev/null && rm packages.microsoft.gpg
-		echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
+		wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/packages.microsoft.gpg add - &>/dev/null
+		echo "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
 		# Configure apt preference to update vscode from microsoft's repo instead of Pop!_OS' PPA
-		printf '# Prefer vscode from the microsoft repo' | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-		printf 'Package: code'                           | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-		printf 'Pin: origin packages.microsoft.com'      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-		printf 'Pin-Priority: 1002'                      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf '# Prefer vscode from the microsoft repo\n' | sudo tee /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf 'Package: code\n'                           | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf 'Pin: origin packages.microsoft.com\n'      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
+		printf 'Pin-Priority: 1002\n'                      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
 		;;
 
 		signal-desktop)
@@ -438,6 +430,7 @@ for i in ${TO_APT[@]}; do
 		;;
 
 		vivaldi)
+		echo "Preparing Vivaldi repository..."
 		wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add - &>/dev/null
 		echo 'deb https://repo.vivaldi.com/archive/deb/ stable main' | sudo tee -a /etc/apt/sources.list.d/vivaldi.list &>/dev/null
 		;;
@@ -765,7 +758,6 @@ if [ ! -z ${TO_FLATPAK[@]} ]; then
 fi
 unset TO_FLATPAK
 
-
 if [ "$(ls -A ~/Downloads/ | grep ".deb")" ]; then
 	echo "Installing downloaded packages..."
 	sudo apt install ~/Downloads/*.deb -y -q
@@ -789,7 +781,7 @@ Separate 4
 
 # Run secondary scripts.
 if [ "$INSTALL_DUC" = true ]; then
-	"$script_location"/duc_noip_install -e # -e to create an app menu entry.
+	"$script_location"/duc_noip_install.sh -e # -e to create an app menu entry.
 	Separate 4
 fi
 if [ "$BUILD_MC_SERVER" = true ]; then
@@ -811,7 +803,7 @@ fi
 
 # Copy deskcuts.
 #   These files use icons found in a .mydock folder at /home/user/.mydock
-if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A $script_location/deskcuts/ | grep ".desktop")" ]; then
+if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A "$script_location"/deskcuts/ | grep ".desktop")" ]; then
 	echo "Copying deskcuts..."
 
 	cp "$script_location/deskcuts/browser-*" ~/.local/share/applications
@@ -841,7 +833,7 @@ fi
 
 # Clean and organize the app menu alphabetically.
 Clean_up
-# gsettings reset org.gnome.shell app-picker-layout # (broken in GNOME 3.38.3)
+gsettings reset org.gnome.shell app-picker-layout
 gsettings reset org.gnome.gedit.state.window size
 
 # If the user chose to, update the recovery partition using Pop!_OS' API. Do
