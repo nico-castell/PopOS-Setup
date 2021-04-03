@@ -1,9 +1,16 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
+1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
+
+## Unreleased
+### Fixed
+- [pop_OS_start](pop_OS_start.sh):
+  - Fixed colored prompt when confirming packages.
+  - Fixed appending to powerline config file when it should be rewritten.
 
 ## Released
 

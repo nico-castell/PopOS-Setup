@@ -715,7 +715,7 @@ for i in ${TO_APT[@]}; do
 			mkdir -p ~/.config/powerline-shell
 			sudo mkdir -p /root/.config/powerline-shell
 			#region file
-			echo "{"                     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "{"                     | sudo tee ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
 			echo "  \"segments\": ["     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
 			echo "    \"virtual_env\","  | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
 			echo "    \"username\","     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
