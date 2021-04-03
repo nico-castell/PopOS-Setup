@@ -330,14 +330,13 @@ sudo apt-get update >/dev/null
 kill $PID; echo "Done"
 Separate 4
 
-# FIXME: Upgrade simulation fails to detect kernel upgrade.
 # Simulate and upgrade using dist-upgrade, if the pattern "linux" is found,
 #   assume kernel is being updated and test if rebooting was not disabled,
 #   then instruct the script to reboot after upgrading.
-UPGRADE_SIM=$(apt-get -s dist-upgrade | grep -e "linux" -e "kernel")
-if [ ! -z "$UPGRADE_SIM" ] && [ ! $disable_reboot = true ]; then
+apt-get -s dist-upgrade | grep -e "linux" &>/dev/null && \
+if [ ! "$disable_reboot" = true ]; then
 	DO_REBOOT=true
-	echo -e "\e[39mThe system will reboot after upgrading the kernel...\e[00m"
+	echo -e "\e[01;39mThe system will reboot after upgrading the kernel...\e[00m"
 fi
 
 echo "Upgrading software to the latest version..."
@@ -353,7 +352,7 @@ unset TO_REMOVE UPGRADE_SIM DO_REBOOT
 if [ ! -z $NVIDIA_DRIVER ]; then
 	if [[ ! $NVIDIA_DRIVER == *"system76-driver-nvidia"* ]] && [ ! "$disable_reboot" = true ]; then
 		DO_REBOOT=true
-		echo "The system will reboot after installing the nvidia driver..."
+		echo "\e[01mThe system will reboot after installing the nvidia driver...\e[00m"
 	fi
 
 	echo -e "Installing NVIDIA driver \e[33m\"$NVIDIA_DRIVER\"\e[00m..."

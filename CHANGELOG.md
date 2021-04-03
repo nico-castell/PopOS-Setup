@@ -20,6 +20,7 @@ All significant changes to **PopOS Start** will be documented here.
 - Fixed new-lines in APT preferences for *google-chrome-stable* and *code*.
 - Returned old setup for the vscode repository, the new one was failing to install the gpg signing key.
 - Fixed bad completion of the script's repository when installing deskcuts. ([pop_OS_start](pop_OS_start.sh))
+- Fixed detection of upgrades to the kernel and rebooting after the upgrade. ([pop_OS_start](pop_OS_start.sh))
 
 ## Released
 
