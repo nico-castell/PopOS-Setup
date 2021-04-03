@@ -1,30 +1,29 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
-1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
 
-## Unreleased
-### Added
+## Released
+
+### Version [0.1.7](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.7) - *2021-04-02*
+#### Added
 - Added [.editorconfig](.editorconfig) for previewing files on GitHub.
 
-### Changed
+#### Changed
 - [mc_server_builder](mc_server_builder.sh) now prompts the user to agree to the EULA.
 - [pop_OS_start](pop_OS_start.sh) now installs *apt-transport-https* before installing https repositories.
 
-### Fixed
+#### Fixed
 - Fixed the prompt when [mc_server_builder](mc_server_builder.sh) asked the user for some configurations.
 - Fixed calling [duc_noip_install](duc_noip_install.sh) from the [pop_OS_start](pop_OS_start.sh) script.
-- Fixed new-lines in APT preferences for *google-chrome-stable* and *code*.
+- Fixed new-lines in APT preferences for *google-chrome-stable* and *code*. ([pop_OS_start](pop_OS_start.sh))
 - Returned old setup for the vscode repository, the new one was failing to install the gpg signing key.
 - Fixed bad completion of the script's repository when installing deskcuts. ([pop_OS_start](pop_OS_start.sh))
 - Fixed detection of upgrades to the kernel and rebooting after the upgrade. ([pop_OS_start](pop_OS_start.sh))
 
-## Released
-
-### Version [0.1.6](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.6) - *2021-04-01*
+### Version [0.1.6](https://github.com/nico-castell/PopOS-Setup/tree/0.1.6) [YANKED] - *2021-04-01*
 #### Added
 - Added more packages for the user to select in [pop_OS_start](pop_OS_start.sh).
 - The [.zshrc](samples/zshrc) file now binds `ctrl+del` to delete a whole word.
