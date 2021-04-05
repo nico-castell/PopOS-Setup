@@ -629,11 +629,18 @@ for i in ${TO_APT[@]}; do
 			echo "Set up an SSH key pair to use with GitHub"
 			read -p "Input a password: " -s PASS; echo # echo to fix read -s not printing a new line.
 
-			ssh-keygen -t rsa -b 4096 -C "GitHub-Key" -N "$PASS" -f ~/.ssh/id_GitHub-Key_main
+			KEY="$HOME/.ssh/id_GitHub-Key_main"
+			ssh-keygen -t rsa -b 4096 -C "GitHub-Key" -N "$PASS" -f "$KEY"
 			unset PASS
 
-			echo -e "\e[36mAdding public key to the clipboard...\e[00m"
-			xclip -selection clipboard < ~/.ssh/id_GitHub-Key_main.pub
+			printf "\e[33mDo you want to print the public key to copy it to your \e[01mGitHub\e[00;33m account? (Y/n) "
+			read
+			if [[ "${REPLY,,}" == "y" ]] || [ -z "$REPLY" ]; then
+				cat "$KEY"
+			fi
+
+			unset KEY
+
 			sleep 1.5
 			echo
 			;;
