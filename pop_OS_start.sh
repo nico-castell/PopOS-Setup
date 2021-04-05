@@ -415,8 +415,8 @@ for i in ${TO_APT[@]}; do
 
 		code)
 		echo "Preparing Visual Studio Code repository..."
-		wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/packages.microsoft.gpg add - &>/dev/null
-		echo "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
+		wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/packages.microsoft.gpg &>/dev/null
+		echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
 		# Configure apt preference to update vscode from microsoft's repo instead of Pop!_OS' PPA
 		printf '# Prefer vscode from the microsoft repo\n' | sudo tee /etc/apt/preferences.d/vscode-settings >/dev/null
 		printf 'Package: code\n'                           | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
