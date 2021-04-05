@@ -51,10 +51,22 @@ if has('syntax') && has('eval')
   packadd! matchit
 endif
 
-set tabstop=4
+" Editor settings:
+set tabstop=3
 set shiftwidth=0
 "set expandtab
 set number
 set nowrap
 set nobackup
 set dir=~/.tmp
+
+" Statusline:
+set statusline=%#PmenuSel# 
+set statusline+=%t:\ 
+set statusline+=%l:%c\ 
+set statusline+=/\ %L
+set statusline+=%= " switch to right side
+set statusline+=%r\ 
+set statusline+=%y\ 
+set statusline+=%p%%
+set laststatus=2
