@@ -11,6 +11,9 @@ All significant changes to **PopOS Start** will be documented here.
 - [pop_OS_start](pop_OS_start.sh):
   - Fixed colored prompt when confirming packages.
   - Fixed appending to powerline config file when it should be rewritten.
+- [.vimrc](samples/vimrc)
+  - Set tabsize to 3
+  - Set up a statusline
 
 ## Released
 
