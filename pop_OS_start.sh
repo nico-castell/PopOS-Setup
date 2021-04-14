@@ -678,7 +678,7 @@ for i in ${TO_APT[@]}; do
 		;;
 
 		vim) # Make a ~/.vimrc from the sample.
-		cat $script_location/samples/vimrc | sudo tee /root/.vimrc | tee ~/.vimrc >/dev/null
+		cat "$script_location/samples/vimrc" | sudo tee /root/.vimrc | tee ~/.vimrc >/dev/null
 		mkdir ~/.tmp
 		sudo mkdir /root/.tmp
 		;;
@@ -781,7 +781,7 @@ fi
 #region Finalizing
 echo "Ensuring packages are up to date..."
 Animate & PID=$!
-if [ "$(sudo apt-get update | grep "apt list --upgradable")" ]]; then
+if [[ "$(sudo apt-get update | grep "apt list --upgradable")" ]]; then
 	echo -e "Some packages can be upgraded, \e[36mupgrading...\e[00m"
 	sudo apt-get upgrade -y >/dev/null
 fi
