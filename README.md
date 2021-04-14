@@ -79,14 +79,14 @@ I'm asumming that you've already [Pop!_OS](https://pop.system76.com/) successful
 	```
 	.
 	└── themes
-		├── background
-		│   └── image.png
-		├── cursor
-		│   └── cursor.tar.gz
-		├── icons
-		│   └── icons.tar.gz
-		└── theme
-			└── theme.tar.gz
+	    ├── background
+	    │   └── image.png
+	    ├── cursor
+	    │   └── cursor.tar.gz
+	    ├── icons
+	    │   └── icons.tar.gz
+	    └── theme
+	        └── theme.tar.gz
 	```
 4. (Optional) If you plan on building a minecraft server, you should check that the `$download_link` and `$version` variables are up to date.
 5. Run the pop_OS_start.sh script

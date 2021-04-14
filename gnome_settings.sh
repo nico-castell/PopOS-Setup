@@ -42,8 +42,8 @@ gsettings set org.gnome.calculator refresh-interval 86400
 # Configuring interface.
 echo "Configuring interface..."
 gsettings set org.gnome.desktop.wm.preferences button-layout "close,minimize,maximize:appmenu"
-gsettings set org.gnome.shell favorite-apps ['brave-browser.desktop', 'google-chrome.desktop', 'org.gnome.Geary.desktop',\
- 'org.gnome.Calendar.desktop', 'browser-msoffice.desktop', 'code.desktop', 'org.gnome.Nautilus.desktop', 'spotify.desktop']
+gsettings set org.gnome.shell favorite-apps ['brave-browser.desktop', 'org.gnome.Geary.desktop', 'brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default.desktop', 'browser-msoffice.desktop', 'org.gnome.Calendar.desktop', 'code.desktop', 'org.gnome.Nautilus.desktop', 'spotify.desktop']
+
 echo "Configuring interface behaviour..."
 gsettings set org.gnome.mutter center-new-windows true
 gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar minimize
