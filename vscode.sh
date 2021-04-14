@@ -1,5 +1,10 @@
 # Script to set up vscode
 
+# WARNING: This script must be executed by running:
+#    source "$script_location/vscode.sh"
+# from pop_OS_start.sh because it depends on variables declared in
+# pop_OS_start.sh
+
 Separate 4
 echo -e "\e[36mVisual Studio Code\e[00m was successfully installed,"
 echo "Choose some developer tools to prepare:"
