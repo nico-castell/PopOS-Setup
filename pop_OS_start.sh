@@ -679,6 +679,8 @@ for i in ${TO_APT[@]}; do
 
 		vim) # Make a ~/.vimrc from the sample.
 		cat $script_location/samples/vimrc | sudo tee /root/.vimrc | tee ~/.vimrc >/dev/null
+		mkdir ~/.tmp
+		sudo mkdir /root/.tmp
 		;;
 
 		zsh) # Install Powerline.
