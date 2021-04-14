@@ -552,8 +552,8 @@ for i in ${TO_APT[@]}; do
 			gpg --full-generate-key
 			printf "\e[33mListing keys:\e[00m\n"
 			gpg --list-secret-keys --keyid-format long
-			printf "\e[33mPlease copy the key and paste it here: \e[00m"
-			read KEY
+			while read -e -t 0.1; do : ; done; unset REPLY # Clear input buffer
+			read -p "`tput setaf 3`Please copy the key and paste it here: `tput sgr0`" KEY
 			printf "\e[33mConfiguring \e[01mgit\e[00;33m to automatically \e[01msign\e[00;33m all your commits...\e[00m\n"
 			git config --global user.signingkey "$KEY"
 			git config --global commit.gpgsign yes

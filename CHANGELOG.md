@@ -21,6 +21,7 @@ All significant changes to **PopOS Start** will be documented here.
   - Fixed missing ANSI escape after SSH setup.
   - Fixed ~/.vimrc and ~/.config/powerline-shell/config.json owned by root.
   - Fixed not creating ~/.zsh_aliases before writing an alias there.
+  - Clear stdin before uses pastes the GPG key to use as git signingkey.
 
 ## Released
 
