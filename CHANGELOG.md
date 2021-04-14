@@ -7,6 +7,23 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
+### Version [0.1.8](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.8) - *2021-04-14*
+### Added
+- [.vimrc](samples/vimrc):
+  - Set up a statusline
+  - Set tabsize to 3
+### Changed
+- [pop_OS_start](pop_OS_start.sh)
+  - Simplified copying deskcuts.
+### Fixed
+- [pop_OS_start](pop_OS_start.sh):
+  - Fixed colored prompt when confirming packages.
+  - Fixed appending to powerline config file when it should be rewritten.
+  - Fixed missing ANSI escape after SSH setup.
+  - Fixed ~/.vimrc and ~/.config/powerline-shell/config.json owned by root.
+  - Fixed not creating ~/.zsh_aliases before writing an alias there.
+  - Clear stdin before uses pastes the GPG key to use as git signingkey.
+
 ### Version [0.1.7](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.7) - *2021-04-02*
 #### Added
 - Added [.editorconfig](.editorconfig) for previewing files on GitHub.
