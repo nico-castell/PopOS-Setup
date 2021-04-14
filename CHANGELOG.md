@@ -7,15 +7,31 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
+### Version [0.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.0) - *2021-04-14*
+#### Changed
+- [pop_OS_start.sh](pop_OS_start.sh):
+  - DETACHED VSCODE SETUP FROM THE SCRIPT:
+    - Deleted post-installation instructions for the `code` package.
+    - Created [vscode.sh](vscode.sh) to fulfill that role.
+    - [pop_OS_start.sh](pop_OS_start.sh) now sources [vscode.sh](vscode.sh)
+
+#### Fixed
+- [pop_OS_start.sh](pop_OS_start.sh):
+  - Fixed [.vimrc](samples/vimrc) sample file not being found.
+  - Create .tmp directories for user and root so vim can use them to keep *.swp* files.
+  - Fixed "missing [" when ensuring all packages are up to date.
+- [gnome_appearance.sh](gnome_appearance.sh):
+  - Fixed configuring favorite-apps.
+
 ### Version [0.1.8](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.8) - *2021-04-14*
-### Added
+#### Added
 - [.vimrc](samples/vimrc):
   - Set up a statusline
   - Set tabsize to 3
-### Changed
+#### Changed
 - [pop_OS_start](pop_OS_start.sh)
   - Simplified copying deskcuts.
-### Fixed
+#### Fixed
 - [pop_OS_start](pop_OS_start.sh):
   - Fixed colored prompt when confirming packages.
   - Fixed appending to powerline config file when it should be rewritten.
