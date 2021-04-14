@@ -633,7 +633,7 @@ for i in ${TO_APT[@]}; do
 			ssh-keygen -t rsa -b 4096 -C "GitHub-Key" -N "$PASS" -f "$KEY"
 			unset PASS
 
-			printf "\e[33mDo you want to print the public key to copy it to your \e[01mGitHub\e[00;33m account? (Y/n) "
+			printf "\e[33mDo you want to print the public key to copy it to your \e[01mGitHub\e[00;33m account?\e[00m (Y/n) "
 			read
 			if [[ "${REPLY,,}" == "y" ]] || [ -z "$REPLY" ]; then
 				cat "$KEY"
@@ -678,7 +678,7 @@ for i in ${TO_APT[@]}; do
 		;;
 
 		vim) # Make a ~/.vimrc from the sample.
-		cat $script_location/samples/vimrc | sudo tee -a ~/.vimrc /root/.vimrc >/dev/null
+		cat $script_location/samples/vimrc | sudo tee /root/.vimrc | tee ~/.vimrc >/dev/null
 		;;
 
 		zsh) # Install Powerline.
@@ -722,22 +722,22 @@ for i in ${TO_APT[@]}; do
 			mkdir -p ~/.config/powerline-shell
 			sudo mkdir -p /root/.config/powerline-shell
 			#region file
-			echo "{"                     | sudo tee ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "  \"segments\": ["     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"virtual_env\","  | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"username\","     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"hostname\","     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"ssh\","          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"cwd\","          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"git\","          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"hg\","           | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"jobs\","         | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"root\""          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "  ],"                  | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "  \"cwd\": {"          | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "    \"max_depth\" : 3" | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "  }"                   | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
-			echo "}"                     | sudo tee -a ~/.config/powerline-shell/config.json /root/.config/powerline-shell/config.json >/dev/null
+			echo "{"                     | sudo tee /root/.config/powerline-shell/config.json | tee ~/.config/powerline-shell/config.json >/dev/null
+			echo "  \"segments\": ["     | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"virtual_env\","  | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"username\","     | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"hostname\","     | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"ssh\","          | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"cwd\","          | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"git\","          | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"hg\","           | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"jobs\","         | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"root\""          | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "  ],"                  | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "  \"cwd\": {"          | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "    \"max_depth\" : 3" | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "  }"                   | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
+			echo "}"                     | sudo tee -a /root/.config/powerline-shell/config.json | tee -a ~/.config/powerline-shell/config.json >/dev/null
 			#endregion
 
 			kill $PID
@@ -748,6 +748,7 @@ for i in ${TO_APT[@]}; do
 
 		# We need to remake this alias.
 		echo "Making new alias for the backup script..."
+		[ -f ~/.zsh_aliases ] || touch ~/.zsh_aliases
 		Make_backup_alias ~/.zsh_aliases
 
 		echo -e "Setting \e[34mzsh\e[00m as the new \e[33mdefault shell\e[00m..."
@@ -814,21 +815,14 @@ fi
 if [ -d "$script_location"/deskcuts ] && [ ! -z "$(ls -A "$script_location"/deskcuts/ | grep ".desktop")" ]; then
 	echo "Copying deskcuts..."
 
-	cp "$script_location/deskcuts/browser-*" ~/.local/share/applications
+	DESTINATION="$HOME/.local/share/applications"
+	mkdir -p "$DESTINATION"
 
-	# Use the prefixes of the files to determine wether the package was
-	#   installed, if so, copy the deskcut.
-	LIST=$(ls -AR "$script_location"/deskcuts/ | grep ".desktop")
-	for i in ${LIST[@]}; do
-		case $i in
-			launcher_fenix.desktop) # Relies on Java.
-			if [[ ${TO_APT[@]} == *"default-jre"* ]]; then
-				cp "$script_location"/deskcuts/launcher_fenix.desktop ~/.local/share/applications
-			fi
-			;;
-		esac
-	done
-	unset LIST COPIED_BROWSER_DESKCUTS
+	cp "$script_location/deskcuts/browser-*" "$DESTINATION"
+	# Copy "Launcher Fenix" only if Java (pre-requisite) was installed.
+	[[ ${TO_APT[@]} == *"default-jre"* ]] && cp "$script_location"/deskcuts/launcher_fenix.desktop "$DESTINATION" ;;
+
+	unset DESTINATION
 fi
 unset TO_APT
 

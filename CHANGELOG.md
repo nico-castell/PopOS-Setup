@@ -11,10 +11,16 @@ All significant changes to **PopOS Start** will be documented here.
 - [.vimrc](samples/vimrc):
   - Set up a statusline
   - Set tabsize to 3
+### Changed
+- [pop_OS_start](pop_OS_start.sh)
+  - Simplified copying deskcuts.
 ### Fixed
 - [pop_OS_start](pop_OS_start.sh):
   - Fixed colored prompt when confirming packages.
   - Fixed appending to powerline config file when it should be rewritten.
+  - Fixed missing ANSI escape after SSH setup.
+  - Fixed ~/.vimrc and ~/.config/powerline-shell/config.json owned by root.
+  - Fixed not creating ~/.zsh_aliases before writing an alias there.
 
 ## Released
 
