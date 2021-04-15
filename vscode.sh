@@ -169,8 +169,7 @@ case $c in
 	ssh-keygen -t rsa -b 4096 -C "GitHub-Key" -N "$PASS" -f "$KEY"
 	unset PASS
 
-	printf "\e[33mDo you want to print the public key to copy it to your \e[01mGitHub\e[00;33m account?\e[00m (Y/n) "
-	read
+	read -p "`tput setaf 3`Do you want to print the public key to copy to copy to your $(printf '\e[01m')GitHub$(printf '\e[00;33m') account?`tput sgr0` (Y/n) "
 	if [[ "${REPLY,,}" == "y" ]] || [ -z "$REPLY" ]; then
 		cat "$KEY"
 	fi

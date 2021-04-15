@@ -69,8 +69,7 @@ mc_entry=("$appmenu/mcserver.desktop")
 
 #region Deleting the server
 if $delete_server; then
-	printf "Are you sure you want to \e[01mdelete the server \e[31mpermanently\e[00m? (y/N) "
-	read
+	read -p "Are you sure you want to delete the server `tput setaf 01`permanently`tput sgr0`? (y/N) "
 	if [[ ${REPLY,,} == "y" ]]; then
 		if [ ! -d "$mc_folder" ]; then
 			printf "Server was deleted previously\n";
@@ -136,8 +135,7 @@ cd "$mc_folder"
 
 # Prompt the user for the ammount of RAM to be used by the server. Default to 1/2 GB
 RAM=512M
-printf "How much \e[33mRAM\e[00m do you want the server to use? "
-read
+read -p "How much `tput setaf 3`RAM`tput sgr0` do you want the server to use? "
 if [ ! -z $REPLY ]; then
 	RAM=$REPLY
 fi
@@ -344,8 +342,7 @@ else
 fi
 
 # Promt the user to agree to the EULA
-printf 'Do you agree to the \e[35mEULA\e[00m (https://account.mojang.com/documents/minecraft_eula)? (Y/n) -> '
-read -er
+read -p "Do you agree to the `tput setaf 5`EULA`tput sgr0` (https://account.mojang.com/documents/minecraft_eula)? (Y/n) -> " -e -r
 [[ ${REPLY,,} == "y" ]] && sed -i 's/eula=false/eula=true/' eula.txt
 
 # Configure some "defaults"
@@ -355,8 +352,7 @@ LAN=${LAN//" "/""}
 sed -i "s/server-ip=/server-ip=$LAN/" server.properties
 
 ask_setting () {
-	printf "%s (\e[35m%s\e[00m) -> " "$1" "$2"
-	read -er
+	read -p "$1 (`tput setaf 5`$2`tput sgr0`) -> " -e -r
 	if [[ -z $REPLY ]]; then echo; REPLY=("$2"); fi # Default to the specified value.
 	REPLY="$(printf '%q' "$REPLY")"
 	REPLACE=$(cat server.properties | grep "^$3=")

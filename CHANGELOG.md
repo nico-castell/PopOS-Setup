@@ -1,9 +1,19 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
+1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
+
+## Unreleased
+### Fixed
+- [mc_server_builder.sh](mc_server_builder.sh)
+  - Fixed colored prompts (the user can now type delete without deleting the prompt).
+- [pop_OS_start.sh](pop_OS_start.sh)
+  - Fixed colored prompts (the user can now type delete without deleting the prompt).
+- [vscode.sh](vscode.sh)
+  - Fixed colored prompts (the user can now type delete without deleting the prompt).
 
 ## Released
 
