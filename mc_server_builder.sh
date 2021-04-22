@@ -104,6 +104,8 @@ if $delete_server; then
 				printf "Deleting server files, \e[31mFailed\e[00m\n"
 			fi
 
+			sudo update-desktop-database
+
 			# Delete firewall rules (user assisted)
 			printf "Choose the rules for port 25565 # MC-SERVER, press ENTER without typing a rule when you're done."
 			sudo ufw status numbered
@@ -319,6 +321,7 @@ Icon=$mc_folder/server-icon.png"
 #endregion ===================================================================
 code_5=0
 mkdir -p "$appmenu"
+sudo update-desktop-database
 printf '%s\n' "$desktop_file" > "$mc_entry" ; code_5=$?
 chmod -x "$mc_entry"
 
@@ -353,7 +356,7 @@ sed -i "s/server-ip=/server-ip=$LAN/" server.properties
 
 ask_setting () {
 	read -p "$1 (`tput setaf 5`$2`tput sgr0`) -> " -e -r
-	if [[ -z $REPLY ]]; then echo; REPLY=("$2"); fi # Default to the specified value.
+	if [[ -z $REPLY ]]; then REPLY=("$2"); fi # Default to the specified value.
 	REPLY="$(printf '%q' "$REPLY")"
 	REPLACE=$(cat server.properties | grep "^$3=")
 	sed -i "s/$REPLACE/$3=$REPLY/" server.properties
