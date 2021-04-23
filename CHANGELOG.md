@@ -11,10 +11,13 @@ All significant changes to **PopOS Start** will be documented here.
 - [pop_OS_start.sh](pop_OS_start.sh)
   - Added installation and configuration of `tlp` (improves power efficiency on battery) package for laptops.
   - Added suspend when closing the lid for laptops.
+- [mc_server_builder.sh](mc_server_builder.sh)
+  - Now updates the desktop database after installation and deletion.
 
 ### Fixed
 - [mc_server_builder.sh](mc_server_builder.sh)
   - Fixed colored prompts (the user can now type delete without deleting the prompt).
+  - Fixed inconsistent new-line behaviour when configuring the server.properties.
 - [pop_OS_start.sh](pop_OS_start.sh)
   - Fixed colored prompts (the user can now type delete without deleting the prompt).
 - [vscode.sh](vscode.sh)
