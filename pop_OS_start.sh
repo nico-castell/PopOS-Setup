@@ -560,6 +560,7 @@ for i in ${TO_APT[@]}; do
 
 		echo -e "Setting \e[34mzsh\e[00m as the new \e[33mdefault shell\e[00m..."
 		chsh -s $(which zsh)
+		sudo chsh -s $(which zsh)
 		;;
 
 		tlp) # Configure tlp to save power
