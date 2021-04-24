@@ -208,8 +208,8 @@ fi
 # some more ls aliases
 alias lla='ls -lah --group-directories-first'
 alias ll='ls -lABh --group-directories-first'
-alias la='ls -AB'
-alias l='ls -lB --group-directories-first'
+alias la='ls -ABh'
+alias l='ls -lBh --group-directories-first'
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
