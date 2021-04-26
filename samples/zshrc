@@ -47,8 +47,15 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 #setopt share_history         # share command history data
 
-erase-history() {
-	local HISTSIZE=0
+# Add patters to the regex to avoid storing them in history
+function zshaddhistory() {
+	emulate -L zsh
+	if ! [[ "$1" =~ "(^ |^ychalresp|^gpg|--password)" ]]; then
+		print -sr -- "${1%%$'\n'}"
+		fc -p
+	else
+		return 1
+	fi
 }
 
 # force zsh to show the complete history
@@ -206,10 +213,10 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ll='ls -lh --group-directories-first'
-alias la='ls -A'
-alias lla='ls -lAh --group-directories-first'
-alias l='ls -CF'
+alias lla='ls -lah --group-directories-first'
+alias ll='ls -lABh --group-directories-first'
+alias la='ls -ABh'
+alias l='ls -lBh --group-directories-first'
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then

@@ -73,7 +73,7 @@ case $c in
 	printf "Setting up some Git aliases...\n"
 	git config --global alias.mrc '!git merge $1 && git commit -m "$2" --allow-empty && :'
 	git config --global alias.flog "log --all --graph --oneline --format=format:'%C(bold white)%h%C(r) -- %C(blue)%an (%ar)%C(r): %s %C(auto)%d%C(r)'"
-	git config --global alias.slog 'slog --show-signature -1'
+	git config --global alias.slog 'log --show-signature -1'
 	git config --global alias.fflog 'log --graph'
 	git config --global alias.mkst 'stash push -u'
 	git config --global alias.popst 'stash pop "stash@{0}" -q'
@@ -169,8 +169,7 @@ case $c in
 	ssh-keygen -t rsa -b 4096 -C "GitHub-Key" -N "$PASS" -f "$KEY"
 	unset PASS
 
-	printf "\e[33mDo you want to print the public key to copy it to your \e[01mGitHub\e[00;33m account?\e[00m (Y/n) "
-	read
+	read -p "`tput setaf 3`Do you want to print the public key to copy to copy to your $(printf '\e[01m')GitHub$(printf '\e[00;33m') account?`tput sgr0` (Y/n) "
 	if [[ "${REPLY,,}" == "y" ]] || [ -z "$REPLY" ]; then
 		cat "$KEY"
 	fi

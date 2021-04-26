@@ -58,8 +58,7 @@ if [ -z $load_tmp_file ]; then
 	Confirm_from_list () {
 		unset Confimed
 		for i in ${To_Confirm[@]}; do
-			printf "Confirm \e[33m\"%s\"\e[00m (Y/n) " $i
-			read -r -t 10
+			read -p "Confirm `tput setaf 3`\"$i\"`tput sgr0` (Y/n) " -r -t 10
 			O=$?
 
 			# User presses ENTER --> YES
@@ -86,9 +85,9 @@ if [ -z $load_tmp_file ]; then
 
 	echo "Confirm packages to install:"
 	 To_Confirm=("audacity" "code" "zsh" "dconf-editor" "gimp" "inkscape" "gnome-tweaks" "brave-browser" "google-chrome-stable")
-	To_Confirm+=("vivaldi" "lm-sensors" "hddtemp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord" "gparted")
-	To_Confirm+=("genisoimage" "spotify-client" "glade" "htop" "tree" "obs-studio" "pavucontrol" "virtualbox" "gnome-chess")
-	To_Confirm+=("signal-desktop" "gnome-mines" "steam" "cmatrix")
+	To_Confirm+=("vivaldi" "lm-sensors" "hddtemp" "tlp" "os-prober" "p7zip-full" "thunderbird" "vlc" "default-jre" "discord")
+	To_Confirm+=("gparted" "genisoimage" "spotify-client" "glade" "htop" "tree" "obs-studio" "pavucontrol" "virtualbox")
+	To_Confirm+=("gnome-chess" "signal-desktop" "gnome-mines" "steam" "cmatrix")
 	Confirm_from_list
 	TO_APT=(${Confimed[@]})
 	# Append essential packages that should always be installed.
@@ -561,6 +560,18 @@ for i in ${TO_APT[@]}; do
 
 		echo -e "Setting \e[34mzsh\e[00m as the new \e[33mdefault shell\e[00m..."
 		chsh -s $(which zsh)
+		sudo chsh -s $(which zsh)
+		;;
+
+		tlp) # Configure tlp to save power
+		Separate 4
+		printf '\e[33mtlp\e[00m was installed, writing config file...\n'
+		sudo mv /etc/tlp.conf /etc/tlp.conf.original && \
+		cat "$script_location/samples/tlp.conf" | sudo tee /etc/tlp.conf >/dev/null
+		test $? -eq 0 && printf '\e[32mSuccess\e[00m, edit the \e[33m/etc/tlp.conf\e[00m file to configure tlp\n'
+		sudo tlp start
+		read -rp "Do you want to suspend the OS when closing the lid? (laptops only) (Y/n) "
+		[[ "${REPLY,,}" == "y" ]] && sudo sed -i 's/#HandleLidSwitch=suspend/HandleLidSwitch=suspend/' /etc/systemd/logind.conf
 		;;
 	esac
 done

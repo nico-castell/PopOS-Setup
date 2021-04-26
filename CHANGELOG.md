@@ -7,6 +7,30 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
+### Version [0.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-04-26*
+#### Added
+- [pop_OS_start.sh](pop_OS_start.sh)
+  - Added installation and configuration of `tlp` (improves power efficiency on battery) package for laptops.
+  - Added suspend when closing the lid for laptops.
+  - When installing `zsh` make it roots default shell too.
+- [mc_server_builder.sh](mc_server_builder.sh)
+  - Now updates the desktop database after installation and deletion.
+
+#### Changed
+- [.zshrc](samples/zshrc)
+  - Changed ls aliases.
+  - Changed `erase-history` function for a filter where the user can specify commands that should not be stored in history.
+
+#### Fixed
+- [mc_server_builder.sh](mc_server_builder.sh)
+  - Fixed colored prompts (the user can now type delete without deleting the prompt).
+  - Fixed inconsistent new-line behaviour when configuring the server.properties.
+- [pop_OS_start.sh](pop_OS_start.sh)
+  - Fixed colored prompts (the user can now type delete without deleting the prompt).
+- [vscode.sh](vscode.sh)
+  - Fixed colored prompts (the user can now type delete without deleting the prompt).
+  - Fixed git recursive alias `slog`.
+
 ### Version [0.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.0) - *2021-04-14*
 #### Changed
 - [pop_OS_start.sh](pop_OS_start.sh):
@@ -28,9 +52,11 @@ All significant changes to **PopOS Start** will be documented here.
 - [.vimrc](samples/vimrc):
   - Set up a statusline
   - Set tabsize to 3
+
 #### Changed
 - [pop_OS_start](pop_OS_start.sh)
   - Simplified copying deskcuts.
+
 #### Fixed
 - [pop_OS_start](pop_OS_start.sh):
   - Fixed colored prompt when confirming packages.
