@@ -11,8 +11,14 @@ All significant changes to **PopOS Start** will be documented here.
 - [pop_OS_start.sh](pop_OS_start.sh)
   - Added installation and configuration of `tlp` (improves power efficiency on battery) package for laptops.
   - Added suspend when closing the lid for laptops.
+  - When installing `zsh` make it roots default shell too.
 - [mc_server_builder.sh](mc_server_builder.sh)
   - Now updates the desktop database after installation and deletion.
+
+### Changed
+- [.zshrc](samples/zshrc)
+  - Changed ls aliases.
+  - Changed `erase-history` function for a filter where the user can specify commands that should not be stored in history.
 
 ### Fixed
 - [mc_server_builder.sh](mc_server_builder.sh)
