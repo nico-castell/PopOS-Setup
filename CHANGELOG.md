@@ -1,13 +1,14 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
-1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
 
-## Unreleased
-### Added
+## Released
+
+### Version [0.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-04-26*
+#### Added
 - [pop_OS_start.sh](pop_OS_start.sh)
   - Added installation and configuration of `tlp` (improves power efficiency on battery) package for laptops.
   - Added suspend when closing the lid for laptops.
@@ -15,12 +16,12 @@ All significant changes to **PopOS Start** will be documented here.
 - [mc_server_builder.sh](mc_server_builder.sh)
   - Now updates the desktop database after installation and deletion.
 
-### Changed
+#### Changed
 - [.zshrc](samples/zshrc)
   - Changed ls aliases.
   - Changed `erase-history` function for a filter where the user can specify commands that should not be stored in history.
 
-### Fixed
+#### Fixed
 - [mc_server_builder.sh](mc_server_builder.sh)
   - Fixed colored prompts (the user can now type delete without deleting the prompt).
   - Fixed inconsistent new-line behaviour when configuring the server.properties.
@@ -29,8 +30,6 @@ All significant changes to **PopOS Start** will be documented here.
 - [vscode.sh](vscode.sh)
   - Fixed colored prompts (the user can now type delete without deleting the prompt).
   - Fixed git recursive alias `slog`.
-
-## Released
 
 ### Version [0.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.0) - *2021-04-14*
 #### Changed
