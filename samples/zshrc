@@ -50,7 +50,7 @@ setopt hist_verify            # show command with history expansion to user befo
 # Add patters to the regex to avoid storing them in history
 function zshaddhistory() {
 	emulate -L zsh
-	if ! [[ "$1" =~ "(^ |^ychalresp|^gpg|--password)" ]]; then
+	if ! [[ "$1" =~ "(^ |^ychalresp|\bgpg\b|--password)" ]]; then
 		print -sr -- "${1%%$'\n'}"
 		fc -p
 	else
@@ -217,6 +217,11 @@ alias lla='ls -lah --group-directories-first'
 alias ll='ls -lABh --group-directories-first'
 alias la='ls -ABh'
 alias l='ls -lBh --group-directories-first'
+
+# Create a directory and cd into it
+new() {
+	mkdir "$1" && cd "$1"
+}
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
