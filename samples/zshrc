@@ -168,7 +168,8 @@ if [ "$color_prompt" = yes ]; then
 			fi
 		fi
 	}
-	# Uncomment this to stop using powerline style shell.
+	# Uncomment this to start using powerline style shell. Requires you install
+	# "powerline-shell" using pip3: sudo pip3 install powerline-shell
 	# use_powerline
 
 else
