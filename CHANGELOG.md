@@ -1,9 +1,29 @@
 # Change log
 All significant changes to **PopOS Start** will be documented here.
 
+1. [Unreleased](#unreleased)
 1. [Released](#Released)
 1. [Previous Repository](#Previous-repository)
 1. [Pre Releases](#Pre-Releases)
+
+## Unreleased
+
+### Added
+- [.zshrc](samples/zshrc)
+  - `new` function to create a directory and cd into it.
+- [vscode.sh](vscode.sh)
+  - Added git alias `sflog` to show output like `flog` and check gpg signatures for each commit.
+
+### Changed
+- [.zshrc](samples/zshrc)
+  - Improved gpg filter from history.
+  - Improved comment with instructions to use powerline prompt.
+- [gnome_appearance.sh](gnome_appearance.sh)
+  - Changed terminal transparency to be less transparent as it makes it difficult to read.
+
+### Fixed
+- [gnome_appearance.sh](gnome_appearance.sh)
+  - Fixed uncommented comment.
 
 ## Released
 
