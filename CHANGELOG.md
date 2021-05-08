@@ -7,6 +7,24 @@ All significant changes to **PopOS Start** will be documented here.
 
 ## Released
 
+### Version [0.2.2](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-05-07*
+#### Added
+- [.zshrc](samples/zshrc)
+  - `new` function to create a directory and cd into it.
+- [vscode.sh](vscode.sh)
+  - Added git alias `sflog` to show output like `flog` and check gpg signatures for each commit.
+
+#### Changed
+- [.zshrc](samples/zshrc)
+  - Improved gpg filter from history.
+  - Improved comment with instructions to use powerline prompt.
+- [gnome_appearance.sh](gnome_appearance.sh)
+  - Changed terminal transparency to be less transparent as it makes it difficult to read.
+
+#### Fixed
+- [gnome_appearance.sh](gnome_appearance.sh)
+  - Fixed uncommented comment.
+
 ### Version [0.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-04-26*
 #### Added
 - [pop_OS_start.sh](pop_OS_start.sh)
