@@ -120,12 +120,12 @@ if [ "$load_tmp_file" = "no" ]; then
 			;;
 		esac
 		done
+		Separate 4
 	fi
 
 	# Store chosen driver
 	echo "CHOSEN_DRIVER - $CHOSEN_DRIVER" >> "$choices_file"
 	unset DRIVERS
-	Separate 4
 
 	printf "Choose some extra scripts to run:\n"
 	# Check if a script is present before prompting
