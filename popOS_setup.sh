@@ -6,20 +6,16 @@
 
 # Set up script variables for later
 load_tmp_file=no
-persist_at_the_end=no
-reboot_enabled=yes
 
 USAGE_MSG () {
 	printf "Usage: \e[01m./%s (-f)\e[00m
-	-f) Load previous choices
-	-d) Disable rebooting\n" "$(basename "$0")"
+	-f) Load previous choices\n" "$(basename "$0")"
 }
 
 # Process options
 while [ -n "$1" ]; do
 	case "$1" in
 		-f) load_tmp_file=yes ;; # Load from temporary file
-		-d) reboot_enabled=no ;; # Stop the script from rebooting
 		-h | --help)
 		USAGE_MSG >&2
 		exit 0
@@ -106,6 +102,31 @@ if [ "$load_tmp_file" = "no" ]; then
 	echo "TO_APT - ${TO_APT[@]}" >> "$choices_file"
 	Separate 4
 
+	# Choose an NVIDIA driver
+	CHOSEN_DRIVER=none
+	if lspci | grep "NVIDIA" &>/dev/null; then
+		DRIVERS+=("system76-driver-nvidia")
+		DRIVERS+=("nvidia-driver-390")
+		DRIVERS+=("nvidia-driver-360")
+		DRIVERS+=("none")
+		select i in ${DRIVERS[@]}; do
+		case $i in
+			none) break ;;
+			*)
+			if [ $REPLY -lt 0 ] || [ $REPLY -gt $#DRIVERS ]; then
+				printf "Wrong\n" >&2
+				continue
+			else CHOSEN_DRIVER="$i"; fi
+			;;
+		esac
+		done
+	fi
+
+	# Store chosen driver
+	echo "CHOSEN_DRIVER - $CHOSEN_DRIVER" >> "$choices_file"
+	unset DRIVERS
+	Separate 4
+
 	printf "Choose some extra scripts to run:\n"
 	# Check if a script is present before prompting
 	prompt_user() {
@@ -148,8 +169,6 @@ if [ "$load_tmp_file" = "no" ]; then
 	echo "MODULES - ${Modules[@]}" >> "$choices_file"
 	unset prompt_user
 	Separate 4
-
-	# TODO: NVIDIA DRIVER SUPPORT
 fi
 #endregion
 
@@ -167,7 +186,9 @@ if [ "$load_tmp_file" = "yes" ]; then
 	TO_APT=$(cat "$choices_file" | grep "TO_APT")
 	TO_APT=${TO_APT/"TO_APT - "/""}
 
-	# TODO: NVIDIA DRIVER SUPPORT
+	# Load chosen NVIDIA driver
+	CHOSEN_DRIVER=$(cat "$choices_file" | grep "CHOSEN_DRIVER")
+	CHOSEN_DRIVER=${CHOSEN_DRIVER/"CHOSEN_DRIVER - "/""}
 
 	# Load scripts to run
 	Modules=$(cat "$choices_file" | grep "MODULES")
@@ -218,9 +239,6 @@ if [ ! $? -eq 0 ]; then
 	printf "\e[31mERROR: No internet\e[00m\n" >&2
 	exit 1
 fi
-
-# TODO: Check if updates are available
-# TODO: NVIDIA DRIVER SUPPORT
 
 # Stop GNOME's packagekit to avoid problems while the package manager is in use.
 sudo systemctl stop packagekit
@@ -302,9 +320,17 @@ unset REPOS_ADDED DOTNET_ADDED
 printf "Updating repositories...\n"
 sudo apt update
 
+# Install the NVIDIA driver
+if [ "$CHOSEN_DRIVER" != "none" ]; then
+	Separate 4
+	printf "Installing the NVIDIA driver: \e[01m%s\e[00m\n" $CHOSEN_DRIVER
+	sudo apt install $CHOSEN_DRIVER
+	Separate 4
+fi
+
+# Upgrade packages
 let UPGRADABLE=$(apt list --upgradable 2>/dev/null | wc -l)
 let UPGRADABLE--
-# Upgrade packages
 if [ $UPGRADABLE -gt 0 ]; then
 	printf "%i packages can be upgraded\n" $UPGRADABLE
 	read -rp "Do you want to upgrade them now? (Y/n) "
@@ -364,8 +390,6 @@ sudo apt-get autoclean &>/dev/null
 
 # Restart GNOME's packagekit after we're done with the package manager
 sudo systemctl restart packagekit
-
-[ "$persist_at_the_end" = "yes" ] && read -rp "Press any key to finish. " -n 1
 
 printf "\e[01;32mFinished!\e[00m your system has been set up.\n"
 exit 0
