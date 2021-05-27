@@ -29,15 +29,6 @@ case $GIT_EDITOR in
 esac; break; done
 unset GIT_EDITOR GIT_EDITORS
 
-# If vscode was installed, configure it as a git mergetool and difftool
-if which code &>/dev/null; then
-	printf "Setting \e[36mVisual Studio Code\e[00m as a Git merge and diff tool...\n"
-	git config --global merge.tool vscode
-	git config --global mergetool.vscode.cmd 'code --wait $MERGED'
-	git config --global diff.tool vscode
-	git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
-fi
-
 # Configure gpg commit signing
 if which gpg &>/dev/null; then
 	read -rp "`tput setaf 6`gpg`tput sgr0` was found, do you want to use it to sign your commits? (Y/n) "
@@ -59,6 +50,15 @@ if which gpg &>/dev/null; then
 
 		unset GPGKEY MKGPG
 	fi
+fi
+
+# If vscode was installed, configure it as a git mergetool and difftool
+if which code &>/dev/null; then
+	printf "Setting \e[36mVisual Studio Code\e[00m as a Git merge and diff tool...\n"
+	git config --global merge.tool vscode
+	git config --global mergetool.vscode.cmd 'code --wait $MERGED'
+	git config --global diff.tool vscode
+	git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
 fi
 
 # Configure git
