@@ -47,6 +47,12 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 #setopt share_history         # share command history data
 
+# force zsh to show the complete history
+alias history="history 0"
+
+# make less more friendly for non-text input files, see lesspipe(1)
+#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
 # Add patters to the regex to avoid storing them in history
 function zshaddhistory() {
 	emulate -L zsh
@@ -58,26 +64,19 @@ function zshaddhistory() {
 	fi
 }
 
-# force zsh to show the complete history
-alias history="history 0"
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-	debian_chroot=$(cat /etc/debian_chroot)
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+	PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
+export PATH
 
-# set a fancy prompt (non-color, unless we know we "want" color)
+# Find if we have color prompt
+# Uncomment to force color prompt
+#force_color_prompt=yes
 case "$TERM" in
-	xterm-color|*-256color) color_prompt=yes;;
+	xterm-color|*-256color) color_prompt=yes ;;
 esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-# force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
 	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -91,16 +90,55 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # Find a git branch, and add it to the prompt.
-find_branch () {
+git_info () {
 	_branch="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
+	[ ! -z $_branch   ] && PR="${1}${_branch}%%f"
+
 	if [ ! -z $_branch ]; then
-		echo -n " $_branch"
+		_changes=$(git status --porcelain=v1 2>/dev/null | wc -l)
+		[ $_changes -ne 0 ] && PR+=" ✎"
+		_behind=$(git status -sb | grep behind &>/dev/null; printf "%i" $?)
+		[ $_behind -eq 0  ] && PR+=" ↓"
+		_ahead=$(git status -sb | grep ahead &>/dev/null; printf "%i" $?)
+		[ $_ahead -eq 0   ] && PR+=" ↑"
 	fi
-	unset _branch
+
+	printf "$PR"
+}
+
+# Powerline syle shell
+use_powerline () {
+	if [ $color_prompt ]; then
+		function powerline_precmd() {
+			PS1="$(powerline-shell --shell zsh $?)"
+		}
+		function install_powerline_precmd() {
+			for s in "${precmd_functions[@]}"; do
+				if [ "$s" = "powerline_precmd" ]; then
+					return
+				fi
+			done
+			precmd_functions+=(powerline_precmd)
+		}
+		if [ "$TERM" != "linux" ]; then
+			install_powerline_precmd
+		fi
+	fi
 }
 
 if [ "$color_prompt" = yes ]; then
-	PROMPT="%B%F{green}%n@%m%f%b:%B%F{yellow}\$(find_branch)%b%f %F{blue}%B%2~%f%b%# "
+	# Default prompt
+	PROMPT="%n@%m: %~%# "
+
+	# Choose a prompt style between: fedora ubuntu kali powerline
+	prompt_style=ubuntu
+	case $prompt_style in
+		fedora) PROMPT=$'[%n@%m %1~\$(git_info " - ")]%# ' ;;
+		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:\$(git_info " %%F{%%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%~%f%b%# ' ;;
+		kali) PROMPT=$'%F{%(#.red.blue)}┌──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%2~%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " - %%F{%%(#.blue.yellow)}")\n%F{%(#.red.blue)}└─%#%f ' ;;
+		powerline) use_powerline ;;
+	esac
+	RPROMPT=$'%(?.. %F{red}%? ✘%f)'
 
 	# enable syntax-highlighting
 	if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && [ "$color_prompt" = yes ]; then
@@ -149,44 +187,12 @@ if [ "$color_prompt" = yes ]; then
 	ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]=standout
 	fi
 
-	# Powerline syle shell
-	use_powerline () {
-		if [ $color_prompt ]; then
-			function powerline_precmd() {
-				PS1="$(powerline-shell --shell zsh $?)"
-			}
-			function install_powerline_precmd() {
-				for s in "${precmd_functions[@]}"; do
-					if [ "$s" = "powerline_precmd" ]; then
-						return
-					fi
-				done
-				precmd_functions+=(powerline_precmd)
-			}
-			if [ "$TERM" != "linux" ]; then
-				install_powerline_precmd
-			fi
-		fi
-	}
-	# Uncomment this to start using powerline style shell. Requires you install
-	# "powerline-shell" using pip3: sudo pip3 install powerline-shell
-	# use_powerline
-
 else
-	PROMPT="${debian_chroot:+($debian_chroot)}%B%F{green}%n@%m%f%b:%B%F{yellow}\$(find_branch)%b%f %F{blue}%2~%f%# "
+	PROMPT="[%n@%m %1~]%# "
+	RPROMPT=$'%(?.. %F{red}%? x%f)'
 fi
-RPROMPT="%(?..%B%F{red}%?%b%f)"
 
 unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-	TERM_TITLE=$'\e]0;${debian_chroot:+($debian_chroot)}%n@%m: %~\a'
-	;;
-*)
-	;;
-esac
 
 # enable color support of ls, less and man, and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -214,10 +220,10 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias lla='ls -lah --group-directories-first'
-alias ll='ls -lABh --group-directories-first'
-alias la='ls -ABh'
-alias l='ls -lBh --group-directories-first'
+alias lla='ls -lahF --group-directories-first'
+alias ll='ls -lABhF --group-directories-first'
+alias la='ls -ABhF'
+alias l='ls -lBhF --group-directories-first'
 
 # Create a directory and cd into it
 new() {
@@ -235,7 +241,5 @@ if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
 	fi
 fi
 
-# Put all aliases in this file.
-if [ -f ~/.zsh_aliases ]; then
-	source ~/.zsh_aliases
-fi
+# Put all your aliases in ~/.zsh_aliases
+[ -f ~/.zsh_aliases ] && . ~/.zsh_aliases

@@ -59,10 +59,7 @@ fi
 # Find a git branch, and add it to the prompt.
 find_branch () {
 		_branch="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
-		if [ ! -z $_branch ]; then
-				echo -n " $_branch"
-		fi
-		unset _branch
+		[ ! -z $_branch ] && printf " %s" "$_branch"
 }
 
 if [ "$color_prompt" = yes ]; then
@@ -98,10 +95,10 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias lla='ls -lah --group-directories-first'
-alias ll='ls -lABh --group-directories-first'
-alias la='ls -AB'
-alias l='ls -lB --group-directories-first'
+alias lla='ls -lahF --group-directories-first'
+alias ll='ls -lABhF --group-directories-first'
+alias la='ls -ABhF'
+alias l='ls -lBhF --group-directories-first'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

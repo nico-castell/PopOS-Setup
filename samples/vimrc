@@ -1,14 +1,4 @@
-" An example for a vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2019 Dec 17
-"
-" To use it, copy it to
-"	       for Unix:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"	 for MS-Windows:  $VIM\_vimrc
-"	      for Haiku:  ~/config/settings/vim/vimrc
-"	    for OpenVMS:  sys$login:.vimrc
+" vimrc file
 
 " When started as "evim", evim.vim will already have done these settings, bail
 " out.
@@ -19,14 +9,17 @@ endif
 " Get the defaults that most users want.
 source $VIMRUNTIME/defaults.vim
 
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file (restore to previous version)
-  if has('persistent_undo')
-    set undofile	" keep an undo file (undo changes after closing)
-  endif
-endif
+" Configure directories for backups
+set undofile
+set backup
+let &directory = expand('~/.vimdata/swap//')
+let &backupdir = expand('~/.vimdata/backup//')
+let &undodir   = expand('~/.vimdata/undo//')
+
+" Make sure the directories exist
+if !isdirectory(&directory) | call mkdir(&directory, "p") | endif
+if !isdirectory(&backupdir) | call mkdir(&backupdir, "p") | endif
+if !isdirectory(&undodir)   | call mkdir(&undodir, "p")   | endif
 
 if &t_Co > 2 || has("gui_running")
   " Switch on highlighting the last used search pattern.
@@ -57,16 +50,20 @@ set shiftwidth=0
 "set expandtab
 set number
 set nowrap
-set nobackup
-set dir=~/.tmp
+
+" Vertical Split
+hi clear VertSplit
+hi VertSplit ctermbg=234 ctermfg=250
+set fillchars+=vert:\┇
 
 " Statusline:
-set statusline=%#PmenuSel# 
-set statusline+=%t:\ 
-set statusline+=%l:%c\ 
-set statusline+=/\ %L
-set statusline+=%= " switch to right side
-set statusline+=%r\ 
-set statusline+=%y\ 
-set statusline+=%p%%
+hi clear Statusline
+hi Statusline term=bold cterm=bold gui=bold ctermfg=15 ctermbg=234 guibg=DarkGrey
+set statusline=%#Statusline#\ %t:\ %l:%c\ /\ %l%=%r\ %y\ %p%%\ 
 set laststatus=2
+
+" Tabline
+hi clear TabLine TabLineFill TabLineSel
+hi TabLine ctermfg=15 ctermbg=234 guifg=White guibg=DarkGrey
+hi TabLineFill ctermfg=0 ctermbg=234 guibg=DarkGrey
+hi TabLineSel cterm=bold ctermfg=15 ctermbg=237 guibg=Grey
