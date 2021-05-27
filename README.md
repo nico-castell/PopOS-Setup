@@ -13,13 +13,6 @@
 
 I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) successfully.
 
-
-For more information on the versions, see the [changelog](CHANGELOG.md).
-
-<h2 align="center">How to use</h2>
-
-I'm asumming that you've already [Pop!_OS](https://pop.system76.com/) successfully.
-
 1. Clone this repo
     ```shell
     $ git clone https://github.com/nico-castell/PopOS-Setup.git
