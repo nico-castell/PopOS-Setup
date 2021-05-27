@@ -38,18 +38,6 @@ if which code &>/dev/null; then
 	git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
 fi
 
-# Configure git
-printf "Configuring pull behaviour...\n"
-git config --global pull.ff only
-printf "Setting up some aliases...\n"
-git config --global alias.mrc '!git merge $1 && git commit -m "$2" --allow-empty && :'
-git config --global alias.flog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %an➜ %C(bold)%s%C(r) %C(auto)%d%C(r)\'"
-git config --global alias.sflog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) §%C(bold green)%G?%C(r) %an➜ %C(bold)%s%C(r) %C(auto)%d%C(r)'"
-git config --global alias.slog 'log --show-signature -1'
-git config --global alias.mkst 'stash push -u'
-git config --global alias.popst 'stash pop "stash@{0}" -q'
-git config --global alias.unstage 'reset -q HEAD -- .'
-
 # Configure gpg commit signing
 if which gpg &>/dev/null; then
 	read -rp "`tput setaf 6`gpg`tput sgr0` was found, do you want to use it to sign your commits? (Y/n) "
@@ -72,3 +60,15 @@ if which gpg &>/dev/null; then
 		unset GPGKEY MKGPG
 	fi
 fi
+
+# Configure git
+printf "Configuring pull behaviour...\n"
+git config --global pull.ff only
+printf "Setting up some aliases...\n"
+git config --global alias.mrc '!git merge $1 && git commit -m "$2" --allow-empty && :'
+git config --global alias.flog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %an➜ %C(bold)%s%C(r) %C(auto)%d%C(r)\'"
+git config --global alias.sflog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) §%C(bold green)%G?%C(r) %an➜ %C(bold)%s%C(r) %C(auto)%d%C(r)'"
+git config --global alias.slog 'log --show-signature -1'
+git config --global alias.mkst 'stash push -u'
+git config --global alias.popst 'stash pop "stash@{0}" -q'
+git config --global alias.unstage 'reset -q HEAD -- .'

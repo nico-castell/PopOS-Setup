@@ -302,6 +302,18 @@ unset REPOS_ADDED DOTNET_ADDED
 printf "Updating repositories...\n"
 sudo apt update
 
+let UPGRADABLE=$(apt list --upgradable 2>/dev/null | wc -l)
+let UPGRADABLE--
+# Upgrade packages
+if [ $UPGRADABLE -gt 0 ]; then
+	printf "%i packages can be upgraded\n" $UPGRADABLE
+	read -rp "Do you want to upgrade them now? (Y/n) "
+	if [ "${REPLY,,}" = "y" ] || [ -z $REPLY ]; then
+		sudo apt upgrade -y
+	fi
+fi
+unset UPGRADABLE
+
 Separate 4
 
 # Install user-selected packages now:
