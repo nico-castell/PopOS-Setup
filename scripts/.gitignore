@@ -1,0 +1,2 @@
+# Ignore the themes folder for gnome_appearance.sh
+themes/*
