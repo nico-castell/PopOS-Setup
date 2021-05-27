@@ -259,7 +259,7 @@ case $i in
 
 	code)
 	REPOS_ADDED=yes
-	echo "Preparing \e[01mVisual Studio Code\e[00m source...\n"
+	printf "Preparing \e[01mVisual Studio Code\e[00m source...\n"
 	wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/packages.microsoft.gpg &>/dev/null
 	printf "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main\n" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
 	# Configure apt to prefer this repo to Pop's PPA
@@ -287,7 +287,7 @@ case $i in
 	REPOS_ADDED=yes
 	if [ "$DOTNET_ADDED" = "no" ]; then
 		DOTNET_ADDED=yes
-		wget -q https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -o .packages-microsoft-prod.deb &>/dev/null
+		wget -q https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O .packages-microsoft-prod.deb &>/dev/null
 		sudo dpkg -i .packages-microsoft-prod.deb &>/dev/null
 		rm .packages-microsoft-prod.deb &>/dev/null
 	fi

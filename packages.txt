@@ -26,7 +26,6 @@ Brave_Browser brave-browser
 Google_Chrome google-chrome-stable
 Signal_Desktop signal-desktop
 Vivaldi vivaldi
-Geary_Mail geary
 Thunderbird thunderbird
 HTOP htop
 LM_Sensors lm-sensors hddtemp
@@ -37,6 +36,6 @@ Z-Shell zsh zsh-syntax-highlighting zsh-autosuggestions fonts-powerline python3-
 dconf-Editor dconf-editor
 GNOME_Tweaks gnome-tweaks gnome-shell-extensions
 GParted gparted
-Neofetch neoftetch
+Neofetch neofetch
 Tree tree
 Vim vim
