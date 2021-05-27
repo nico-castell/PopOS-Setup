@@ -1,26 +1,8 @@
 #!/bin/bash
 
-# MIT License
-
-# Copyright (c) 2021 nico-castell
-
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# MIT License - Copyright (c) 2021 Nicolás Castellán
+# THE SOFTWARE IS PROVIDED "AS IS"
+# Read the included LICENSE file for more information
 
 # Get script variables now, use them later.
 delete_server=false
@@ -104,8 +86,6 @@ if $delete_server; then
 				printf "Deleting server files, \e[31mFailed\e[00m\n"
 			fi
 
-			sudo update-desktop-database
-
 			# Delete firewall rules (user assisted)
 			printf "Choose the rules for port 25565 # MC-SERVER, press ENTER without typing a rule when you're done."
 			sudo ufw status numbered
@@ -167,7 +147,7 @@ wget -q "$download_link" -O server.jar ; code_1=$?
 
 # Copy server icon
 code_2=0
-cp "$script_location/assets/mcserver/server-icon.png" . ; code_2=$?
+cp "$script_location/../assets/mcserver/server-icon.png" . ; code_2=$?
 
 #region run_file =============================================================
 run_file="#!/bin/bash
@@ -321,7 +301,6 @@ Icon=$mc_folder/server-icon.png"
 #endregion ===================================================================
 code_5=0
 mkdir -p "$appmenu"
-sudo update-desktop-database
 printf '%s\n' "$desktop_file" > "$mc_entry" ; code_5=$?
 chmod -x "$mc_entry"
 

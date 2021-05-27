@@ -1,32 +1,14 @@
 #!/bin/bash
 # Script to set my extensions how I like them.
 
-# MIT License
+# MIT License - Copyright (c) 2021 Nicolás Castellán
+# THE SOFTWARE IS PROVIDED "AS IS"
+# Read the included LICENSE file for more information
 
-# Copyright (c) 2021 nico-castell
-
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-(xdg-open "https://extensions.gnome.org/extension/906/sound-output-device-chooser/") &
-(xdg-open "https://extensions.gnome.org/extension/97/coverflow-alt-tab/") &
-(xdg-open "https://extensions.gnome.org/extension/307/dash-to-dock/") &
-(xdg-open "https://extensions.gnome.org/extension/779/clipboard-indicator/") &
+(xdg-open "https://extensions.gnome.org/extension/906/sound-output-device-chooser/" &>/dev/null) &
+(xdg-open "https://extensions.gnome.org/extension/97/coverflow-alt-tab/" &>/dev/null) &
+(xdg-open "https://extensions.gnome.org/extension/307/dash-to-dock/" &>/dev/null) &
+(xdg-open "https://extensions.gnome.org/extension/779/clipboard-indicator/" &>/dev/null) &
 
 read -p "Press enter to continue... "
 
