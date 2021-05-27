@@ -4,4 +4,10 @@
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information
 
-printf "This script hasn't yet been implemented\n" >&2
+if [ ! -d /recovery ]; then
+	printf "You don't have a recovery partition to update\n" >&2
+	exit 1
+fi
+
+printf "Upgrading recovery partition...\n"
+sudo pop-upgrade recovery upgrade from-release
