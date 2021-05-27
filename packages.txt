@@ -1,0 +1,41 @@
+Audacity audacity
+Spotify spotify-client
+OBS_Studio obs-studio
+VLC vlc
+.NET_3.1_SDK dotnet-sdk-3.1 aspnetcore-runtime-3.1
+.NET_5.0_SDK dotnet-sdk-5.0 aspnetcore-runtime-5.0
+C/C++_development build-essential cmake
+Git git git-lfs
+Glade glade
+GNOME_Boxes gnome-boxes
+GNOME_Builder gnome-builder
+Java_JDK default-jdk
+Java_Runtime default-jre
+Ninja_Build ninja-build
+Virtual_Box virtualbox
+Visual_Studio_Code code git git-lfs
+cmatrix cmatrix
+Discord discord
+GNOME_Chess gnome-chess
+GNOME_Mines gnome-mines
+Steam steam
+GIMP gimp
+Inkscape inkscape
+Brave_Browser brave-browser
+Google_Chrome google-chrome-stable
+Signal_Desktop signal-desktop
+Vivaldi vivaldi
+Geary_Mail geary
+Thunderbird thunderbird
+HTOP htop
+LM_Sensors lm-sensors hddtemp
+TLP tlp powertop
+Ubuntu_Restricted_Extras ubuntu-restricted-extras
+Z-Shell zsh zsh-syntax-highlighting zsh-autosuggestions fonts-powerline python3-pip
+7zip p7zip-full
+dconf-Editor dconf-editor
+GNOME_Tweaks gnome-tweaks gnome-shell-extensions
+GParted gparted
+Neofetch neoftetch
+Tree tree
+Vim vim

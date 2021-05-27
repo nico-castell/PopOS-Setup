@@ -46,8 +46,8 @@ choices_file="$script_location/.tmp_choices.txt"
 packages_file="$script_location/packages.txt"
 scripts_folder="$script_location/scripts"
 postinstall_folder="$script_location/post-install.d"
-[ -f "$packages_file"  ]     || MSSING "$packages_file"
-[ -d "$scripts_folder" ]     || MISSING "$scripts_folder"
+[ -f "$packages_file"      ] || MISSING "$packages_file"
+[ -d "$scripts_folder"     ] || MISSING "$scripts_folder"
 [ -d "$postinstall_folder" ] || MISSING "$postinstall_folder"
 
 unset USAGE_MSG MISSING
@@ -229,6 +229,7 @@ sudo systemctl stop packagekit
 sudo apt-get install apt-transport-https -y &>/dev/null
 
 REPOS_ADDED=no
+DOTNET_ADDED=no
 for i in ${TO_APT[@]}; do
 case $i in
 	spotify-client)
@@ -281,11 +282,21 @@ case $i in
 	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add - &>/dev/null
 	printf 'deb https://repo.vivaldi.com/archive/deb/ stable main\n' | sudo tee -a /etc/apt/sources.list.d/vivaldi.list &>/dev/null
 	;;
+
+	dotnet*)
+	REPOS_ADDED=yes
+	if [ "$DOTNET_ADDED" = "no" ]; then
+		DOTNET_ADDED=yes
+		wget -q https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -o .packages-microsoft-prod.deb &>/dev/null
+		sudo dpkg -i .packages-microsoft-prod.deb &>/dev/null
+		rm .packages-microsoft-prod.deb &>/dev/null
+	fi
+	;;
 esac
 done
 
 [ "$REPOS_ADDED" = "yes" ] && Separate 4
-unset REPOS_ADDED
+unset REPOS_ADDED DOTNET_ADDED
 
 # Update all repositories.
 printf "Updating repositories...\n"
