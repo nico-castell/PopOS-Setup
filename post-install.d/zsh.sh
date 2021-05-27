@@ -1,4 +1,4 @@
-# bash script to be sourced from fedora_setup.sh
+# bash script to be sourced from popOS_setup.sh
 
 # Copy .zshrc and offer to change default shell
 Separate 4

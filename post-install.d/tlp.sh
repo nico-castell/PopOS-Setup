@@ -1,4 +1,4 @@
-# bash script to be sourced from fedora_setup.sh
+# bash script to be sourced from popOS_setup.sh
 
 Separate 4
 printf "Successfully installed \e[36mtlp\e[00m, configuring...\n"

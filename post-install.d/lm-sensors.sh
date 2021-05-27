@@ -1,4 +1,4 @@
-# bash script to be sourced from fedora_setup.sh
+# bash script to be sourced from popOS_setup.sh
 
 # Interact with the user to configure "sensors" package
 Separate 4
