@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=OneNote
-GenericName=Office
-Comment=Access the OneNote web app.
-Icon=/home/nicolas/.mydock/msoffice/onenote.png
-Exec=xdg-open ttps://www.onenote.com/notebooks?auth=1
-Categories=Office;
-Keywords=Notes;OneNote;Office;Microsoft

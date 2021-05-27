@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Excel
-GenericName=Office;
-Comment=Open Excel online
-Icon=/home/nicolas/.mydock/msoffice/excel.png
-Exec=xdg-open https://www.office.com/launch/excel?auth=1
-Categories=Office;
-Keywords=Excel;Office;Microsoft;
