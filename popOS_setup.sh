@@ -123,6 +123,7 @@ if [ "$load_tmp_file" = "no" ]; then
 			else CHOSEN_DRIVER="$i"; fi
 			;;
 		esac
+		break
 		done
 		Separate 4
 	fi
