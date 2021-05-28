@@ -55,10 +55,9 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
   - The script now writes its files in `~/.local/bin` and `~/.local/share/applications`.
 ### Removed
 - [popOS_setup.sh](popOS_setup.sh):
-  - The script no longer asks the user if they want to remove software.
-  - The script no longer asks the user what flatpaks they want to install.
   - The script no longer restarts the computer, making the code simpler.
   - The script no longer copies the *deskcuts*.
+  - The script no longer supports installing downloaded packages in the `~/Downloads` folder.
 - [deskcuts](deskcuts):
   - Removed a few redundant deskcuts.
 - [mc_server_builder.sh](scripts/mc_server_builder.sh):

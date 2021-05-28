@@ -80,6 +80,8 @@ if [ "$load_tmp_file" = "no" ]; then
 	# We're about to make a new choices file
 	[ -f "$choices_file" ] && rm "$choices_file"
 
+	# TODO: Add support for the removal of packages
+
 	# List of packages to install, then set up
 	printf "Confirm packages to install:\n"
 
@@ -94,6 +96,8 @@ if [ "$load_tmp_file" = "no" ]; then
 	done
 	IFS="$IFSB"
 	unset IFSB
+
+	# TODO: Add support for the installation of flatpaks
 
 	# Append "essential" packages
 	TO_APT+=("ufw" "xclip")
@@ -320,6 +324,8 @@ unset REPOS_ADDED DOTNET_ADDED
 printf "Updating repositories...\n"
 sudo apt update
 
+# TODO: Add support for removing packages
+
 # Install the NVIDIA driver
 if [ "$CHOSEN_DRIVER" != "none" ]; then
 	Separate 4
@@ -345,6 +351,8 @@ Separate 4
 # Install user-selected packages now:
 printf "Installing user-selected packages...\n"
 sudo apt install ${TO_APT[@]}
+
+# TODO: Add support for flatpak packages
 
 # Source the post-installation scripts for the packages we've installed
 if [ $? -eq 0 ]; then
