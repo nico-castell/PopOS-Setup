@@ -97,7 +97,7 @@ if [ "$load_tmp_file" = "no" ]; then
 	for i in $(cat "$remove_file"); do
 		read -rp "Confirm: `tput setaf 1``printf %s $i | cut -d ' ' -f 1 | tr '_' ' '``tput sgr0` (y/N) "
 		[ "${REPLY,,}" = "y" ] && \
-			TO_REMOVE+=("$(printf %s "$1" | cut -d ' ' -f 2-)")
+			TO_REMOVE+=("$(printf %s "$i" | cut -d ' ' -f 2-)")
 	done
 	echo "TO_REMOVE - ${TO_REMOVE[@]}" >> "$choices_file"
 
@@ -436,10 +436,11 @@ fi
 Separate 4
 
 # Clean up after we're done
+printf "Cleaning up...\n"
 [ -f "$autoresume_file" ] && rm "$autoresume_file"
 [ -f "$choices_file"    ] && rm "$choices_file"
-sudo apt-get --purge autoremove &>/dev/null
-sudo apt-get autoclean &>/dev/null
+sudo apt-get autoremove -y &>/dev/null
+sudo apt-get autoclean -y &>/dev/null
 
 # Restart GNOME's packagekit after we're done with the package manager
 sudo systemctl restart packagekit
