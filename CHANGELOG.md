@@ -1,11 +1,8 @@
 # Change log
 All significant changes to **Pop!_OS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-  - [Added](#added)
-  - [Changed](#changed)
-  - [Removed](#removed)
 - [Released](#released)
+  - [Release 1.0.0](#release-100)
   - [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
   - [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
   - [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
@@ -24,12 +21,13 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.0.2](#version-002)
   - [Version 0.0.1](#version-001)
 
-## Unreleased
+## Released
+### Release 1.0.0
 Some time before this release, the [Fedora Setup](https://githbub.com/nico-castell/Fedora-Setup) project started by reworking this project to work in Fedora. There were a lot of innovations. This release focuses on porting them back. Some of the most notable innovations have been:
 - The creation of the [packages.txt](packages.txt) file.
 - The creation of the [post-install.d](post-install.d) folder, which stores *.sh* files that are sourced by the main script.
 - And many improvements to the codebase that make expanding and modifying functionality easier.
-### Added
+#### Added
 - [popOS_setup.sh](popOS_setup.sh)
   - The script now gives a welcome message when started.
 - [packages.txt](packages.txt):
@@ -47,13 +45,13 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 - [.vimrc](samples/vimrc):
   - The file now creates a `~/.vimdata` folder to store all the temporary files used by vim.
   - The file lightly customizes some of the coloring and style of the vim editor.
-### Changed
+#### Changed
 - [popOS_setup.sh](popOS_setup.sh):
   - The main script (pop_OS_start.sh) was renamed to be like the name of the project.
   - There were innumerable changes to how the script works, but the user experience remains very familiar.
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
   - The script now writes its files in `~/.local/bin` and `~/.local/share/applications`.
-### Removed
+#### Removed
 - [popOS_setup.sh](popOS_setup.sh):
   - The script no longer restarts the computer, making the code simpler.
   - The script no longer copies the *deskcuts*.
@@ -67,7 +65,6 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 - **Fonts** folder:
   - The fonts folder was removed.
 
-## Released
 ### Version [0.2.2](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-05-07*
 #### Added
 - [.zshrc](samples/zshrc)
