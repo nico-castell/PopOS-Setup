@@ -1,0 +1,3 @@
+Libre_Office libreoffice*
+Geary_Mail geary
+Firefox firefox*

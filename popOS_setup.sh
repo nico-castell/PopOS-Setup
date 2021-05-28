@@ -37,12 +37,20 @@ MISSING() {
 	exit 1
 }
 
+# Prepare and test filepaths in variables
 autoresume_file="$HOME/.config/autostart/autoresume_popOS_setup.desktop"
 choices_file="$script_location/.tmp_choices.txt"
+
 packages_file="$script_location/packages.txt"
+flatpaks_file="$script_location/flatpaks.txt"
+remove_file="$script_location/remove.txt"
+
 scripts_folder="$script_location/scripts"
 postinstall_folder="$script_location/post-install.d"
+
 [ -f "$packages_file"      ] || MISSING "$packages_file"
+[ -f "$flatpaks_file"      ] || MISSING "$flatpaks_file"
+[ -f "$remove_file"        ] || MISSING "$remove_file"
 [ -d "$scripts_folder"     ] || MISSING "$scripts_folder"
 [ -d "$postinstall_folder" ] || MISSING "$postinstall_folder"
 
@@ -80,30 +88,40 @@ if [ "$load_tmp_file" = "no" ]; then
 	# We're about to make a new choices file
 	[ -f "$choices_file" ] && rm "$choices_file"
 
-	# TODO: Add support for the removal of packages
-
-	# List of packages to install, then set up
-	printf "Confirm packages to install:\n"
-
-	# Go throught a list of packages asking the user to choose which ones to
-	# install
+	# Set the $IFS to process the files line by line
 	IFSB="$IFS"
 	IFS="$(echo -en "\n\b")"
+
+	# Go through a list of packages asking the user to choose which ones to remove
+	printf "Confirm packages to remove:\n"
+	for i in $(cat "$remove_file"); do
+		read -rp "Confirm: `tput setaf 1``printf %s $i | cut -d ' ' -f 1 | tr '_' ' '``tput sgr0` (y/N) "
+		[ "${REPLY,,}" = "y" ] && \
+			TO_REMOVE+=("$(printf %s "$1" | cut -d ' ' -f 2-)")
+	done
+	echo "TO_REMOVE - ${TO_REMOVE[@]}" >> "$choices_file"
+
+	# Go through a list of packages asking the user to choose which ones to install
+	printf "Confirm packages to install:\n"
 	for i in $(cat "$packages_file"); do
 		read -rp "Confirm: `tput setaf 3``printf %s $i | cut -d ' ' -f 1 | tr '_' ' '``tput sgr0` (Y/n) "
 		[ "${REPLY,,}" = "y" ] || [ -z $REPLY ] && \
 			TO_APT+=("$(printf %s "$i" | cut -d ' ' -f 2-)")
 	done
+	TO_APT+=("ufw" "xclip") # Append "essential packages"
+	echo "TO_APT - ${TO_APT[@]}" >> "$choices_file"
+
+	# Go through a list of flatpaks asking the user to choose which ones to install
+	printf "Confirm flatpaks to install:\n"
+	for i in $(cat "$flatpaks_file"); do
+		read -rp "Confirm: `tput setaf 6``printf %s $i | cut -d ' ' -f 1 | tr '_' ' '``tput sgr0` (Y/n) "
+		[ "${REPLY,,}" = "y" ] || [ -z $REPLY ] && \
+			TO_FLATPAK+=("$(printf %s $i | cut -d ' ' -f 2-)")
+	done
+	echo "TO_FLATPAK - ${TO_FLATPAK[@]}" >> "$choices_file"
+
 	IFS="$IFSB"
 	unset IFSB
-
-	# TODO: Add support for the installation of flatpaks
-
-	# Append "essential" packages
-	TO_APT+=("ufw" "xclip")
-
-	# Store all selected packages
-	echo "TO_APT - ${TO_APT[@]}" >> "$choices_file"
 	Separate 4
 
 	# Choose an NVIDIA driver
@@ -187,9 +205,17 @@ if [ "$load_tmp_file" = "yes" ]; then
 		exit 1
 	fi
 
-	# Load apt packages
+	# Load packages to remove
+	TO_REMOVE=$(cat "$choices_file" | grep "TO_REMOVE")
+	TO_REMOVE=${TO_REMOVE/"TO_REMOVE - "/""}
+
+	# Load packages to install
 	TO_APT=$(cat "$choices_file" | grep "TO_APT")
 	TO_APT=${TO_APT/"TO_APT - "/""}
+
+	# Load flatpaks to install
+	TO_FLATPAK=$(cat "$choices_file" | grep "TO_FLATPAK")
+	TO_FLATPAK=${TO_FLATPAK/"TO_FLATPAK - "/""}
 
 	# Load chosen NVIDIA driver
 	CHOSEN_DRIVER=$(cat "$choices_file" | grep "CHOSEN_DRIVER")
@@ -325,7 +351,13 @@ unset REPOS_ADDED DOTNET_ADDED
 printf "Updating repositories...\n"
 sudo apt update
 
-# TODO: Add support for removing packages
+# Remove user-selected packages:
+if [ -n "$TO_REMOVE" ]; then
+	Separate 4
+	printf "Removing user-selected packages...\n"
+	sudo apt --purge remove ${TO_REMOVE[@]}
+	Separate 4
+fi
 
 # Install the NVIDIA driver
 if [ "$CHOSEN_DRIVER" != "none" ]; then
@@ -349,11 +381,23 @@ unset UPGRADABLE
 
 Separate 4
 
-# Install user-selected packages now:
+# Install user-selected packages:
 printf "Installing user-selected packages...\n"
 sudo apt install ${TO_APT[@]}
 
-# TODO: Add support for flatpak packages
+# Install user-selected flatpaks:
+if [ -n "$TO_FLATPAK" ]; then
+	Separate 4
+	printf "Installing user-selected flatpaks...\n"
+	printf "Which type of installation do you want to do?\n"
+	select i in "system" "user"; do
+	case $i in
+		system) sudo flatpak install ${TO_FLATPAK[@]}        ;;
+		user)   flatpak install ${TO_FLATPAK[@]}             ;;
+		*) printf "You must choose a valid option"; continue ;;
+	esac; break; done
+	Separate 4
+fi
 
 # Source the post-installation scripts for the packages we've installed
 if [ $? -eq 0 ]; then
