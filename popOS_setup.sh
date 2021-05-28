@@ -78,11 +78,6 @@ printf "Welcome to \e[01mPop!_OS Setup\e[00m version %s!
 Follow the instructions and you should be up and running soon
 THE SOFTWARE IS PROVIDED \"AS IS\", read the license for more information\n\n" $(git describe --tags --abbrev=0)
 
-# TODO: Remove this warning
-for i in {0..1}; do
-	printf "\e[01;31mTHIS BRANCH IS UNDER DEVELOPMENT, USE IT AT YOUR OWN RISK\e[00m\n" >&2
-done
-
 #region Prompting the user for their choices
 if [ "$load_tmp_file" = "no" ]; then
 	# We're about to make a new choices file
