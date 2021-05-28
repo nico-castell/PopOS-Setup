@@ -9,5 +9,6 @@
 		120
 	],
 	"editor.insertSpaces": false,
-	"editor.detectIndentation": false
+	"editor.detectIndentation": false,
+	"markdown.extension.toc.levels": "2..3"
 }

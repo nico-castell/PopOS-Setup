@@ -1,12 +1,74 @@
 # Change log
-All significant changes to **PopOS Start** will be documented here.
+All significant changes to **Pop!_OS Setup** will be documented here.
 
-1. [Released](#Released)
-1. [Previous Repository](#Previous-repository)
-1. [Pre Releases](#Pre-Releases)
+- [Unreleased](#unreleased)
+  - [Added](#added)
+  - [Changed](#changed)
+  - [Removed](#removed)
+- [Released](#released)
+  - [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
+  - [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
+  - [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
+  - [Version 0.1.8 - *2021-04-14*](#version-018---2021-04-14)
+  - [Version 0.1.7 - *2021-04-02*](#version-017---2021-04-02)
+  - [Version 0.1.6 [YANKED] - *2021-04-01*](#version-016-yanked---2021-04-01)
+  - [Version 0.1.5 - *2021-03-04*](#version-015---2021-03-04)
+  - [Version 0.1.4 [YANKED] - *2021-02-24*](#version-014-yanked---2021-02-24)
+  - [Version 0.1.3 - *2021-02-05*](#version-013---2021-02-05)
+  - [Version 0.1.2 - *2021-01-31*](#version-012---2021-01-31)
+- [Previous repository](#previous-repository)
+  - [Version 0.1.1 - *2021-01-28*](#version-011---2021-01-28)
+  - [Version 0.1.0 - *2021-01-10*](#version-010---2021-01-10)
+- [Pre-Releases](#pre-releases)
+  - [Version 0.0.3](#version-003)
+  - [Version 0.0.2](#version-002)
+  - [Version 0.0.1](#version-001)
+
+## Unreleased
+Some time before this release, the [Fedora Setup](https://githbub.com/nico-castell/Fedora-Setup) project started by reworking this project to work in Fedora. There were a lot of innovations. This release focuses on porting them back. Some of the most notable innovations have been:
+- The creation of the [packages.txt](packages.txt) file.
+- The creation of the [post-install.d](post-install.d) folder, which stores *.sh* files that are sourced by the main script.
+- And many improvements to the codebase that make expanding and modifying functionality easier.
+### Added
+- [popOS_setup.sh](popOS_setup.sh)
+  - The script now gives a welcome message when started.
+- [packages.txt](packages.txt):
+  - This file contains the list of packages and dependencies that the [popOS_setup.sh](popOS_setup.sh) script installs. By putting this list in a file, adding and removing packages becomes very easy.
+- [post-install.d](post-install.d):
+  - This new folder contains shell scripts that should be sourced from [popOS_setup.sh](popOS_setup.sh), they contain the post-installation instructions previously found **in** the main script.
+- [scripts](scripts):
+  - The scritps folder contains a few scripts that can be run without being sourced by [popOS_setup.sh](popOS_setup.sh). These scripts were previously in the root of the repository.
+- [update_recovery.sh](scripts/update_recovery.sh):
+  - The functionality to update the recovery partition was moved from the main script to this external script.
+- [.zshrc](samples/zshrc):
+  - Introduced "prompt styles", so the user can choose a prompt style from the templates when the main script is sourcing the [zsh.sh](post-install.d/zsh.sh) script.
+  - Now the paths `~/.local/bin` and `~/bin` are added to the $PATH environment variable.
+  - A few other small changes.
+- [.vimrc](samples/vimrc):
+  - The file now creates a `~/.vimdata` folder to store all the temporary files used by vim.
+  - The file lightly customizes some of the coloring and style of the vim editor.
+### Changed
+- [popOS_setup.sh](popOS_setup.sh):
+  - The main script (pop_OS_start.sh) was renamed to be like the name of the project.
+  - There were innumerable changes to how the script works, but the user experience remains very familiar.
+- [duc_noip_install.sh](scripts/duc_noip_install.sh):
+  - The script now writes its files in `~/.local/bin` and `~/.local/share/applications`.
+### Removed
+- [popOS_setup.sh](popOS_setup.sh):
+  - The script no longer asks the user if they want to remove software.
+  - The script no longer asks the user what flatpaks they want to install.
+  - The script no longer restarts the computer, making the code simpler.
+  - The script no longer copies the *deskcuts*.
+- [deskcuts](deskcuts):
+  - Removed a few redundant deskcuts.
+- [mc_server_builder.sh](scripts/mc_server_builder.sh):
+  - The script no longer executes the command `sudo update-desktop-database`.
+- **vscode.sh**:
+  - The script was removed as it is no longer necessary.
+- **Fonts** folder:
+  - The fonts folder was removed.
 
 ## Released
-
 ### Version [0.2.2](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-05-07*
 #### Added
 - [.zshrc](samples/zshrc)

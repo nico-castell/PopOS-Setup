@@ -19,7 +19,7 @@ I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) succes
     ```
 2. Given that the main branch is always under development, you might want to checkout the last tag, which will be the last known stable version.
     ```shell
-    $ git checkout $(git describe --tags --abrev=0) # Go the last tag
+    $ git checkout $(git describe --tags --abrev=0) # Go to the last tag
     $ git checkout main                             # Go back to main
     ```
 3. (Optional) Look at the instuctions in thme [gnome_apperance](scripts/gnome_appearance.sh) script, and configure the file structure for the script to set up the GNOME appearance with your themes.
@@ -35,18 +35,17 @@ I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) succes
         └── theme
             └── theme.tar.gz
     ```
-4. (Optional) If you plan on building a minecraft server, you should check that the `$download_link` and `$version` variables are up to date.
+4. (Optional) If you plan on building a minecraft server, you should check that the `$download_link` and `$version` variables are up to date, they're always market as `TODO` to be easy to find.
 5. Run the [popOS_setup.sh](popOS_setup.sh) script.
     ```shell
     $ ./popOS_setup.sh
     ```
-6. Follow the instructions of the script.
+6. Follow the instructions from the script.
 7. Wait, this script will as for further instructions as it goes about doing it's thing.
 
 <h2 align="center">Keep in mind</h2>
 
 - You **must** have an internet connection to run the script.
-- The script may **restart your computer**, so try to run the script and nothing else.
 - If you choose to update the backup image, it will have to download an entire image of [Pop!_OS](https://pop.system76.com/). So it can take very long, depending on your internet connection.
 - If you're using an older nvidia GPU not supported by the latest nvidia driver, it might be better to download the [Pop!_OS](https://pop.system76.com/) ISO without their custom driver, and then choose the latest driver that supports your GPU from the list the script offers. (I'm talking from experience)
 
