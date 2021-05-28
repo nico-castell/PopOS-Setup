@@ -117,7 +117,7 @@ if [ "$load_tmp_file" = "no" ]; then
 		case $i in
 			none) break ;;
 			*)
-			if [ $REPLY -lt 0 ] || [ $REPLY -gt $#DRIVERS ]; then
+			if [ $REPLY -lt 0 ] || [ $REPLY -gt ${#DRIVERS[@]} ]; then
 				printf "Wrong\n" >&2
 				continue
 			else CHOSEN_DRIVER="$i"; fi
