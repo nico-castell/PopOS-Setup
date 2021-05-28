@@ -5,7 +5,7 @@ VLC vlc
 .NET_3.1_SDK dotnet-sdk-3.1 aspnetcore-runtime-3.1
 .NET_5.0_SDK dotnet-sdk-5.0 aspnetcore-runtime-5.0
 C/C++_development build-essential cmake
-Git git git-lfs
+Gitg gitg git git-lfs
 Glade glade
 GNOME_Boxes gnome-boxes
 GNOME_Builder gnome-builder
