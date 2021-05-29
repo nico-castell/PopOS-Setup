@@ -1,6 +1,8 @@
 # Change log
 All significant changes to **Pop!_OS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+  - [Fixed](#fixed)
 - [Released](#released)
   - [Release 1.0.0](#release-100)
   - [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
@@ -20,6 +22,11 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.0.3](#version-003)
   - [Version 0.0.2](#version-002)
   - [Version 0.0.1](#version-001)
+
+## Unreelased
+### Fixed
+- [.vimrc](samples/vimrc):
+  - Fixed the statusline showing current line instead of total lines after the `/`.
 
 ## Released
 ### Release 1.0.0

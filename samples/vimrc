@@ -59,7 +59,7 @@ set fillchars+=vert:\┇
 " Statusline:
 hi clear Statusline
 hi Statusline term=bold cterm=bold gui=bold ctermfg=15 ctermbg=234 guibg=DarkGrey
-set statusline=%#Statusline#\ %t:\ %l:%c\ /\ %l%=%r\ %y\ %p%%\ 
+set statusline=%#Statusline#\ %t:\ %l:%c\ /\ %L%=%r\ %y\ %p%%\ 
 set laststatus=2
 
 " Tabline
