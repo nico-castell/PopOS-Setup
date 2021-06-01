@@ -115,6 +115,9 @@ for i in $(ls "$destination"); do
 	let found++
 done
 
+# You must always keep at least one backup
+[ $KEEP -lt 1 ] && let KEEP=1
+
 if [ $found -ge $KEEP ]; then
 	Animate "Removing \e[31mold backups\e[00m" & PID=$!
 	let to_delete="found - KEEP + 1"

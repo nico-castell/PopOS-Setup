@@ -31,6 +31,8 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Fixed the statusline showing current line instead of total lines after the `/`.
+- [back_me_up.sh](back_me_up.sh):
+  - Fixed trying to keep less than 1 backup.
 
 ## Released
 ### Release 1.0.0
