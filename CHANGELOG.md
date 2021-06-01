@@ -2,6 +2,7 @@
 All significant changes to **Pop!_OS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
+  - [Added](#added)
   - [Fixed](#fixed)
 - [Released](#released)
   - [Release 1.0.0](#release-100)
@@ -23,7 +24,10 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.0.2](#version-002)
   - [Version 0.0.1](#version-001)
 
-## Unreelased
+## Unreleased
+### Added
+- [.vimrc](samples/vimrc):
+  - Added variable fg color for the vim statusline: red if you're root, white if you're not.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Fixed the statusline showing current line instead of total lines after the `/`.

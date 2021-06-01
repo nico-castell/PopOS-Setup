@@ -58,7 +58,8 @@ set fillchars+=vert:\┇
 
 " Statusline:
 hi clear Statusline
-hi Statusline term=bold cterm=bold gui=bold ctermfg=15 ctermbg=234 guibg=DarkGrey
+hi Statusline term=bold cterm=bold gui=bold ctermbg=234 guibg=DarkGrey
+if $USER == 'root' | hi Statusline ctermfg=124 | else | hi Statusline ctermfg=15 | endif
 set statusline=%#Statusline#\ %t:\ %l:%c\ /\ %L%=%r\ %y\ %p%%\ 
 set laststatus=2
 
