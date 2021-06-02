@@ -100,7 +100,6 @@ git_info () {
 	if [ ! -z $_branch ]; then
 		_changes=$(git status --porcelain=v1 2>/dev/null | wc -l)
 		[ $_changes -ne 0 ] && PR+=" ✎"
-
 		_behind=$(git status -sb | grep behind &>/dev/null; printf "%i" $?)
 		[ $_behind -eq 0  ] && PR+=" ↓"
 		_ahead=$(git status -sb | grep ahead &>/dev/null; printf "%i" $?)
@@ -138,7 +137,7 @@ if [ "$color_prompt" = yes ]; then
 	prompt_style=ubuntu
 	case $prompt_style in
 		fedora) PROMPT=$'[%n@%m %1~\$(git_info " - ")]%# ' ;;
-		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:\$(git_info " %%F{%%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%~%f%b%# ' ;;
+		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:\$(git_info " %%F{%%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
 		kali) PROMPT=$'%F{%(#.red.blue)}┌──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " - %%F{%%(#.blue.yellow)}")\n%F{%(#.red.blue)}└─%#%f ' ;;
 		powerline) use_powerline ;;
 	esac

@@ -3,6 +3,7 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
   - [Added](#added)
+  - [Changed](#changed)
   - [Fixed](#fixed)
 - [Released](#released)
   - [Release 1.0.0](#release-100)
@@ -28,6 +29,9 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 ### Added
 - [.vimrc](samples/vimrc):
   - Added variable fg color for the vim statusline: red if you're root, white if you're not.
+### Changed
+- [.zshrc](samples/zshrc):
+  - Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Fixed the statusline showing current line instead of total lines after the `/`.
