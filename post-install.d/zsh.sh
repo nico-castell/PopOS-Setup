@@ -5,11 +5,17 @@ Separate 4
 printf "Successfully installed \e[36mzsh\e[00m, configuring...\n"
 
 # Create .zshrc files
-     [ ! -f ~/.zshrc ]     && cat "$script_location/samples/zshrc" | tee ~/.zshrc ~/.zshrc-og >/dev/null
+     [ ! -f ~/.zshrc     ] && cat "$script_location/samples/zshrc" | tee ~/.zshrc ~/.zshrc-og >/dev/null
 sudo [ ! -f /root/.zshrc ] && cat "$script_location/samples/zshrc" | sudo tee /root/.zshrc /root/.zshrc-og >/dev/null
 
-# Prepare powerline shell
-sudo pip3 install powerline-shell &>/dev/null; O=$?
+# Offer to install powerline-shell
+read -rp "$(printf "Do you want to install \e[01mPowerline Shell\e[00m? (y/N)")"
+if [ ${REPLY,,} = "y" ]; then
+	printf "Installing \e[01mPowerline Shell\e[00m...\n"
+	pip3 install powerline-shell &>/dev/null; O=$?
+else
+	O=1
+fi
 
 if [ $O -eq 0 ]; then
 	mkdir -p ~/.config/powerline-shell
@@ -40,7 +46,7 @@ fi
 printf "Choose the prompt style you prefer: \n"
 select s in $(cat "$HOME/.zshrc" | grep "# Choose a prompt style between" | sed -e 's/\s*#.*: //'); do
 	if [ $O -ne 0 ] && [ $s = "powerline" ]; then
-		printf "Sorry, powerline was not successfully installed, choose another style\n"
+		printf "Sorry, powerline was not installed, choose another style\n"
 		continue
 	fi
 	sed -i "s/prompt_style=.*$/prompt_style=$s/" ~/.zshrc

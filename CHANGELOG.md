@@ -31,9 +31,12 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Added variable fg color for the vim statusline: red if you're root, white if you're not.
 - [vim.sh](post-install.d/vim.sh):
   - Added the posibility to set vim as the default `$EDITOR`.
+  - Added the posibility of installing the powerline-status plugin for the editor.
 ### Changed
 - [.zshrc](samples/zshrc):
   - Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
+- [zsh.sh](post-install.d/zsh.sh):
+  - The script will no longer attempt to install powerline automatically, instead, it will ask the user if they want to install it.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Fixed the statusline showing current line instead of total lines after the `/`.
