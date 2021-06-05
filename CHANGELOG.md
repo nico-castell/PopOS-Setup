@@ -1,12 +1,9 @@
 # Change log
 All significant changes to **Pop!_OS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-  - [Added](#added)
-  - [Changed](#changed)
-  - [Fixed](#fixed)
 - [Released](#released)
-  - [Release 1.0.0](#release-100)
+  - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
+  - [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
   - [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
   - [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
   - [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
@@ -25,8 +22,10 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.0.2](#version-002)
   - [Version 0.0.1](#version-001)
 
-## Unreleased
-### Added
+## Released
+### Version [1.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.1.0) - *2021-06-05*
+This update is mostly a cumulative release of minor additions. The biggest introductions are the choice to use the powerline plugin in **Vim**, better prompts for the **Z-Shell**, and a few changes and fixes.
+#### Added
 - [.vimrc](samples/vimrc):
   - Added variable fg color for the vim statusline: red if you're root, white if you're not.
 - [vim.sh](post-install.d/vim.sh):
@@ -37,21 +36,20 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
 - [git.sh](post-install.d/git.sh):
   - Added `now-ignored` alias to find files that should be untracked after updating a `.gitignore`.
-### Changed
+#### Changed
 - [.zshrc](samples/zshrc):
   - Kali style prompt now has softer edges: `╭──` instead of `┌──`.
 - [zsh.sh](post-install.d/zsh.sh):
   - The script will no longer attempt to install powerline automatically, instead, it will ask the user if they want to install it.
 - [git.sh](post-install.d/git.sh):
   - Changed `flog` and `sflog` aliases. You can specify a path to the `unstage` alias now.
-### Fixed
+#### Fixed
 - [.vimrc](samples/vimrc):
   - Fixed the statusline showing current line instead of total lines after the `/`.
 - [back_me_up.sh](back_me_up.sh):
   - Fixed trying to keep less than 1 backup.
 
-## Released
-### Release 1.0.0
+### Version [1.0.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.0.0) - *2021-05-28*
 Some time before this release, the [Fedora Setup](https://githbub.com/nico-castell/Fedora-Setup) project started by reworking this project to work in Fedora. There were a lot of innovations. This release focuses on porting them back. Some of the most notable innovations have been:
 - The creation of the [packages.txt](packages.txt) file.
 - The creation of the [post-install.d](post-install.d) folder, which stores *.sh* files that are sourced by the main script.

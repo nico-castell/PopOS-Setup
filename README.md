@@ -49,6 +49,22 @@ I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) succes
 - If you choose to update the backup image, it will have to download an entire image of [Pop!_OS](https://pop.system76.com/). So it can take very long, depending on your internet connection.
 - If you're using an older nvidia GPU not supported by the latest nvidia driver, it might be better to download the [Pop!_OS](https://pop.system76.com/) ISO without their custom driver, and then choose the latest driver that supports your GPU from the list the script offers. (I'm talking from experience)
 
+<h2 align="center">Biggest features</h2>
+
+This project can set up some powerful features, such as:
+
+- Advanced, stylized prompts for the **Z-Shell**:
+  <p align="center"><img width="600" height="272" src="assets/prompts.png"></p>
+- Powerline plugin for the **Vim** editor:
+  <p align="center"><img width="600" height="390" src="assets/vim-powerline.png"></p>
+- Setting up **GnuPG** to sign **Git** commits:
+  <p align="center"><img width="600" height="326" src="assets/seahorse.png"></p>
+- Easily expandable lists of packages for the script to work with: [packages.txt](packages.txt), [flatpaks.txt](flatpaks.txt) and [remove.txt](remove.txt)
+- Desktop entry files that you can add at your convenience.
+- A [script](scripts/mc_server_builder.sh) to set up a minecraft server.
+- A [script](back_me_up.sh) to back up your home directory.
+- A [script](scripts/update_recovery.sh) to update your recovery partition.
+
 <h2 align="center">Known issues</h2>
 
 1. [*duc_noip_install*](duc_noip_install): The installer can't seem to understand symbols when typing a password, at least on my tests, the script opens *gedit* for you to copy/paste your password and work around the issue.
