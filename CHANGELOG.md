@@ -32,9 +32,12 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 - [vim.sh](post-install.d/vim.sh):
   - Added the posibility to set vim as the default `$EDITOR`.
   - Added the posibility of installing the powerline-status plugin for the editor.
+- [.zshrc](samples/zshrc):
+  - Added gear (`⚙`) for fedora and ubuntu sytle prompts to show there are background jobs running.
+  - Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
 ### Changed
 - [.zshrc](samples/zshrc):
-  - Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
+  - Kali style prompt now has softer edges: `╭──` instead of `┌──`.
 - [zsh.sh](post-install.d/zsh.sh):
   - The script will no longer attempt to install powerline automatically, instead, it will ask the user if they want to install it.
 ### Fixed
