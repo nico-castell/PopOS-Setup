@@ -12,7 +12,7 @@ sudo [ ! -f /root/.zshrc ] && cat "$script_location/samples/zshrc" | sudo tee /r
 read -rp "$(printf "Do you want to install \e[01mPowerline Shell\e[00m? (y/N)")"
 if [ ${REPLY,,} = "y" ]; then
 	printf "Installing \e[01mPowerline Shell\e[00m...\n"
-	pip3 install powerline-shell &>/dev/null; O=$?
+	sudo pip3 install powerline-shell &>/dev/null; O=$?
 else
 	O=1
 fi

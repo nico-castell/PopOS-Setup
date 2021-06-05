@@ -1,6 +1,8 @@
 # Change log
 All significant changes to **Pop!_OS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+  - [Changed](#changed)
 - [Released](#released)
   - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
   - [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
@@ -21,6 +23,13 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.0.3](#version-003)
   - [Version 0.0.2](#version-002)
   - [Version 0.0.1](#version-001)
+
+## Unreleased
+### Changed
+- [vim.sh](post-install.d/vim.sh):
+  - Switched from user installation of powerline-status to sytem installation.
+- [zsh.sh](post-install.d/zsh.sh):
+  - Switched from user installation of powerline-shell to sytem installation.
 
 ## Released
 ### Version [1.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.1.0) - *2021-06-05*

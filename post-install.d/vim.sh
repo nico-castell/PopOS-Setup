@@ -35,7 +35,7 @@ fi
 if [ ${PWL,,} = "y" -o -z $PWL ]; then
 	prepare_powerline() {
 		printf "Installing \e[01mPowerline\e[00m for Vim...\n"
-		pip3 install powerline-status &>/dev/null && \
+		sudo pip3 install powerline-status &>/dev/null && \
 			printf "
 if &term !=? 'linux'
 	\" Powerline
