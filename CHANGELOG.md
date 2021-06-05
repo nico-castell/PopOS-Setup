@@ -35,11 +35,15 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 - [.zshrc](samples/zshrc):
   - Added gear (`⚙`) for fedora and ubuntu sytle prompts to show there are background jobs running.
   - Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
+- [git.sh](post-install.d/git.sh):
+  - Added `now-ignored` alias to find files that should be untracked after updating a `.gitignore`.
 ### Changed
 - [.zshrc](samples/zshrc):
   - Kali style prompt now has softer edges: `╭──` instead of `┌──`.
 - [zsh.sh](post-install.d/zsh.sh):
   - The script will no longer attempt to install powerline automatically, instead, it will ask the user if they want to install it.
+- [git.sh](post-install.d/git.sh):
+  - Changed `flog` and `sflog` aliases. You can specify a path to the `unstage` alias now.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Fixed the statusline showing current line instead of total lines after the `/`.
