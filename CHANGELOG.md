@@ -3,6 +3,7 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
   - [Changed](#changed)
+  - [Fixed](#fixed)
 - [Released](#released)
   - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
   - [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
@@ -30,6 +31,11 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Switched from user installation of powerline-status to sytem installation.
 - [zsh.sh](post-install.d/zsh.sh):
   - Switched from user installation of powerline-shell to sytem installation.
+### Fixed
+- [vim.sh](post-install.d/vim.sh):
+  - Fixed excessive arguments.
+- [zsh.sh](post-install.d/zsh.sh):
+  - Fixed missing space when prompting the user.
 
 ## Released
 ### Version [1.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.1.0) - *2021-06-05*

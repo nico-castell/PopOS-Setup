@@ -9,7 +9,7 @@ printf "Successfully installed \e[36mzsh\e[00m, configuring...\n"
 sudo [ ! -f /root/.zshrc ] && cat "$script_location/samples/zshrc" | sudo tee /root/.zshrc /root/.zshrc-og >/dev/null
 
 # Offer to install powerline-shell
-read -rp "$(printf "Do you want to install \e[01mPowerline Shell\e[00m? (y/N)")"
+read -rp "$(printf "Do you want to install \e[01mPowerline Shell\e[00m? (y/N) ")"
 if [ ${REPLY,,} = "y" ]; then
 	printf "Installing \e[01mPowerline Shell\e[00m...\n"
 	sudo pip3 install powerline-shell &>/dev/null; O=$?

@@ -9,7 +9,7 @@ read -rp "$(printf "Do you want to set \e[01mVim\e[00m as the default \e[35m\$ED
 read -rp "$(printf "Do you want to use \e[01mPowerline\e[00m in Vim? (Y/n) ")" PWL
 
 # Set vim as the default EDITOR
-if [ ${DEF,,} = "y" -o -z $DEF ]; then
+if [ "${DEF,,}" = "y" -o -z "$DEF" ]; then
 	set_default_editor() {
 		printf "Setting \e[01mVim\e[00m as the default editor...\n"
 		sudo mkdir -p /etc/profile.d
@@ -32,7 +32,7 @@ endif\n" $(which vim) | sudo tee /etc/profile.d/vim-default-editor.csh >/dev/nul
 fi
 
 # Install powerline for vim
-if [ ${PWL,,} = "y" -o -z $PWL ]; then
+if [ "${PWL,,}" = "y" -o -z "$PWL" ]; then
 	prepare_powerline() {
 		printf "Installing \e[01mPowerline\e[00m for Vim...\n"
 		sudo pip3 install powerline-status &>/dev/null && \
