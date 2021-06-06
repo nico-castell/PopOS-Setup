@@ -27,6 +27,8 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 
 ## Unreleased
 ### Changed
+- [popOS_setup.sh](popOS_setup.sh):
+  - The extra scripts are now loaded and executed through loops, this is much more expandable (and reliable) than loading them individually.
 - [vim.sh](post-install.d/vim.sh):
   - Switched from user installation of powerline-status to sytem installation.
 - [zsh.sh](post-install.d/zsh.sh):

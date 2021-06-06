@@ -56,14 +56,6 @@ postinstall_folder="$script_location/post-install.d"
 
 unset USAGE_MSG MISSING
 
-# Prepare module variables
-GNOME_APPEARANCE=no
-GNOME_SETTINGS=no
-GNOME_EXTENSIONS=no
-BUILD_MC_SERVER=no
-INSTALL_DUC=no
-UPDATE_RECOVERY=no
-
 # Function to draw a line across the width of the console.
 Separate () {
 	if [ ! -z $1 ]; then tput setaf $1; fi
@@ -74,9 +66,18 @@ Separate () {
 # Aquire root privileges now
 sudo echo >/dev/null || exit 1
 
-printf "Welcome to \e[01mPop!_OS Setup\e[00m version %s!
+# Give the welcome message and license disclaimer
+commit="$(git log -1 --format='%h' 2>/dev/null)"
+version="$(git describe --tags --abbrev=0 2>/dev/null)"
+[ -n "$version" ] && \
+	version=" version $version"
+[ -z "$version" -a -n "$commit" ] && \
+	version=" at commit $commit"
+
+printf "Welcome to \e[36m01mPop!_OS Setup\e[00m%s!
 Follow the instructions and you should be up and running soon
-THE SOFTWARE IS PROVIDED \"AS IS\", read the license for more information\n\n" $(git describe --tags --abbrev=0)
+THE SOFTWARE IS PROVIDED \"AS IS\", read the license for more information\n\n" "$version"
+unset version commit
 
 #region Prompting the user for their choices
 if [ "$load_tmp_file" = "no" ]; then
@@ -145,46 +146,16 @@ if [ "$load_tmp_file" = "no" ]; then
 	echo "CHOSEN_DRIVER - $CHOSEN_DRIVER" >> "$choices_file"
 	unset DRIVERS
 
+	# Let the user choose extra scripts to run
 	printf "Choose some extra scripts to run:\n"
-	# Check if a script is present before prompting
-	prompt_user() {
-		unset Confirmed
-		if [ -f "$scripts_folder/$1" ]; then
-			read -rp "Do you want to $2 (Y/n) "
-			if [ "${REPLY[@]}" = "y" ] || [ -z $REPLY ]; then
-				Confirmed=yes
-			else Confirmed=no; fi
-		else Confirmed=no; fi
-	}
+	for i in $(ls "$scripts_folder" | grep \.sh$); do
+		read -rp "$(printf "Do you want to run the \e[01m%s\e[00m extra script? (Y/n) " "${i/".sh"/""}")"
+		[ "${REPLY,,}" = "y" -o -z "$REPLY" ] && \
+			SCRIPTS+=("$i")
+	done
 
-	# Start prompting the user
-	prompt_user "gnome_appearance.sh" "configure the appearance of gnome"
-	GNOME_APPEARANCE=$Confirmed
-	[ "$GNOME_APPEARANCE" = "yes" ] && Modules+=("GNOME_APPEARANCE")
-
-	prompt_user "gnome_settings.sh" "modify some of gnome's configurations"
-	GNOME_SETTINGS=$Confirmed
-	[ "$GNOME_SETTINGS" = "yes" ] && Modules+=("GNOME_SETTINGS")
-
-	prompt_user "gnome_extensions.sh" "install some gnome extensions"
-	GNOME_EXTENSIONS=$Confirmed
-	[ "$GNOME_EXTENSIONS" = "yes" ] && Modules+=("GNOME_EXTENSIONS")
-
-	if [[ ${TO_APT[@]} == *"default-jre" ]]; then
-		prompt_user "mc_server_builder.sh" "build a minecraft server"
-		BUILD_MC_SERVER=$Confirmed
-		[ "$BUILD_MC_SERVER" = "yes" ] && Modules+=("BUILD_MC_SERVER")
-	fi
-
-	prompt_user "duc_noip_install.sh" "install No-Ip's DUC"
-	INSTALL_DUC=$Confirmed
-	[ "$INSTALL_DUC" = "yes" ] && Modules+=("INSTALL_DUC")
-
-	prompt_user "update_recovery.sh" "update the recovery partition"
-	UPDATE_RECOVERY=$Confirmed
-	[ "$UPDATE_RECOVERY" = "yes" ] && Modules+=("UPDATE_RECOVERY")
-
-	echo "MODULES - ${Modules[@]}" >> "$choices_file"
+	# Store selected scripts
+	echo "SCRIPTS - ${SCRIPTS[@]}" >> "$choices_file"
 	unset prompt_user
 	Separate 4
 fi
@@ -217,14 +188,8 @@ if [ "$load_tmp_file" = "yes" ]; then
 	CHOSEN_DRIVER=${CHOSEN_DRIVER/"CHOSEN_DRIVER - "/""}
 
 	# Load scripts to run
-	Modules=$(cat "$choices_file" | grep "MODULES")
-	Modules=${Modules/"MODULES - "/""}
-	[[ "$Modules" == *"GNOME_APPEARANCE"* ]] && GNOME_APPEARANCE=yes
-	[[ "$Modules" == *"GNOME_SETTINGS"*   ]] && GNOME_SETTINGS=yes
-	[[ "$Modules" == *"GNOME_EXTENSIONS"* ]] && GNOME_EXTENSIONS=yes
-	[[ "$Modules" == *"BUILD_MC_SERVER"*  ]] && BUILD_MC_SERVER=yes
-	[[ "$Modules" == *"INSTALL_DUC"*      ]] && INSTALL_DUC=yes
-	[[ "$Modules" == *"UPDATE_RECOVERY"*  ]] && UPDATE_RECOVERY=yes
+	SCRIPTS=$(cat "$choices_file" | grep "SCRIPTS")
+	SCRIPTS=${SCRIPTS/"SCRIPTS - "/""}
 
 	Separate 4
 fi
@@ -403,30 +368,11 @@ if [ $? -eq 0 ]; then
 fi
 
 # Run extra scripts
-if [ "$GNOME_APPEARANCE" = "yes" ];then
-	Separate 4; printf "Running \e[01mGNOME Appearance\e[00m module...\n"
-	"$scripts_folder/gnome_appearance.sh"
-fi
-if [ "$GNOME_SETTINGS" = "yes"   ];then
-	Separate 4; printf "Running \e[01mGNOME Settings\e[00m module...\n"
-	"$scripts_folder/gnome_settings.sh"
-fi
-if [ "$GNOME_EXTENSIONS" = "yes" ];then
-	Separate 4; printf "Running \e[01mGNOME Extensions\e[00m module...\n"
-	"$scripts_folder/gnome_extensions.sh"
-fi
-if [ "$BUILD_MC_SERVER" = "yes"  ];then
-	Separate 4; printf "Running \e[01mBuild Minecraft Server\e[00m module...\n"
-	"$scripts_folder/mc_server_builder.sh"
-fi
-if [ "$INSTALL_DUC" = "yes"      ];then
-	Separate 4; printf "Running \e[01mInstall No-Ip's DUC\e[00m module...\n"
-	"$scripts_folder/duc_noip_install.sh" -e
-fi
-if [ "$UPDATE_RECOVERY" = "yes"  ]; then
-	Separate 4; printf "Running \e[01mUpdate Recovery\e[00m module...\n"
-	"$scripts_folder/update_recovery.sh"
-fi
+for i in ${SCRIPTS[@]}; do
+	Separate 4
+	printf "Running \e[01m%s\e[00m extra script...\n" "${i/".sh"/""}"
+	"$scripts_folder/$i"
+done
 
 Separate 4
 
