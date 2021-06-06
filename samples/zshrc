@@ -94,19 +94,19 @@ fi
 
 # Find a git branch, and add it to the prompt.
 git_info () {
-	_branch="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
-	[ ! -z $_branch   ] && PR="${1}${_branch}%%f"
+	_status="$(git status -sb 2>/dev/null)"
+	_branch="$(printf "%s" "$_status" | grep "^##" | sed -e "s/^##\s//" -e "s/\..*//" -e "s/^No\scommits\syet\son\s//")"
+	[ -n "$_branch" ] && _branch=" $_branch"
 
-	if [ ! -z $_branch ]; then
-		_changes=$(git status --porcelain=v1 2>/dev/null | wc -l)
-		[ $_changes -ne 0 ] && PR+=" ✎"
-		_behind=$(git status -sb | grep behind &>/dev/null; printf "%i" $?)
-		[ $_behind -eq 0  ] && PR+=" ↓"
-		_ahead=$(git status -sb | grep ahead &>/dev/null; printf "%i" $?)
-		[ $_ahead -eq 0   ] && PR+=" ↑"
-	fi
+	[ $(echo $_status | wc -l) -gt 1 ] && \
+		_changes="%f ✎"
+	echo $_status | grep behind &>/dev/null && \
+		_behind="%f ↓"
+	echo $_status | grep ahead &>/dev/null && \
+		_ahead="%f ↑"
 
-	printf "$PR"
+	info="${_branch}${_changes}${_behind}${_ahead}${_nocommits}"
+	[ -n "$info" ] && printf "%s%s" "${1}" "${info}"
 }
 
 # Powerline style shell
@@ -131,14 +131,14 @@ use_powerline () {
 
 if [ "$color_prompt" = yes ]; then
 	# Fallback prompt
-	PROMPT="%n@%m: %~%# "
+	PROMPT="[%n@%m %1~]%# "
 
 	# Choose a prompt style between: fedora ubuntu kali powerline
 	prompt_style=ubuntu
 	case ${(L)prompt_style} in
-		fedora) PROMPT=$'[%n@%m %1~%(1j. ⚙.)\$(git_info " - ")]%# ' ;;
-		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)\$(git_info " %%F{%%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
-		kali) PROMPT=$'%F{%(#.red.blue)}╭──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " - %%F{%%(#.blue.yellow)}")\n%F{%(#.red.blue)}╰─%#%f ' ;;
+		fedora) PROMPT=$'[%n@%m %1~%(1j. ⚙.)\$(git_info " -")]%# ' ;;
+		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)\$(git_info "%F{%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
+		kali) PROMPT=$'%F{%(#.red.blue)}╭──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " -%F{%(#.blue.yellow)}")\n%F{%(#.red.blue)}╰─%#%f ' ;;
 		powerline) use_powerline ;;
 	esac
 	RPROMPT=$'%(?.. %F{red}%? ✘%f)'
@@ -147,7 +147,7 @@ if [ "$color_prompt" = yes ]; then
 	#   "terminal.integrated.env.linux": { "VSCODE_TERM": "yes" }
 	# To the vscode settings json to enable this.
 	[ "${(L)VSCODE_TERM}" = "yes" ] && \
-		PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)%F{%(#.blue.yellow)}\$(git_info "  ") %(#.%F{red}🕱.%F{blue}>)%f '
+		PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)\$(git_info " %F{%(#.blue.yellow)}") %(#.%F{red}🕱.%F{blue}>)%f '
 
 	# enable syntax-highlighting
 	if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && [ "$color_prompt" = yes ]; then

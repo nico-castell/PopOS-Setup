@@ -41,6 +41,8 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Switched from user installation of powerline-status to sytem installation.
 - [zsh.sh](post-install.d/zsh.sh):
   - Switched from user installation of powerline-shell to sytem installation.
+- [.zshrc](samples/zshrc):
+  - Improved performance of the git info in the prompt.
 ### Fixed
 - [vim.sh](post-install.d/vim.sh):
   - Fixed excessive arguments.
