@@ -33,6 +33,8 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 - [popOS_setup.sh](popOS_setup.sh):
   - Added **VS Codium** source.
 ### Changed
+- [duc_noip_install.sh](scripts/duc_noip_install.sh):
+  - Rewrote the script to be much more reliable and simple to edit.
 - [popOS_setup.sh](popOS_setup.sh):
   - The extra scripts are now loaded and executed through loops, this is much more expandable (and reliable) than loading them individually.
 - [vim.sh](post-install.d/vim.sh):
@@ -44,6 +46,8 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Fixed excessive arguments.
 - [zsh.sh](post-install.d/zsh.sh):
   - Fixed missing space when prompting the user.
+- [git.sh](post-install.d/git.sh):
+  - Fixed faulty config for the vim editor.
 
 ## Released
 ### Version [1.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.1.0) - *2021-06-05*

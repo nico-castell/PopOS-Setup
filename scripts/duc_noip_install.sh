@@ -1,221 +1,161 @@
 #!/bin/bash
-# Script to install No-Ip's DUC on Linux
 
 # MIT License - Copyright (c) 2021 Nicolás Castellán
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information
 
-#region Checks
-#===========================================================================
-# Checking options internet and installation.
-
-while [ -n "$1" ]; do
-	case "$1" in
-		-e) ENTRY=true ;;        # Create a start menu entry.
-		# -a) AUTOSTART=true ;;  # Use crontab to autostart the DUC at start-up.
-		-h)                      # Offer a help message.
-			echo "This script installs No-Ip's DUC on your computer."
-			echo "The options are:"
-			echo "  -e) Create a start menu entry."
-			echo "  -h) Show this menu."
-			exit
-			;;
-		*) echo "Option $1 not recognized" && exit 1 ;;
-esac; shift; done
+# Check if the DUC is already installed
+if which noip2 &>/dev/null; then
+	printf "No-IP's DUC is already installed\n" >&2
+	exit 1
+fi
 
 # Test for an internet connection and exit if none is found.
 ping -c 1 google.com &>/dev/null
 if [ ! $? -eq 0 ]; then
-	echo -e >&2 "\e[31mERROR: No internet\e[00m"
-	exit 1
+	printf "\e[31mERROR: No internet\e[00m\n" >&2
+	exit 2
 fi
 
-# Checking if the DUC is already installed.
-FINDDUC=$(which noip2)
-FINDDUC=${FINDDUC/"/usr/local/bin/"/""}
-if [ $FINDDUC = "noip2" ]; then
-	echo -e "\e[32mNo-Ip's DUC is already installed\e[00m, exiting..."
-	echo "run 'sudo noip2 -S' if it's not already configured"
-	exit 0
+# Script needs a terminal to run properly
+if [ ! -t 1 ]; then
+	printf "ERROR: This script needs to take input from a terminal\n" >&2
+	exit 3
 fi
 
-#===========================================================================
-#endregion Checks
+USAGE_MSG () {
+	printf "This script installs \e[01;36mNo-IP's Dynamic Update client\e[00m.
+Options:
+	-n) Don't install a menu entry
+	-p) Override installation prefix
 
+Examples:
+	./%s
+	./%s -p /usr -n\n" "$(basename "$0")" "$(basename "$0")"
+}
 
-#region Installing
-#===========================================================================
-# Talk to the user and install the program
+integrate_desktop=yes
+prefix="$HOME/.local"
+while [ -n "$1" ]; do
+	case "$1" in
+		-n) integrate_desktop=no ;;
+		-p) prefix="$2"; shift   ;;
+		*) USAGE_MSG >&2; exit 0 ;;
+esac; shift; done
+unset USAGE_MSG
 
-# Greeting the user.
-echo "Installer for No-Ip activated."
-echo "This will open a text editor to type your password and copy paste it later."
-echo "This is necessary because tiping directly causes some simbols to be wrong."
-echo "You should be prompted for your No-Ip password twice."
+# Acquire root privileges now
+sudo echo >/dev/null || exit 4
 
-# Accessing the installation folder and downloading the uncompiled program.
+# Greet the user
+printf "Installing \e[01;36mNo-IP's Dynamic Update Client\e[00m (DUC):
+This script may open a text editor to work around an issue when typing your
+password, see the README file for more information.\n"
+
+# Download the program
 cd /usr/local/src/
-echo "Attempting to download the .tar.gz file"
+sudo wget -q http://www.noip.com/client/linux/noip-duc-linux.tar.gz
 
-# Testing if wget is installed.
-FINDWGET=$(which wget)
-FINDWGET=${FINDWGET/"/usr/bin/"/""}
-
-if [ $FINDWGET != "wget" ]; then
-	echo -e "\e[31mERROR: You need to install the package 'wget' to download the file\e[00m" >&2
-	exit 1
+# Unpack, install and configure
+installed=no
+if sudo tar -zxf noip*.tar.gz ; then
+	sudo rm noip.tar.gz
+	cd noip*/
+	gedit </dev/null &>/dev/null &
+	sudo make install
+	installed=yes
 fi
 
-# Actually downloads the file.
-sudo wget http://www.noip.com/client/linux/noip-duc-linux.tar.gz
+# Integrate with the user's desktop
+if [ "$integrate_desktop" = "yes" -a "$installed" = "yes" ]; then
+	cd "$HOME"
 
-echo "Unpacking the file"
-sudo tar -xf noip-duc-linux.tar.gz
+	# Create relevant directories and files
+	target="$prefix/bin"
+	entry="$prefix/share/applications"
+	icon="$prefix/share/icons/hicolor/256x256/apps"
 
-# This will open a text editor to type your password, It's necessary because
-#   typing to the installer can cause certain symbols to be written incorrectly
-#   and cause a "Wrong password" error.
-(gedit ) &
-cd noip-2*
+	mkdir -p $target $entry $icon
 
-# Now it'll compile the program from source.
-echo "Attempting Installation"
+	target="$target/noip-assist"
+	entry="$entry/noip-assist.desktop"
+	icon="$icon/noip-duc.png"
 
-# Now it'll test if make is installed before continuing.
-FINDMAKE=$(which make)
+	# Make the "binary" (it's actually a bash script) file
+	printf "%s\n" "#!/bin/bash
+# Target file to help you manage No-IP\'s DUC
 
-if [[ ! $FINDMAKE = *"make"* ]]; then
-	echo -e "\e[31mERROR: You need to install the package 'make' to install the DUC.\e[00m" 2>/dev/null
-	exit 1
+# File created by duc_noip_install.sh script.
+# MIT License - Copyright (c) Nicolás Castellán
+# THE SOFTWARE IS PROVIDED \"AS IS\"
+
+action=start
+
+while [ -n \"\$1\" ]; do
+	case \"\$1\" in
+		-k) action=kill                   ;;
+		-h|--help) USAGE_MSG >&2 ; exit 0 ;;
+		*)
+		printf \"option \\e[01m%s\\e[00m not recognized\\n\" >&2
+		USAGE_MSG >&2
+		exit 1
+		;;
+	esac
+done
+
+if [ \"\$action\" = \"start\" ]; then
+	printf \"root privileges are needed for this operation:\\n\"
+	if sudo /usr/local/bin/noip2 ; then
+		printf \"Process started\\n\"
+		sudo /usr/local/bin/noip2 -S
+		OUT=0
+	else
+		OUT=1
+	fi
+elif [ \"\$action\" = \"kill\" ]; then
+	PID=\$(ps ax | grep noip2 | grep -v grep | awk '{print \$1}' 2>/dev/null)
+	if [ -n \"\$PID\" ]; then
+		printf \"root privileges are needed for this operation:\\n\"
+		if sudo kill -9 \"\$PID\" ; then
+			printf \"Process successfully stopped\\n\"
+			OUT=0
+		fi
+	else
+		printf \"Process id could not be foud\\nMay not be running\\n\" >&2
+		OUT=1
+	fi
 fi
 
-# This will actually install the program.
-sudo make install
-echo -e "\nCreating configuration file..."
-sudo /usr/local/bin/noip2 -C
-echo -e "\nRemoving lefover .tar.gz file..."
-sudo rm /usr/local/src/noip*.tar.gz
+sleep 2
+exit \$OUT" | tee "$target" >/dev/null
+	chmod 755 "$target"
 
-#===========================================================================
-#endregion Installing
+	# Download the icon
+	wget -q https://www.dropbox.com/s/g55zl9q9uc2a1pw/noiplogo.png?dl=1 -O "$icon"
+	chmod 644 "$icon"
 
+	# Make the desktop entry file
+	printf "%s\n" "[Desktop Entry]
+Name=No-Ip DUC
+Comment=Start the dynamic update client.
+GenericName=DUC;
+Exec=$target
+Icon=noip-duc
+Type=Application
+StartupNotify=false
+Terminal=true
+Categories=Network;Server;
+Actions=open-killing;
+Keywords=Network;Minecraft;Server;
 
-#region Start menu entry
-#===========================================================================
-# Offers the user a chance to make a start menu entry.
+X-Desktop-File-Install-Version=0.24
 
-# This will make it so that you can use the option or be prompted about making the entry.
-if [ $ENTRY ]; then
-
-	cd ~
-	if [ ! -d ~/.mydock/ ]; then
-		mkdir ~/.mydock
-	fi
-
-	# Download the logo only if there isn't yet another one.
-	mkdir -p ~/.local/share/icons/hicolor/256x256/apps
-	cd ~/.local/share/icons/hicolor/256x256/apps
-	if [ ! -f ~/.mydock/noiplogo.png ]; then
-		echo "Downloading logo..."
-		wget -q https://www.dropbox.com/s/g55zl9q9uc2a1pw/noiplogo.png?dl=1 -O noiplogo.png
-	fi
-
-	mkdir -p ~/.local/bin
-	cd ~/.local/bin
-	if [ ! -f noip_duc.sh ]; then
-		echo "Making target file..."
-		#region File ============================================================
-		echo "#!/bin/bash"                                              > noip_duc.sh
-		echo "# Script to start the DUC."                               >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "while [ -n \"\$1\" ]; do"                                 >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "    case \"\$1\" in"                                      >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "        # Show PID and wait."                             >> noip_duc.sh
-		echo "        -s) SHOW=true ;;"                                 >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "        # Open to kill process."                          >> noip_duc.sh
-		echo "        -k) KILL=true ;;"                                 >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "        *) echo \"Option \$1 not recognized\" && exit ;;" >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "    esac"                                                 >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "    shift"                                                >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "done"                                                     >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "# Find Process ID and kill it."                           >> noip_duc.sh
-		echo "if [ \$KILL ]; then"                                      >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "    echo \"Please type your sudo password:\""             >> noip_duc.sh
-		echo "    sudo /usr/local/bin/noip2 -S"                         >> noip_duc.sh
-		echo "    echo"                                                 >> noip_duc.sh
-		echo "    read -p \"Input the PID > \""                         >> noip_duc.sh
-		echo "    sudo /usr/local/bin/noip2 -K \$REPLY"                 >> noip_duc.sh
-		echo "    echo"                                                 >> noip_duc.sh
-		echo "    read -p \"Press ENTER to exit.\""                     >> noip_duc.sh
-		echo "    exit"                                                 >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "fi"                                                       >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "# Start No-Ip's DUC."                                     >> noip_duc.sh
-		echo "echo \"Please type your sudo password:\""                 >> noip_duc.sh
-		echo "sudo /usr/local/bin/noip2"                                >> noip_duc.sh
-		echo "echo \"DUC Started Succesfully\""                         >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "# Show the PID."                                          >> noip_duc.sh
-		echo "if [ \$SHOW ]; then"                                      >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "    echo"                                                 >> noip_duc.sh
-		echo "    sudo /usr/local/bin/noip2 -S"                         >> noip_duc.sh
-		echo "    echo"                                                 >> noip_duc.sh
-		echo "    read -p \"Press ENTER to exit.\""                     >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "fi"                                                       >> noip_duc.sh
-		echo                                                            >> noip_duc.sh
-		echo "if [ ! \$SHOW ]; then sleep 1.5; fi"                      >> noip_duc.sh
-		#endregion File ============================================================
-	fi
-	chmod +x ./noip_duc.sh
-
-	# This will create the .desktop file.
-	cd ~/.local/share/applications
-	if [ ! -f noip_duc.desktop ]; then
-		echo "Creating noip_duc.desktop file..."
-		#region File ============================================================
-		echo "[Desktop Entry]"                            > ./noip_duc.desktop
-		echo "Name=No-Ip DUC"                             >> ./noip_duc.desktop
-		echo "Comment=Start the dynamic update client."   >> ./noip_duc.desktop
-		echo "GenericName=DUC;"                           >> ./noip_duc.desktop
-		echo "Exec=/home/$USER/.local/bin/noip_duc.sh"    >> ./noip_duc.desktop
-		echo "Icon=noiplogo"                              >> ./noip_duc.desktop
-		echo "Type=Application"                           >> ./noip_duc.desktop
-		echo "StartupNotify=false"                        >> ./noip_duc.desktop
-		echo "Terminal=true"                              >> ./noip_duc.desktop
-		echo "Categories=Network;Server;"                 >> ./noip_duc.desktop
-		echo "Actions=open-showing;open-killing;"         >> ./noip_duc.desktop
-		echo "Keywords=Network;Minecraft;Server;"         >> ./noip_duc.desktop
-		echo                                              >> ./noip_duc.desktop
-		echo "X-Desktop-File-Install-Version=0.24"        >> ./noip_duc.desktop
-		echo                                              >> ./noip_duc.desktop
-		echo "[Desktop Action open-showing]"              >> ./noip_duc.desktop
-		echo "Name=Open showing PID"                      >> ./noip_duc.desktop
-		echo "Exec=/home/$USER/.local/bin/noip_duc.sh -s" >> ./noip_duc.desktop
-		echo "Icon=noiplogo"                              >> ./noip_duc.desktop
-		echo                                              >> ./noip_duc.desktop
-		echo "[Desktop Action open-killing]"              >> ./noip_duc.desktop
-		echo "Name=Open to end process"                   >> ./noip_duc.desktop
-		echo "Exec=/home/$USER/.local/bin/noip_duc.sh -k" >> ./noip_duc.desktop
-		echo "Icon=noiplogo"                              >> ./noip_duc.desktop
-		#endregion File ============================================================
-	fi
-	echo "Press 'Alt+F2' and run 'r' if the entry doesn't yet load."
+[Desktop Action open-killing]
+Name=Open to end process
+Exec=$target -k
+Icon=noiplogo" | tee "$entry" >/dev/null
+	chmod 644 "$entry"
 fi
 
-#===========================================================================
-#endregion Start menu entry
-
-printf "\e[32mNo-Ip's DUC has been installed!\e[00m\n"
+printf "\e[01;32mFinished!\e[00m The DUC installation script is done\n"
 # Thanks for downloading, and enjoy!
