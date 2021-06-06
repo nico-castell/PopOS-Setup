@@ -278,6 +278,13 @@ case $i in
 	printf "Pin-Priority: 1002\n"                      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
 	;;
 
+	codium)
+	REPOS_ADDED=yes
+	printf "Preparing \e[01mVS Codium\e[00m source...\n"
+	wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vscodium.gpg &>/dev/null
+	printf "deb https://paulcarroty.gitlab.io/vscode-deb-rpm-repo/debs/ vscodium main\n" | sudo tee /etc/apt/sources.list.d/vscodium.list &>/dev/null
+	;;
+
 	signal-desktop)
 	REPOS_ADDED=yes
 	printf "Preparing \e[01mSignal Desktop\e[00m source...\n"

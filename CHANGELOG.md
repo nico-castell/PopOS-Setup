@@ -2,6 +2,7 @@
 All significant changes to **Pop!_OS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
+  - [Added](#added)
   - [Changed](#changed)
   - [Fixed](#fixed)
 - [Released](#released)
@@ -26,6 +27,11 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.0.1](#version-001)
 
 ## Unreleased
+### Added
+- [packages.txt](packages.txt):
+  - Added [**VS Codium**](https://vscodium.com/) package.
+- [popOS_setup.sh](popOS_setup.sh):
+  - Added **VS Codium** source.
 ### Changed
 - [popOS_setup.sh](popOS_setup.sh):
   - The extra scripts are now loaded and executed through loops, this is much more expandable (and reliable) than loading them individually.

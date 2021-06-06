@@ -4,7 +4,8 @@ OBS_Studio obs-studio
 VLC vlc
 .NET_3.1_SDK dotnet-sdk-3.1 aspnetcore-runtime-3.1
 .NET_5.0_SDK dotnet-sdk-5.0 aspnetcore-runtime-5.0
-C/C++_development build-essential cmake
+C/C++_development build-essential
+CMake cmake
 Gitg gitg git git-lfs
 Glade glade
 GNOME_Boxes gnome-boxes
@@ -15,6 +16,7 @@ Ninja_Build ninja-build
 Node.JS nodejs
 Virtual_Box virtualbox
 Visual_Studio_Code code git git-lfs
+VS_Codium codium
 cmatrix cmatrix
 Discord discord
 GNOME_Chess gnome-chess
