@@ -34,6 +34,7 @@ Examples:
 	./%s -p /usr -n\n" "$(basename "$0")" "$(basename "$0")"
 }
 
+# Process options
 integrate_desktop=yes
 prefix="$HOME/.local"
 while [ -n "$1" ]; do
@@ -91,17 +92,21 @@ if [ "$integrate_desktop" = "yes" -a "$installed" = "yes" ]; then
 
 action=start
 
+USAGE_MSG () {
+	printf \"Usage:
+	./%s (-k)\\n\"
+}
+
 while [ -n \"\$1\" ]; do
 	case \"\$1\" in
 		-k) action=kill                   ;;
 		-h|--help) USAGE_MSG >&2 ; exit 0 ;;
 		*)
-		printf \"option \\e[01m%s\\e[00m not recognized\\n\" >&2
+		printf \"option \\e[01m%s\\e[00m not recognized\\n\" \"\$1\" >&2
 		USAGE_MSG >&2
 		exit 1
 		;;
-	esac
-done
+esac; shift; done
 
 if [ \"\$action\" = \"start\" ]; then
 	printf \"root privileges are needed for this operation:\\n\"
@@ -127,7 +132,7 @@ elif [ \"\$action\" = \"kill\" ]; then
 fi
 
 sleep 2
-exit \$OUT" | tee "$target" >/dev/null
+exit \$OUT\\n" | tee "$target" >/dev/null
 	chmod 755 "$target"
 
 	# Download the icon
@@ -152,8 +157,7 @@ X-Desktop-File-Install-Version=0.24
 
 [Desktop Action open-killing]
 Name=Open to end process
-Exec=$target -k
-Icon=noiplogo" | tee "$entry" >/dev/null
+Exec=$target -k\\n" | tee "$entry" >/dev/null
 	chmod 644 "$entry"
 fi
 
