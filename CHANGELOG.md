@@ -32,6 +32,8 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Added [**VS Codium**](https://vscodium.com/) package.
 - [popOS_setup.sh](popOS_setup.sh):
   - Added **VS Codium** source.
+- [.zshrc](samples/zshrc):
+  - Added info about staged and untracked files to the git prompt.
 ### Changed
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
   - Rewrote the script to be much more reliable and simple to edit.

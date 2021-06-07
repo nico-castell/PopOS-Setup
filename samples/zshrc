@@ -92,21 +92,34 @@ if [ -n "$force_color_prompt" ]; then
 	fi
 fi
 
-# Find a git branch, and add it to the prompt.
+# Find info about git and add it to the prompt.
 git_info () {
-	_status="$(git status -sb 2>/dev/null)"
-	_branch="$(printf "%s" "$_status" | grep "^##" | sed -e "s/^##\s//" -e "s/\..*//" -e "s/^No\scommits\syet\son\s//")"
-	[ -n "$_branch" ] && _branch=" $_branch"
+	# Get easy to parse info
+	_status="$(git status -b --porcelain=v2 2>/dev/null)"
 
-	[ $(echo $_status | wc -l) -gt 1 ] && \
-		_changes="%f ✎"
-	echo $_status | grep behind &>/dev/null && \
-		_behind="%f ↓"
-	echo $_status | grep ahead &>/dev/null && \
-		_ahead="%f ↑"
+	# Prepare branch name (or commit name)
+	_branch="$(echo "$_status" | grep "^#\sbranch\.head" | rev | cut -d ' ' -f 1 | rev)"
+	[ "$_branch" = "(detached)" ] && \
+		_branch="$(echo "$_status" | grep "^#\sbranch\.oid" | rev | cut -d ' ' -f 1 | rev | colrm 8)"
+	[ -n "$_branch" ] && branch="$_branch"
 
-	info="${_branch}${_changes}${_behind}${_ahead}${_nocommits}"
-	[ -n "$info" ] && printf "%s%s" "${1}" "${info}"
+	# Process info
+	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]." | wc -l)"
+	_ahead="$(    echo "$_status" | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | rev | sed -e "s/\+//")"
+	_behind="$(   echo "$_status" | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | rev | sed -e "s/\-//")"
+	_modified="$( echo "$_status" | grep "^[0-9]\s.[MADRCU]" | wc -l)"
+	_untracked="$(echo "$_status" | grep "^\?"               | wc -l)"
+
+	# Prepare simbols for the reader
+	[ "$_commiting" -gt 0 ] && info+=" +"
+	[ "$_ahead"     -gt 0 ] && info+=" ↑"
+	[ "$_behind"    -gt 0 ] && info+=" ↓"
+	[ "$_modified"  -gt 0 ] && info+=" ✎"
+	[ "$_untracked" -gt 0 ] && info+=" ?"
+
+	# Build the prompt info
+	[ -n "$branch" ] && printf "%s%s%%f%s" "$1" "$branch" "$info"
+	unset branch _branch _ahead _behind _modified _untracked _status info
 }
 
 # Powerline style shell
@@ -131,14 +144,14 @@ use_powerline () {
 
 if [ "$color_prompt" = yes ]; then
 	# Fallback prompt
-	PROMPT="[%n@%m %1~]%# "
+	PROMPT="%B%F{%(#.red.green)}%n@%m%f%b: %B%F{%(#.yellow.blue)}%~%f%b%# "
 
 	# Choose a prompt style between: fedora ubuntu kali powerline
 	prompt_style=ubuntu
 	case ${(L)prompt_style} in
-		fedora) PROMPT=$'[%n@%m %1~%(1j. ⚙.)\$(git_info " -")]%# ' ;;
-		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)\$(git_info "%F{%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
-		kali) PROMPT=$'%F{%(#.red.blue)}╭──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " -%F{%(#.blue.yellow)}")\n%F{%(#.red.blue)}╰─%#%f ' ;;
+		fedora) PROMPT=$'[%n@%m %1~%(1j. ⚙.)\$(git_info " - ")]%# ' ;;
+		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)\$(git_info " %F{%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
+		kali) PROMPT=$'%F{%(#.red.blue)}╭──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " - %F{%(#.blue.yellow)}")\n%F{%(#.red.blue)}╰─%#%f ' ;;
 		powerline) use_powerline ;;
 	esac
 	RPROMPT=$'%(?.. %F{red}%? ✘%f)'
@@ -147,7 +160,7 @@ if [ "$color_prompt" = yes ]; then
 	#   "terminal.integrated.env.linux": { "VSCODE_TERM": "yes" }
 	# To the vscode settings json to enable this.
 	[ "${(L)VSCODE_TERM}" = "yes" ] && \
-		PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)\$(git_info " %F{%(#.blue.yellow)}") %(#.%F{red}🕱.%F{blue}>)%f '
+		PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)\$(git_info " %F{%(#.blue.yellow)} ") %(#.%F{red}🕱.%F{blue}>)%f '
 
 	# enable syntax-highlighting
 	if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && [ "$color_prompt" = yes ]; then
@@ -197,7 +210,7 @@ if [ "$color_prompt" = yes ]; then
 	fi
 
 else
-	PROMPT="%F{%(#.red.green)}%n@%m%f: %F{%(#.yellow.blue)}%~%#%f "
+	PROMPT="%F{%(#.red.green)}%n@%m%f: %F{%(#.yellow.blue)}%~%f%# "
 	RPROMPT=$'%(?.. %F{red}%? x%f)'
 fi
 
