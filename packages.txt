@@ -10,6 +10,7 @@ Gitg gitg git git-lfs
 Glade glade
 GNOME_Boxes gnome-boxes
 GNOME_Builder gnome-builder
+Go_Language golang
 Java_JDK default-jdk
 Java_Runtime default-jre
 Ninja_Build ninja-build

@@ -105,9 +105,9 @@ git_info () {
 
 	# Process info
 	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]." | wc -l)"
-	_ahead="$(    echo "$_status" | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | rev | sed -e "s/\+//")"
-	_behind="$(   echo "$_status" | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | rev | sed -e "s/\-//")"
-	_modified="$( echo "$_status" | grep "^[0-9]\s.[MADRCU]" | wc -l)"
+	_ahead="$(echo "$_status"     | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | rev | sed -e "s/\+//")"
+	_behind="$(echo "$_status"    | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | rev | sed -e "s/\-//")"
+	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]" | wc -l)"
 	_untracked="$(echo "$_status" | grep "^\?"               | wc -l)"
 
 	# Prepare simbols for the reader
@@ -263,5 +263,11 @@ if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
 	fi
 fi
 
-# Put all your aliases in ~/.zsh_aliases
+# Put all your aliases and configs in files under the ~/.zshrc.d folder
+[ -d ~/.zshrc.d ] && \
+	for i in $(ls ~/.zshrc.d); do
+		. ~/.zshrc.d/$i
+	done
+
+# DEPRECATED: Put aliases and configs in the ~/.zsh_aliases file
 [ -f ~/.zsh_aliases ] && . ~/.zsh_aliases

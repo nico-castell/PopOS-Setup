@@ -5,6 +5,7 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Added](#added)
   - [Changed](#changed)
   - [Fixed](#fixed)
+  - [Deprecated](#deprecated)
 - [Released](#released)
   - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
   - [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
@@ -30,10 +31,12 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 ### Added
 - [packages.txt](packages.txt):
   - Added [**VS Codium**](https://vscodium.com/) package.
+  - Added [**Golang**](https://golang.org/), this required some modifications to the **Z-Shell** setup.
 - [popOS_setup.sh](popOS_setup.sh):
   - Added **VS Codium** source.
 - [.zshrc](samples/zshrc):
   - Added info about staged and untracked files to the git prompt.
+  - Aliases and configs are now sourced from files under the `~/.zshrc.d` folder, as well as from a `~/.zsh_aliases` file.
 ### Changed
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
   - Rewrote the script to be much more reliable and simple to edit.
@@ -52,6 +55,9 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Fixed missing space when prompting the user.
 - [git.sh](post-install.d/git.sh):
   - Fixed faulty config for the vim editor.
+### Deprecated
+- [.zshrc](samples/zshrc):
+  - This file will continue sourcing the `~/.zsh_aliases` file, but it will be fully replaced by `~/.zshrc.d` in an upcoming release. Because of this, the `~/.zsh_aliases` file will no longer be automatically created.
 
 ## Released
 ### Version [1.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.1.0) - *2021-06-05*

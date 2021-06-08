@@ -53,10 +53,6 @@ select s in $(cat "$HOME/.zshrc" | grep "# Choose a prompt style between" | sed 
 	break
 done
 
-# Ensure zsh aliases file exists
-     [ -f ~/.zsh_aliases ] || printf "# zsh aliases file\n" |      tee ~/.zsh_aliases     >/dev/null
-sudo [ -f ~/.zsh_aliases ] || printf "# zsh aliases file\n" | sudo tee /root/.zsh_aliases >/dev/null
-
 read -rp "Do you want to make `tput setaf 6`Z-Shell`tput sgr0` your default shell? (Y/n) "
 if [[ ${REPLY,,} == "y" ]] || [ -z $REPLY ]; then
 	chsh -s $(which zsh)
