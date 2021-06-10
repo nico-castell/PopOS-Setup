@@ -37,6 +37,8 @@ All significant changes to **Pop!_OS Setup** will be documented here.
 - [.zshrc](samples/zshrc):
   - Added info about staged and untracked files to the git prompt.
   - Aliases and configs are now sourced from files under the `~/.zshrc.d` folder, as well as from a `~/.zsh_aliases` file.
+- [.bashrc](samples/bashrc):
+  - Brought some of the powerful git prompt to this file.
 - [back_me_up.sh](back_me_up.sh):
   - The script now also looks for `~/.zshrc.d`, `~/.bashrc.d`, and `~/.bash_aliases`.
 ### Changed

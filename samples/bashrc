@@ -56,26 +56,53 @@ if [ -n "$force_color_prompt" ]; then
 		fi
 fi
 
-# Find a git branch, and add it to the prompt.
-find_branch () {
-		_branch="$(git branch 2>/dev/null | sed -e "/^\s/d" -e "s/^\*\s//")"
-		[ ! -z $_branch ] && printf " %s" "$_branch"
+# Find info about git and add it to the prompt.
+git_info () {
+	# Don't run this code if it's not going to be useful
+	[ ! -d .git ] && return
+
+	# Get easy to parse info
+	_status="$(git status -b --porcelain=v2 2>/dev/null)"
+
+	# Prepare branch name (or commit name)
+	_branch="$(echo "$_status" | grep "^#\sbranch\.head" | rev | cut -d ' ' -f 1 | rev)"
+	[ "$_branch" = "(detached)" ] && \
+		_branch="$(echo "$_status" | grep "^#\sbranch\.oid" | rev | cut -d ' ' -f 1 | rev | colrm 8)"
+	[ -n "$_branch" ] && branch="$_branch"
+
+	# Process info
+	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]." | wc -l)"
+	_ahead="$(echo "$_status"     | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | rev | sed -e "s/\+//")"
+	_behind="$(echo "$_status"    | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | rev | sed -e "s/\-//")"
+	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]" | wc -l)"
+	_untracked="$(echo "$_status" | grep "^\?"               | wc -l)"
+
+	# Prepare simbols for the reader
+	[ "$_commiting" -gt 0 ] && info+=" +"
+	[ "$_ahead"     -gt 0 ] && info+=" ↑"
+	[ "$_behind"    -gt 0 ] && info+=" ↓"
+	[ "$_modified"  -gt 0 ] && info+=" ✎"
+	[ "$_untracked" -gt 0 ] && info+=" ?"
+
+	# Build the prompt info
+	[ -n "$branch" ] && printf "%s%s%%f%s" "$1" "$branch" "$info"
+	unset branch _branch _ahead _behind _modified _untracked _status info
 }
 
 if [ "$color_prompt" = yes ]; then
-		PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[02m\][\$?]\[\033[00;01;33m\]\$(find_branch) \[\033[00;01;34m\]\w\[\033[00m\]\$ "
+	PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[02m\][\$?]\[\033[00;01;33m\]\$(git_info ' ') \[\033[00;01;34m\]\w\[\033[00m\]\$ "
 else
-		PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]: \[\033[02m\][$?] \[\033[00;34m\]\w\[\033[m\]\$ '
-		# PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+	PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]: \[\033[02m\][$?] \[\033[00;34m\]\w\[\033[m\]\$ '
+	# PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-		PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-		;;
+	PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+	;;
 *)
-		;;
+	;;
 esac
 unset color_prompt force_color_prompt
 
