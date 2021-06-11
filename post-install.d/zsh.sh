@@ -23,16 +23,16 @@ if [ $O -eq 0 ]; then
 
 	#region file
 	FILE='{
-"segments": [
-	"virtual_env",
-	"username",
-	"hostname",
-	"ssh",
-	"cwd",
-	"git",
-	"hg",
-	"jobs",
-	"root"
+	"segments": [
+		"virtual_env",
+		"username",
+		"hostname",
+		"ssh",
+		"cwd",
+		"git",
+		"hg",
+		"jobs",
+		"root"
 	],
 	"cwd": {
 		"max_depth": 3

@@ -1,12 +1,8 @@
 # Change log
 All significant changes to **Pop!_OS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-  - [Added](#added)
-  - [Changed](#changed)
-  - [Fixed](#fixed)
-  - [Deprecated](#deprecated)
 - [Released](#released)
+  - [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
   - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
   - [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
   - [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
@@ -27,11 +23,17 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.0.2](#version-002)
   - [Version 0.0.1](#version-001)
 
-## Unreleased
-### Added
+## Released
+### Version [1.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.2.0) - *2021-06-11*
+This version contains a few improvements, a rewritten script, and fixes. The most significant additions were:
+- Added **VS Codium** package.
+- Added **Golang** with a post-install script that sets `$GOPATH` to `~/.local/golang`.
+- Improved and faster **git info prompt**
+- Rewrote the **duc_noip_install.sh** script.
+#### Added
 - [packages.txt](packages.txt):
   - Added [**VS Codium**](https://vscodium.com/) package.
-  - Added [**Golang**](https://golang.org/), this required some modifications to the **Z-Shell** setup.
+  - Added [**Golang**](https://golang.org/) programming language, algng with a post install [script](post-install.d/golang.sh).
 - [popOS_setup.sh](popOS_setup.sh):
   - Added **VS Codium** source.
 - [.zshrc](samples/zshrc):
@@ -41,7 +43,7 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Brought some of the powerful git prompt to this file.
 - [back_me_up.sh](back_me_up.sh):
   - The script now also looks for `~/.zshrc.d`, `~/.bashrc.d`, and `~/.bash_aliases`.
-### Changed
+#### Changed
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
   - Rewrote the script to be much more reliable and simple to edit.
 - [popOS_setup.sh](popOS_setup.sh):
@@ -52,18 +54,17 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - Switched from user installation of powerline-shell to sytem installation.
 - [.zshrc](samples/zshrc):
   - Improved performance of the git info in the prompt.
-### Fixed
+#### Fixed
 - [vim.sh](post-install.d/vim.sh):
   - Fixed excessive arguments.
 - [zsh.sh](post-install.d/zsh.sh):
   - Fixed missing space when prompting the user.
 - [git.sh](post-install.d/git.sh):
   - Fixed faulty config for the vim editor.
-### Deprecated
+#### Deprecated
 - [.zshrc](samples/zshrc):
   - This file will continue sourcing the `~/.zsh_aliases` file, but it will be fully replaced by `~/.zshrc.d` in an upcoming release. Because of this, the `~/.zsh_aliases` file will no longer be automatically created.
 
-## Released
 ### Version [1.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.1.0) - *2021-06-05*
 This update is mostly a cumulative release of minor additions. The biggest introductions are the choice to use the powerline plugin in **Vim**, better prompts for the **Z-Shell**, and a few changes and fixes.
 #### Added
