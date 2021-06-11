@@ -49,7 +49,7 @@ select s in $(cat "$HOME/.zshrc" | grep "# Choose a prompt style between" | sed 
 		printf "Sorry, powerline was not installed, choose another style\n"
 		continue
 	fi
-	sed -i "s/prompt_style=.*$/prompt_style=$s/" ~/.zshrc
+	sed -i "s/^	prompt_style=.*$/	prompt_style=$s/" ~/.zshrc
 	break
 done
 

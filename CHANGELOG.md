@@ -1,6 +1,9 @@
 # Change log
 All significant changes to **Pop!_OS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+  - [Changed](#changed)
+  - [Fixed](#fixed)
 - [Released](#released)
   - [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
   - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
@@ -15,13 +18,15 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.1.4 [YANKED] - *2021-02-24*](#version-014-yanked---2021-02-24)
   - [Version 0.1.3 - *2021-02-05*](#version-013---2021-02-05)
   - [Version 0.1.2 - *2021-01-31*](#version-012---2021-01-31)
-- [Previous repository](#previous-repository)
-  - [Version 0.1.1 - *2021-01-28*](#version-011---2021-01-28)
-  - [Version 0.1.0 - *2021-01-10*](#version-010---2021-01-10)
-- [Pre-Releases](#pre-releases)
-  - [Version 0.0.3](#version-003)
-  - [Version 0.0.2](#version-002)
-  - [Version 0.0.1](#version-001)
+
+## Unreleased
+### Changed
+- [.zshrc](samples/zshrc):
+  - The **vscode prompt** can now be chosen by assigning the value `vscode` to the `prompt_style` variable.
+  - Made **vscode prompt** trigger when `$VSCODE_GIT_IPC_HANDLE` is set, instead of `"$VSCODE_TERM" == "yes"`. This means the user won't have to manually set the variable from the vscode settings.
+### Fixed
+- [.zshrc](samples/zshrc):
+  - Fixed prompt starting with error code 1 when `~/.zsh_aliases` is missing.
 
 ## Released
 ### Version [1.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.2.0) - *2021-06-11*
@@ -288,43 +293,3 @@ Now the project is hosted on a new repository.
 The old repository is deprecated and will be removed within the next 14 days. ***The repository was deleted on the 25th February, 2021.***
 
 **Reason:** I made a mistake and rewrote the entire git history. This new repository was created from a backup of the project.
-
----
-## Previous repository
-
-### Version 0.1.1 - *2021-01-28*
-#### Added
-1. Implementation of rsync in *back_me_up*.
-2. Implementation of wait animations in *back_me_up* and *pop_OS_start*.
-3. Adding **signal-desktop** to *pop_OS_start*.
-4. Added Extension Development to select menu in Visual Studio Code setup.
-5. Improved documentation.
-
-### Version 0.1.0 - *2021-01-10*
-This is the first official release, there were other minor and not so minor upgrades to the project before it was published. Previous versions were not documented so information about then is very limited.
-
-#### Added
-1. Add animations on a few package manager short operations
-2. Copying .zshrc to root
-3. Configuring powerline-shell on root user.
-
-#### Fixed
-1. zsh auto-package-completion fixed (and pip3 powerline-shell installation)
-2. Copying .zshrc sample to root
-3. Copying deskcuts when accessing a directory containing spaces.
-
----
-## Pre-Releases
-
-### Version 0.0.3
-#### Changed
-This was a major **re-writing** of the pop_OS_start script, it allowed for more expandability, simplified processes and seriously reduced the number of bugs.
-
-### Version 0.0.2
-#### Added
-1. **Reboot the machine** after upgrading the kernel or installing a proprietary NVIDIA driver.
-1. Load choices from a temporary file.
-
-### Version 0.0.1
-#### Added
-1. Choose packages to remove or install and flatpaks to install **at the start** of the script, not when the operation is about to be performed.
