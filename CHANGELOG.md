@@ -2,6 +2,7 @@
 All significant changes to **Pop!_OS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
+  - [Added](#added)
   - [Changed](#changed)
   - [Fixed](#fixed)
 - [Released](#released)
@@ -20,6 +21,9 @@ All significant changes to **Pop!_OS Setup** will be documented here.
   - [Version 0.1.2 - *2021-01-31*](#version-012---2021-01-31)
 
 ## Unreleased
+### Added
+- [gnome-builder.sh](post-install.d/gnome-builder.sh):
+  - Added the file, it gives the user a choice to install the **GNOME SDK** before they start using **GNOME Builder**.
 ### Changed
 - [.zshrc](samples/zshrc):
   - The **vscode prompt** can now be chosen by assigning the value `vscode` to the `prompt_style` variable.
