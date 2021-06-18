@@ -2,3 +2,4 @@ DropBox com.dropbox.Client
 Spotify com.Spotify.Client
 KdenLive org.kde.kdenlive
 GitKraken com.axosoft.GitKraken
+Bitwarden com.bitwarden.desktop
