@@ -79,6 +79,7 @@ export PATH
 #force_color_prompt=yes
 case "$TERM" in
 	xterm-color|*-256color) color_prompt=yes ;;
+	xterm-kitty)            color_prompt=yes ;;
 esac
 
 if [ -n "$force_color_prompt" ]; then
@@ -108,8 +109,8 @@ git_info () {
 
 	# Process info
 	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]." | wc -l)"
-	_ahead="$(echo "$_status"     | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | rev | sed -e "s/\+//")"
-	_behind="$(echo "$_status"    | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | rev | sed -e "s/\-//")"
+	_ahead="$(echo "$_status"     | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | sed -e "s/\+//")"
+	_behind="$(echo "$_status"    | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | sed -e "s/\-//")"
 	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]" | wc -l)"
 	_untracked="$(echo "$_status" | grep "^\?"               | wc -l)"
 

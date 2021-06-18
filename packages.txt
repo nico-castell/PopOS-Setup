@@ -39,6 +39,7 @@ Z-Shell zsh zsh-syntax-highlighting zsh-autosuggestions fonts-powerline python3-
 dconf-Editor dconf-editor
 GNOME_Tweaks gnome-tweaks gnome-shell-extensions
 GParted gparted
+Kitty_Terminal kitty
 Neofetch neofetch
 Tree tree
 Vim vim

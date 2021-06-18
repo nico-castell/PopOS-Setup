@@ -54,7 +54,7 @@ set nowrap
 " Vertical Split
 hi clear VertSplit
 hi VertSplit ctermbg=234 ctermfg=250
-set fillchars+=vert:\┇
+set fillchars+=vert:\│
 
 " Statusline:
 hi clear Statusline
@@ -63,8 +63,17 @@ if $USER == 'root' | hi Statusline ctermfg=124 | else | hi Statusline ctermfg=15
 set statusline=%#Statusline#\ %t:\ %l:%c\ /\ %L%=%r\ %y\ %p%%\ 
 set laststatus=2
 
+" Cursor line:
+hi clear CursorLine
+hi CursorLine   ctermbg=233 guibg=DarkGrey
+hi clear CursorLineNr
+hi CursorLineNr ctermbg=233 guibg=DarkGrey ctermfg=11 gui=bold guifg=Yellow
+set cursorline
+
 " Tabline
-hi clear TabLine TabLineFill TabLineSel
+hi clear TabLine
 hi TabLine ctermfg=15 ctermbg=234 guifg=White guibg=DarkGrey
+hi clear TabLineFill
 hi TabLineFill ctermfg=0 ctermbg=234 guibg=DarkGrey
+hi clear TabLineSel
 hi TabLineSel cterm=bold ctermfg=15 ctermbg=237 guibg=Grey
