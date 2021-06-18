@@ -44,7 +44,8 @@ if &term !=? 'linux'
 	set showtabline=1
 	set noshowmode
 	set t_Co=256
-endif\n" "$(pip3 show powerline-status 2>/dev/null | grep Location | cut -d ' ' -f 2-)/powerline/bindings/vim" >>~/.vimrc
+endif\n" "$(pip3 show powerline-status 2>/dev/null | grep Location | cut -d ' ' -f 2-)/powerline/bindings/vim" | \
+	tee -a ~/.vimrc | sudo tee -a /root/.vimrc >/dev/null
 	}
 	prepare_powerline &
 fi

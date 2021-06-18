@@ -36,7 +36,10 @@ All significant changes to **PopOS Setup** will be documented here.
 - [.zshrc](samples/zshrc):
   - The **vscode prompt** can now be chosen by assigning the value `vscode` to the `prompt_style` variable.
   - Made **vscode prompt** trigger when `$VSCODE_GIT_IPC_HANDLE` is set, instead of `"$VSCODE_TERM" == "yes"`. This means the user won't have to manually set the variable from the vscode settings.
+  - Now edits the `$PATH` more carefully.
 ### Fixed
+- [.vimrc](post-install.d/vim.sh):
+  - Fixed root user not getting powerline set up after the user chooses to install it.
 - [.zshrc](samples/zshrc):
   - Fixed prompt starting with error code 1 when `~/.zsh_aliases` is missing.
 
