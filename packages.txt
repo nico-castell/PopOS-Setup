@@ -16,7 +16,8 @@ Java_Runtime default-jre
 Ninja_Build ninja-build
 Node.JS nodejs
 Virtual_Box virtualbox
-Visual_Studio_Code code git git-lfs
+Visual_Studio_Code code
+Visual_Studio_Code_Insiders code-insiders
 VS_Codium codium
 cmatrix cmatrix
 Discord discord

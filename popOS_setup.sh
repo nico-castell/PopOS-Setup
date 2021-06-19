@@ -47,12 +47,14 @@ remove_file="$script_location/remove.txt"
 
 scripts_folder="$script_location/scripts"
 postinstall_folder="$script_location/post-install.d"
+sources_folder="$script_location/sources.d"
 
 [ -f "$packages_file"      ] || MISSING "$packages_file"
 [ -f "$flatpaks_file"      ] || MISSING "$flatpaks_file"
 [ -f "$remove_file"        ] || MISSING "$remove_file"
 [ -d "$scripts_folder"     ] || MISSING "$scripts_folder"
 [ -d "$postinstall_folder" ] || MISSING "$postinstall_folder"
+[ -d "$sources_folder" ] || MISSING "$sources_folder"
 
 unset USAGE_MSG MISSING
 
@@ -234,85 +236,17 @@ fi
 # Stop GNOME's packagekit to avoid problems while the package manager is in use.
 sudo systemctl stop packagekit
 
-# Set up extra sources now
+# Install this package to make apt support https
 sudo apt-get install apt-transport-https -y &>/dev/null
 
-REPOS_ADDED=no
-DOTNET_ADDED=no
-for i in ${TO_APT[@]}; do
-case $i in
-	spotify-client)
-	REPOS_ADDED=yes
-	printf "Preparing \e[01mSpotify\e[00m source...\n"
-	curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add - &>/dev/null
-	printf "deb http://repository.spotify.com stable non-free\n" | sudo tee /etc/apt/sources.list.d/spotify.list &>/dev/null
-	;;
-
-	brave-browser)
-	REPOS_ADDED=yes
-	printf "Preparing \e[01mBrave Browser\e[00m source...\n"
-	sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg &>/dev/null
-	printf "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main\n" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list &>/dev/null
-	;;
-
-	google-chrome-stable)
-	REPOS_ADDED=yes
-	printf "Preparing \e[01mGoogle Chrome\e[00m source...\n"
-	wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add - &>/dev/null
-	# Configure apt to prefer this repo to Pop's PPA
-	printf "# Prefer Google Chrome from the google repository\n" | sudo tee    /etc/apt/preferences.d/google-chrome-settings >/dev/null
-	printf "Package: google-chrome-stable\n"                     | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-	printf "Pin: origin dl.google.com\n"                         | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-	printf "Pin-Priority: 1002\n"                                | sudo tee -a /etc/apt/preferences.d/google-chrome-settings >/dev/null
-	;;
-
-	code)
-	REPOS_ADDED=yes
-	printf "Preparing \e[01mVisual Studio Code\e[00m source...\n"
-	wget -qO - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/packages.microsoft.gpg &>/dev/null
-	printf "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main\n" | sudo tee /etc/apt/sources.list.d/vscode.list &>/dev/null
-	# Configure apt to prefer this repo to Pop's PPA
-	printf "# Prefer vscode from the microsoft repo\n" | sudo tee    /etc/apt/preferences.d/vscode-settings >/dev/null
-	printf "Package: code\n"                           | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-	printf "Pin: origin packages.microsoft.com\n"      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-	printf "Pin-Priority: 1002\n"                      | sudo tee -a /etc/apt/preferences.d/vscode-settings >/dev/null
-	;;
-
-	codium)
-	REPOS_ADDED=yes
-	printf "Preparing \e[01mVS Codium\e[00m source...\n"
-	wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vscodium.gpg &>/dev/null
-	printf "deb https://paulcarroty.gitlab.io/vscode-deb-rpm-repo/debs/ vscodium main\n" | sudo tee /etc/apt/sources.list.d/vscodium.list &>/dev/null
-	;;
-
-	signal-desktop)
-	REPOS_ADDED=yes
-	printf "Preparing \e[01mSignal Desktop\e[00m source...\n"
-	curl -sS https://updates.signal.org/desktop/apt/keys.asc | sudo apt-key add - &>/dev/null
-	printf "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main\n" | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list &>/dev/null
-	;;
-
-	vivaldi)
-	REPOS_ADDED=yes
-	printf "Preparing \e[01mVivaldi\e[00m source...\n"
-	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add - &>/dev/null
-	printf 'deb https://repo.vivaldi.com/archive/deb/ stable main\n' | sudo tee -a /etc/apt/sources.list.d/vivaldi.list &>/dev/null
-	;;
-
-	dotnet*)
-	REPOS_ADDED=yes
-	if [ "$DOTNET_ADDED" = "no" ]; then
-		DOTNET_ADDED=yes
-		wget -q https://packages.microsoft.com/config/ubuntu/20.10/packages-microsoft-prod.deb -O .packages-microsoft-prod.deb &>/dev/null
-		sudo dpkg -i .packages-microsoft-prod.deb &>/dev/null
-		rm .packages-microsoft-prod.deb &>/dev/null
-	fi
-	;;
-esac
+# Source all the files containing extra sources now
+for i in $(ls "$sources_folder" | grep \.sh$); do
+	[[ "${TO_APT[@]}" == *"${i/".sh"/""}"* ]] && \
+		source "$sources_folder/$i"
 done
 
-[ "$REPOS_ADDED" = "yes" ] && Separate 4
-unset REPOS_ADDED DOTNET_ADDED
+[[ "${REPOS_CONFIGURED[@]}" ]] && Separate 4
+unset REPOS_CONFIGURED URL KEY
 
 # Update all repositories.
 printf "Updating repositories...\n"
@@ -370,7 +304,7 @@ fi
 if [ $? -eq 0 ]; then
 	for i in $(ls "$postinstall_folder" | grep \.sh$); do
 		[[ "${TO_APT[@]}" == *"${i/".sh"/""}"* ]] && \
-			. "$postinstall_folder/$i"
+			source "$postinstall_folder/$i"
 	done
 fi
 
