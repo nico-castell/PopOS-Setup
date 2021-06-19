@@ -1,11 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-  - [Added](#added)
-  - [Changed](#changed)
-  - [Fixed](#fixed)
 - [Released](#released)
+  - [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
   - [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
   - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
   - [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
@@ -20,8 +17,13 @@ All significant changes to **PopOS Setup** will be documented here.
   - [Version 0.1.3 - *2021-02-05*](#version-013---2021-02-05)
   - [Version 0.1.2 - *2021-01-31*](#version-012---2021-01-31)
 
-## Unreleased
-### Added
+## Released
+### Version [2.0.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.0.0) - *2021-06-19*
+This version, while it doesn't bring much new. Reworked an important step of the main script, installing **apt repositories**, to be much more expandable than before, without requiring editing the main script to modify the step. However, some small features were added, such as:
+- New packages in the installation list.
+- Line highlighting in Vim
+- A post-install script to set up the GNOME Sdk
+#### Added
 - [sources.d](sources.d):
   - This folder will contain sources to be added before installing packages.
 - [packages.txt](packages.txt):
@@ -34,20 +36,19 @@ All significant changes to **PopOS Setup** will be documented here.
   - Added support for Kitty terminal.
 - [.vimrc](samples/vimrc):
   - Added line highlighting.
-### Changed
+#### Changed
 - [popOS_setup.sh](popOS_setup.sh):
   - Changed methodology for adding repositories. Now the [sources.d](sources.d) folder contains the sources in files named according to the package that needs the source.
 - [.zshrc](samples/zshrc):
   - The **vscode prompt** can now be chosen by assigning the value `vscode` to the `prompt_style` variable.
   - Made **vscode prompt** trigger when `$VSCODE_GIT_IPC_HANDLE` is set, instead of `"$VSCODE_TERM" == "yes"`. This means the user won't have to manually set the variable from the vscode settings.
   - Now edits the `$PATH` more carefully.
-### Fixed
+#### Fixed
 - [.vimrc](post-install.d/vim.sh):
   - Fixed root user not getting powerline set up after the user chooses to install it.
 - [.zshrc](samples/zshrc):
   - Fixed prompt starting with error code 1 when `~/.zsh_aliases` is missing.
 
-## Released
 ### Version [1.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.2.0) - *2021-06-11*
 This version contains a few improvements, a rewritten script, and fixes. The most significant additions were:
 - Added **VS Codium** package.

@@ -13,7 +13,7 @@
 
 I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) successfully.
 
-1. Clone this repo
+1. Clone this repo, you can do a shallow clone if you wish (by adding `--depth=1` to the following command).
     ```shell
     $ git clone https://github.com/nico-castell/PopOS-Setup.git
     ```
