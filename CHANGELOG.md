@@ -1,6 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+  - [Fixed](#fixed)
 - [Released](#released)
   - [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
   - [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
@@ -16,6 +18,11 @@ All significant changes to **PopOS Setup** will be documented here.
   - [Version 0.1.4 [YANKED] - *2021-02-24*](#version-014-yanked---2021-02-24)
   - [Version 0.1.3 - *2021-02-05*](#version-013---2021-02-05)
   - [Version 0.1.2 - *2021-01-31*](#version-012---2021-01-31)
+
+## Unreleased
+### Fixed
+- [vim.sh](post-install.d/vim.sh):
+  - Fixed typo in *.csh* config file.
 
 ## Released
 ### Version [2.0.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.0.0) - *2021-06-19*

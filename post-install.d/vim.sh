@@ -22,7 +22,7 @@ if [ -z \"\$EDITOR\" ]; then
 fi\n" $(which vim) | sudo tee /etc/profile.d/vim-default-editor.sh >/dev/null
 
 		# .csh file
-		printf "Ensure vim is set as EDITOR if it isn't already set
+		printf "# Ensure vim is set as EDITOR if it isn't already set
 
 if ( ! (\$?EDITOR) ) then
 	setenv EDITOR \"%s\"
