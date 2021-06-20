@@ -1,48 +1,20 @@
-" vimrc file
+" nvim init file
 
-" When started as "evim", evim.vim will already have done these settings, bail
-" out.
-if v:progname =~? "evim"
-  finish
-endif
-
-" Get the defaults that most users want.
-source $VIMRUNTIME/defaults.vim
-
-" Configure directories for backups
+" Configure directories used by nvim
 set undofile
 set backup
-let &directory = expand('~/.cache/vim/swap//')
-let &backupdir = expand('~/.cache/vim/backup//')
-let &undodir   = expand('~/.cache/vim/undo//')
+let &directory = expand('~/.cache/nvim/swap//')
+let &backupdir = expand('~/.cache/nvim/backup//')
+let &undodir   = expand('~/.cache/nvim/undo//')
 
 " Create directories and set their permissions
 if !isdirectory(&directory) | call mkdir(&directory, "p", "0700") | endif
 if !isdirectory(&backupdir) | call mkdir(&backupdir, "p", "0700") | endif
 if !isdirectory(&undodir)   | call mkdir(&undodir, "p", "0700")   | endif
 
-if &t_Co > 2 || has("gui_running")
-  " Switch on highlighting the last used search pattern.
-  set hlsearch
-endif
-
-" Put these in an autocmd group, so that we can delete them easily.
-augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-augroup END
-
-" Add optional packages.
-"
-" The matchit plugin makes the % command work better, but it is not backwards
-" compatible.
-" The ! means the package won't be loaded right away but when plugins are
-" loaded during initialization.
-if has('syntax') && has('eval')
-  packadd! matchit
-endif
+" Configure shared data file
+let &shada = expand('~/.cache/nvim/shada')
+let &shadafile = expand('~/.cache/nvim/shada/main.shada')
 
 " Editor settings:
 set tabstop=3
@@ -50,21 +22,21 @@ set shiftwidth=0
 "set expandtab
 set number
 set nowrap
+set guicursor=
 set scrolloff=5
 
-" Vertical Split
+" Vertical split
 hi clear VertSplit
 hi VertSplit ctermbg=234 ctermfg=250
 set fillchars+=vert:\│
 
-" Statusline:
+" Statusline
 hi clear StatusLine
 hi clear StatusLineNC
 hi StatusLine   term=bold cterm=bold gui=bold ctermbg=234 guibg=DarkGrey
 hi StatusMode   term=bold cterm=bold gui=bold ctermbg=234 guibg=DarkGrey ctermfg=34
 hi StatusLineNC ctermbg=232 guibg=DarkGrey
 if $USER == 'root' | hi Statusline ctermfg=124 | else | hi Statusline ctermfg=15 | endif
-set laststatus=2
 
 let g:currentmode={
 	\ 'n' : 'NORMAL',

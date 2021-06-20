@@ -42,5 +42,6 @@ GNOME_Tweaks gnome-tweaks gnome-shell-extensions
 GParted gparted
 Kitty_Terminal kitty
 Neofetch neofetch
+Neovim neovim
 Tree tree
 Vim vim

@@ -17,15 +17,17 @@ unset USERNAME EMAIL BRANCH
 printf "Please, select a default editor for commit messages:\n"
 which code  &>/dev/null && GIT_EDITORS+=("vscode")
 which vim   &>/dev/null && GIT_EDITORS+=("vim")
+whivh nvim  &>/dev/null && GIT_EDITORS+=("nvim")
 which nano  &>/dev/null && GIT_EDITORS+=("nano")
 which gedit &>/dev/null && GIT_EDITORS+=("gedit")
 select GIT_EDITOR in ${GIT_EDITORS[@]}; do
 case $GIT_EDITOR in
-	vscode) git config --global core.editor "code --wait"                                  ;;
-	vim)    git config --global core.editor "vim -n -c 'set noundofile' -c 'set nobackup'" ;;
-	nano)   git config --global core.editor "nano"                                         ;;
-	gedit)  git config --global core.editor "gedit -s"                                     ;;
-	*) printf "Option %s not recognized.\n" $GIT_EDITOR; continue                          ;;
+	vscode) git config --global core.editor "code --wait"                                   ;;
+	vim)    git config --global core.editor "vim -n -c 'set noundofile' -c 'set nobackup'"  ;;
+	nvim)   git config --global core.editor "nvim -n -c 'set noundofile' -c 'set nobackup'" ;;
+	nano)   git config --global core.editor "nano"                                          ;;
+	gedit)  git config --global core.editor "gedit -s"                                      ;;
+	*) printf "Option %s not recognized.\n" $GIT_EDITOR; continue                           ;;
 esac; break; done
 unset GIT_EDITOR GIT_EDITORS
 

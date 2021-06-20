@@ -2,6 +2,7 @@
 All significant changes to **PopOS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
+  - [Added](#added)
   - [Fixed](#fixed)
 - [Released](#released)
   - [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
@@ -20,9 +21,25 @@ All significant changes to **PopOS Setup** will be documented here.
   - [Version 0.1.2 - *2021-01-31*](#version-012---2021-01-31)
 
 ## Unreleased
+### Added
+- [packages.txt](packages.txt):
+  - Added [Neovim](https://neovim.io/) package.
+- [nvim.vim](samples/nvim.vim):
+  - Added a config file for neovim with many of the features of the current [.vimrc](samples/vimrc).
+- [neovim.sh](post-install.d):
+  - Can set up **Neovim** as the default `$EDITOR`.
+  - Can write a special function to the config file to check which editor you're running when you also install **Vim**.
+- [.vimrc](samples/vimrc):
+  - A dynamic statusline for non-powerline vim editors. It changes based on wether the user is in an active or inactive split.
+  - Set a scroll offset of 5 lines to keep your sight further from the edge of the screen.
+- [vim.sh](post-install.d/vim.sh):
+  - Can write a special function to the config file to check which editor you're running when you also install **Neovim**.
 ### Fixed
+- [.vimrc](samples/vimrc):
+  - Put backup, undo, and swap files in `~/.cache/vim`, and set their permissions so other users cannot read them.
 - [vim.sh](post-install.d/vim.sh):
   - Fixed typo in *.csh* config file.
+  - Reworded some prompts to avoid confusion with neovim.
 
 ## Released
 ### Version [2.0.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.0.0) - *2021-06-19*
