@@ -14,20 +14,46 @@ read -p "What do you want to call the default branch? " BRANCH
 unset USERNAME EMAIL BRANCH
 
 # Choose a commit editor
-printf "Please, select a default editor for commit messages:\n"
-which code  &>/dev/null && GIT_EDITORS+=("vscode")
-which vim   &>/dev/null && GIT_EDITORS+=("vim")
-whivh nvim  &>/dev/null && GIT_EDITORS+=("nvim")
-which nano  &>/dev/null && GIT_EDITORS+=("nano")
-which gedit &>/dev/null && GIT_EDITORS+=("gedit")
+printf "Please, select your preferred editor for working with Git:\n"
+which code          &>/dev/null && GIT_EDITORS+=("vscode")
+which code-insiders &>/dev/null && GIT_EDITORS+=("vscode-insiders")
+which vim           &>/dev/null && GIT_EDITORS+=("vim")
+whivh nvim          &>/dev/null && GIT_EDITORS+=("nvim")
+which nano          &>/dev/null && GIT_EDITORS+=("nano")
+which gedit         &>/dev/null && GIT_EDITORS+=("gedit")
 select GIT_EDITOR in ${GIT_EDITORS[@]}; do
 case $GIT_EDITOR in
-	vscode) git config --global core.editor "code --wait"                                   ;;
-	vim)    git config --global core.editor "vim -n -c 'set noundofile' -c 'set nobackup'"  ;;
-	nvim)   git config --global core.editor "nvim -n -c 'set noundofile' -c 'set nobackup'" ;;
-	nano)   git config --global core.editor "nano"                                          ;;
-	gedit)  git config --global core.editor "gedit -s"                                      ;;
-	*) printf "Option %s not recognized.\n" $GIT_EDITOR; continue                           ;;
+	vscode) # Set up Visual Studio Code
+	git config --global core.editor "code --wait"
+	git config --global merge.tool vscode
+	git config --global mergetool.vscode.cmd 'code --wait "$MERGED"'
+	git config --global diff.tool vscode
+	git config --global difftool.vscode.cmd 'code --wait --diff "$LOCAL" "$REMOTE"'
+	;;
+	code-insiders) # Set up Visual Studio Code Insiders
+	git config --global core.editor "code-insiders --wait"
+	git config --global merge.tool vscode-insiders
+	git config --global mergetool.vscode-insiders.cmd 'code-insiders --wait "$MERGED"'
+	git config --global diff.tool vscode-insiders
+	git config --global difftool.vscode-insiders.cmd 'code-insiders --wait --diff "$LOCAL" "$REMOTE"'
+	;;
+	vim) # Set up Vim
+	git config --global core.editor "vim -n -c 'set noundofile' -c 'set nobackup'"
+	git config --global merge.tool vim
+	git config --global mergetool.vim.cmd 'vim -d "$LOCAL" "$REMOTE" "$MERGED"'
+	git config --global diff.tool vim
+	git config --global difftool.vim.cmd 'vim -d "$LOCAL" "$REMOTE"'
+	;;
+	nvim) # Set up Neovim
+	git config --global core.editor "nvim -n -c 'set noundofile' -c 'set nobackup'"
+	git config --global merge.tool nvim
+	git config --global mergetool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE" "$MERGED"'
+	git config --global diff.tool nvim
+	git config --global difftool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE"'
+	;;
+	nano)   git config --global core.editor "nano"                ;;
+	gedit)  git config --global core.editor "gedit -s"            ;;
+	*) printf "Option %s not recognized.\n" $GIT_EDITOR; continue ;;
 esac; break; done
 unset GIT_EDITOR GIT_EDITORS
 
@@ -54,15 +80,6 @@ if which gpg &>/dev/null; then
 	fi
 fi
 
-# If vscode was installed, configure it as a git mergetool and difftool
-if which code &>/dev/null; then
-	printf "Setting \e[36mVisual Studio Code\e[00m as a Git merge and diff tool...\n"
-	git config --global merge.tool vscode
-	git config --global mergetool.vscode.cmd 'code --wait $MERGED'
-	git config --global diff.tool vscode
-	git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
-fi
-
 # Configure git
 printf "Configuring pull behaviour...\n"
 git config --global pull.ff only
@@ -70,8 +87,9 @@ printf "Setting up some aliases...\n"
 git config --global alias.mrc '!git merge $1 && git commit -m "$2" --allow-empty && :'
 git config --global alias.flog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %an: %C(bold)%s%C(r) %C(auto)%d%C(r)'"
 git config --global alias.sflog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %C(bold green)%G?%C(r) %an: %C(bold)%s%C(r) %C(auto)%d%C(r)'"
+git config --global alias.eflog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %ae: %C(bold)%s%C(r) %C(auto)%d%C(r)'"
 git config --global alias.slog 'log --show-signature -1'
 git config --global alias.mkst 'stash push -u'
 git config --global alias.popst 'stash pop "stash@{0}" -q'
 git config --global alias.unstage 'reset -q HEAD --'
-git config --global alias.now-ignored 'ls-files -i --exclude-standard'
+git config --global alias.now-ignored = 'ls-files -i --exclude-standard'

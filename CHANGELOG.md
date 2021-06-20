@@ -16,9 +16,6 @@ All significant changes to **PopOS Setup** will be documented here.
   - [Version 0.1.7 - *2021-04-02*](#version-017---2021-04-02)
   - [Version 0.1.6 [YANKED] - *2021-04-01*](#version-016-yanked---2021-04-01)
   - [Version 0.1.5 - *2021-03-04*](#version-015---2021-03-04)
-  - [Version 0.1.4 [YANKED] - *2021-02-24*](#version-014-yanked---2021-02-24)
-  - [Version 0.1.3 - *2021-02-05*](#version-013---2021-02-05)
-  - [Version 0.1.2 - *2021-01-31*](#version-012---2021-01-31)
 
 ## Unreleased
 ### Added
@@ -34,6 +31,9 @@ All significant changes to **PopOS Setup** will be documented here.
   - Set a scroll offset of 5 lines to keep your sight further from the edge of the screen.
 - [vim.sh](post-install.d/vim.sh):
   - Can write a special function to the config file to check which editor you're running when you also install **Neovim**.
+- [git.sh](post-install.d/git.sh):
+  - Integrate **Vim** and **Neovim** more deeply with Git.
+  - New aliases `eflog` and `now-ignores`. They show commit log with commiter emails and tracked files that should be ignored by git, respectively.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Put backup, undo, and swap files in `~/.cache/vim`, and set their permissions so other users cannot read them.
@@ -305,35 +305,3 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 - Java JDK installation in [pop_OS_start](pop_OS_start.sh).
 - Git ppa repository reporting fail after success [pop_OS_start](pop_OS_start.sh).
 - Fixed bugs in [gnome_appearance](gnome_appearance.sh).
-
-### Version [0.1.4](https://github.com/nico-castell/PopOS-Setup/tree/0.1.4) [YANKED] - *2021-02-24*
-#### Added
-- [back_me_up](back_me_up.sh)
-	- Backup .clang-format from home
-- [mc_server_builder](mc_server_builder.sh)
-	- Adds a compress.sh script to archive the server.
-
-#### Changed
-- [mc_server_builder](mc_server_builder.sh)
-	- The script was rewritten
-	- Improved run.sh
-	- No longer has to download server icon, it just coppies it from the [assets](assets) folder
-- [pop_OS_start](pop_OS_start.sh)
-	- The web browser [deskcuts](deskcuts) were standarized by using `xdg-open`.
-
-### Version [0.1.3](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.3) - *2021-02-05*
-#### Changed
-* Major changes in all comments.
-* Some `tput setaf` commands were changed for ANSI escape codes.
-
-#### Fixed
-[back_me_up](back_me_up.sh): No longer errors when not running from ~.
-
-### Version [0.1.2](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.2) - *2021-01-31*
-#### Changed
-Now the project is hosted on a new repository.
-
-#### Deprecated
-The old repository is deprecated and will be removed within the next 14 days. ***The repository was deleted on the 25th February, 2021.***
-
-**Reason:** I made a mistake and rewrote the entire git history. This new repository was created from a backup of the project.
