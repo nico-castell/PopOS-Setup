@@ -40,6 +40,7 @@ case $GIT_EDITOR in
 	vim) # Set up Vim
 	git config --global core.editor "vim -n -c 'set noundofile' -c 'set nobackup'"
 	git config --global merge.tool vim
+	git config --global mergetool.keepBackup false
 	git config --global mergetool.vim.cmd 'vim -d "$LOCAL" "$REMOTE" "$MERGED"'
 	git config --global diff.tool vim
 	git config --global difftool.vim.cmd 'vim -d "$LOCAL" "$REMOTE"'
@@ -47,6 +48,7 @@ case $GIT_EDITOR in
 	nvim) # Set up Neovim
 	git config --global core.editor "nvim -n -c 'set noundofile' -c 'set nobackup'"
 	git config --global merge.tool nvim
+	git config --global mergetool.keepBackup false
 	git config --global mergetool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE" "$MERGED"'
 	git config --global diff.tool nvim
 	git config --global difftool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE"'
