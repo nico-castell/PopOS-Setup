@@ -37,6 +37,7 @@ All significant changes to **PopOS Setup** will be documented here.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Put backup, undo, and swap files in `~/.cache/vim`, and set their permissions so other users cannot read them.
+  - Reconfigured some of the coloring to be more consistent on terminal and gui.
 - [vim.sh](post-install.d/vim.sh):
   - Fixed typo in *.csh* config file.
   - Reworded some prompts to avoid confusion with neovim.

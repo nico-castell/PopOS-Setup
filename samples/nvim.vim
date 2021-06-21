@@ -27,15 +27,15 @@ set scrolloff=5
 
 " Vertical split
 hi clear VertSplit
-hi VertSplit ctermbg=234 ctermfg=250
+hi VertSplit ctermbg=232 ctermfg=245 guibg=Grey3 guifg=Grey54
 set fillchars+=vert:\│
 
 " Statusline
 hi clear StatusLine
 hi clear StatusLineNC
-hi StatusLine   term=bold cterm=bold gui=bold ctermbg=234 guibg=DarkGrey
-hi StatusMode   term=bold cterm=bold gui=bold ctermbg=234 guibg=DarkGrey ctermfg=34
-hi StatusLineNC ctermbg=232 guibg=DarkGrey
+hi StatusLine   term=bold cterm=bold gui=bold ctermbg=234 guibg=Grey11
+hi StatusMode   term=bold cterm=bold gui=bold ctermbg=234 guibg=Grey11 ctermfg=34 guifg=Green3
+hi StatusLineNC ctermbg=232 guibg=Grey3
 if $USER == 'root' | hi Statusline ctermfg=124 | else | hi Statusline ctermfg=15 | endif
 
 let g:currentmode={
@@ -55,21 +55,26 @@ let g:currentmode={
 " Dinamically set the statusline based on active/inactive split.
 augroup statusline
 	autocmd!
-	autocmd WinEnter,BufEnter * setlocal statusline=%#StatusMode#\ %{g:currentmode[mode()]}\ »%#StatusLine#\ %t:\ %l:%c\ /\ %L%=%r\ %y\ %p%%\ 
-	autocmd WinLeave,BufLeave * setlocal statusline=%#StatusLineNC#\ %t%=%r\ %y\ %p%%\ 
+	autocmd WinEnter,BufEnter * setlocal statusline=%#StatusMode#\ %{g:currentmode[mode()]}\ »%#StatusLine#\ %t\ %l:%c/%L\ %M%=%R\ %{&filetype}\ (%{&ff})\ %p%%\ 
+	autocmd WinLeave,BufLeave * setlocal statusline=%#StatusLineNC#\ %t\ %M%=%R\ %{&filetype}\ %p%%\ 
 augroup end
 
 " Cursor line:
 hi clear CursorLine
-hi CursorLine   ctermbg=233 guibg=DarkGrey
 hi clear CursorLineNr
+hi CursorLine   ctermbg=233 guibg=DarkGrey
 hi CursorLineNr ctermbg=233 guibg=DarkGrey ctermfg=11 gui=bold guifg=Yellow
 set cursorline
 
+" Folds
+hi clear Folded
+hi Folded ctermfg=13 ctermbg=235 guifg=Fuchsia guibg=Grey15
+set fillchars+=fold:═
+
 " Tabline
 hi clear TabLine
-hi TabLine ctermfg=15 ctermbg=234 guifg=White guibg=DarkGrey
 hi clear TabLineFill
-hi TabLineFill ctermfg=0 ctermbg=234 guibg=DarkGrey
 hi clear TabLineSel
-hi TabLineSel cterm=bold ctermfg=15 ctermbg=237 guibg=Grey
+hi TabLine ctermfg=15 ctermbg=232 guifg=White guibg=Grey3
+hi TabLineFill ctermfg=0 ctermbg=232 guibg=Grey3
+hi TabLineSel cterm=bold ctermfg=15 ctermbg=234 guibg=Grey11

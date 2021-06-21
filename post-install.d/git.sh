@@ -41,17 +41,17 @@ case $GIT_EDITOR in
 	git config --global core.editor "vim -n -c 'set noundofile' -c 'set nobackup'"
 	git config --global merge.tool vim
 	git config --global mergetool.keepBackup false
-	git config --global mergetool.vim.cmd 'vim -d "$LOCAL" "$REMOTE" "$MERGED"'
+	git config --global mergetool.nvim.cmd 'vim -d "$LOCAL" "$REMOTE" "$MERGED" -c "exe 2 .\"wincmd l\""'
 	git config --global diff.tool vim
-	git config --global difftool.vim.cmd 'vim -d "$LOCAL" "$REMOTE"'
+	git config --global difftool.vim.cmd 'vim -d "$LOCAL" "$REMOTE" -c "wincmd l"'
 	;;
 	nvim) # Set up Neovim
 	git config --global core.editor "nvim -n -c 'set noundofile' -c 'set nobackup'"
 	git config --global merge.tool nvim
 	git config --global mergetool.keepBackup false
-	git config --global mergetool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE" "$MERGED"'
+	git config --global mergetool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE" "$MERGED" -c "exe 2 .\"wincmd l\""'
 	git config --global diff.tool nvim
-	git config --global difftool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE"'
+	git config --global difftool.nvim.cmd 'nvim -d "$LOCAL" "$REMOTE" -c "wincmd l"'
 	;;
 	nano)   git config --global core.editor "nano"                ;;
 	gedit)  git config --global core.editor "gedit -s"            ;;
