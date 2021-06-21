@@ -18,7 +18,7 @@ printf "Please, select your preferred editor for working with Git:\n"
 which code          &>/dev/null && GIT_EDITORS+=("vscode")
 which code-insiders &>/dev/null && GIT_EDITORS+=("vscode-insiders")
 which vim           &>/dev/null && GIT_EDITORS+=("vim")
-whivh nvim          &>/dev/null && GIT_EDITORS+=("nvim")
+which nvim          &>/dev/null && GIT_EDITORS+=("nvim")
 which nano          &>/dev/null && GIT_EDITORS+=("nano")
 which gedit         &>/dev/null && GIT_EDITORS+=("gedit")
 select GIT_EDITOR in ${GIT_EDITORS[@]}; do
@@ -41,7 +41,7 @@ case $GIT_EDITOR in
 	git config --global core.editor "vim -n -c 'set noundofile' -c 'set nobackup'"
 	git config --global merge.tool vim
 	git config --global mergetool.keepBackup false
-	git config --global mergetool.nvim.cmd 'vim -d "$LOCAL" "$REMOTE" "$MERGED" -c "exe 2 .\"wincmd l\""'
+	git config --global mergetool.vim.cmd 'vim -d "$LOCAL" "$REMOTE" "$MERGED" -c "exe 2 .\"wincmd l\""'
 	git config --global diff.tool vim
 	git config --global difftool.vim.cmd 'vim -d "$LOCAL" "$REMOTE" -c "wincmd l"'
 	;;
@@ -94,4 +94,4 @@ git config --global alias.slog 'log --show-signature -1'
 git config --global alias.mkst 'stash push -u'
 git config --global alias.popst 'stash pop "stash@{0}" -q'
 git config --global alias.unstage 'reset -q HEAD --'
-git config --global alias.now-ignored = 'ls-files -i --exclude-standard'
+git config --global alias.now-ignored 'ls-files -i --exclude-standard'
