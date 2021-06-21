@@ -8,6 +8,12 @@ indent_style = tab
 indent_size = 3
 trim_trailing_whitespace = true
 
+[*.vim]
+charset = utf-8
+indent_style = tab
+indent_size = 3
+trim_trailing_whitespace = true
+
 [{zshrc,bashrc,vimrc}]
 charset = utf-8
 indent_style = tab
