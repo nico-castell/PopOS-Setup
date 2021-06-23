@@ -15,6 +15,7 @@ USAGE_MSG() {
 \e[00mOptions:
 	\e[01m-m\e[00m) Backup .minecraft folder.
 	\e[01m-v\e[00m) Backup virtual machines.
+	\e[01m-r\e[00m) Replace last backup.
 	\e[01m-k\e[00m) Override numbers of backups to keep.
 	\e[01m-d\e[00m) Override backup drive.
 	\e[01m-h\e[00m) Display a usage message.\n"
@@ -30,9 +31,11 @@ the top of the script.
 Examples:
 	./$(basename "$0")
 	./$(basename "$0") -m -k 4
+	./$(basename "$0") -m -r
 	./$(basename "$0") -m -v -k 4 -d \"Storage drive\"\n" "$DRIVE" "$KEEP"
 }
 
+replace_latest=no
 backup_minecraft=no
 backup_vms=no
 
@@ -41,6 +44,7 @@ while [ -n "$1" ]; do
 case "$1" in
 	-m) backup_minecraft=yes ;;
 	-v) backup_vms=yes       ;;
+	-r) replace_latest=yes   ;;
 	-k) KEEP="$2"; shift     ;;
 	-d) DRIVE="$2"; shift    ;;
 	-h | --help)
@@ -113,10 +117,14 @@ if [ -d "$destination/$TODAY" ]; then
 fi
 
 # Remove old backups
-let found=0
-for i in $(ls "$destination"); do
-	let found++
-done
+let found=$(ls "$destination" | wc -l)
+
+# Remove latest backup (to replace it)
+if [ "$replace_latest" = "yes" -a "$found" -gt 0 ]; then
+	FOLDERS=($(ls "$destination"))
+	rm -r "$destination/${FOLDERS[-1]}"
+	unset FOLDERS
+fi
 
 # You must always keep at least one backup
 [ $KEEP -lt 1 ] && let KEEP=1

@@ -20,6 +20,8 @@ All significant changes to **PopOS Setup** will be documented here.
 
 ## Unreleased
 ### Added
+- [back_me_up.sh](back_me_up.sh):
+  - Added `-r` flag, which tells the script to replace the latest backup.
 - [packages.txt](packages.txt):
   - Added [Neovim](https://neovim.io/) package.
 - [nvim.vim](samples/nvim.vim):
