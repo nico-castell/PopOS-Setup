@@ -5,7 +5,8 @@ GenericName=Movies;Films;
 Comment=Access Disney+ and enjoy your favorite movies.
 Comment[en_UK]=Access Disney+ and enjoy your favourite films.
 Comment[es]=Accede a Disney+ y disfruta de tus peliculas favoritas.
-Icon=/home/nicolas/.mydock/disneyplus_logo.png
+Icon=disneyplus_logo
+# Place the .svg icon in ~/.local/share/icons/hicolor/scalable
 Exec=xdg-open https://www.disneyplus.com/home
 Categories=Video;Movies;Films;Entertainment;
 Keywords=Disney;Movies;Films;

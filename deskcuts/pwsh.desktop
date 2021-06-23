@@ -2,8 +2,9 @@
 Type=Application
 Name=PowerShell 7
 Comment=A powerfull cross-platform shell.
-Icon=/opt/pwsh/pwsh_logo.png
-Exec=/opt/pwsh/pwsh
+Exec=/usr/local/bin/pwsh
+Icon=pwsh
+# Place the .svg icon in /usr/share/icons/hicolor/scalable
 Terminal=true
 StartupNotify=true
 Categories=shell;

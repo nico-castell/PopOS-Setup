@@ -3,7 +3,8 @@ Type=Application
 Name=Netflix
 Comment=Access the netflix web and browse.
 GenericName=Movies
-Icon=/home/nicolas/.mydock/netflixlogo.png
+Icon=netflixlogo
+# Place the .svg icon in ~/.local/share/icons/hicolor/scalable
 Exec=xdg-open https://www.netflix.com/browse
 Categories=Video;Movies;Entertainment;
 Keywords=Netflix;Movies

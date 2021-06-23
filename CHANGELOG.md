@@ -3,6 +3,7 @@ All significant changes to **PopOS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
   - [Added](#added)
+  - [Changed](#changed)
   - [Fixed](#fixed)
 - [Released](#released)
   - [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
@@ -34,6 +35,9 @@ All significant changes to **PopOS Setup** will be documented here.
 - [git.sh](post-install.d/git.sh):
   - Integrate **Vim** and **Neovim** more deeply with Git.
   - New aliases `eflog` and `now-ignores`. They show commit log with commiter emails and tracked files that should be ignored by git, respectively.
+### Changed
+- [deskcuts](deskcuts):
+  - Many files inside the folder were updated to use paths such as `~/.local/share/icons/hicolor` and `/usr/local`.
 ### Fixed
 - [.vimrc](samples/vimrc):
   - Put backup, undo, and swap files in `~/.cache/vim`, and set their permissions so other users cannot read them.

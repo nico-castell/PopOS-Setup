@@ -3,7 +3,8 @@ Type=Application
 Name=Microsoft Office
 GenericName=Office
 Comment=Access the Microsoft Office web apps.
-Icon=/home/nicolas/.mydock/msoffice/msoffice.png
+Icon=msoffice
+# Place all .svg icons in ~/.local/share/icons/hicolor/scalable
 Exec=xdg-open https://www.office.com/?auth=1
 Categories=Office;
 Actions=word;excel;powerpoint;onedrive;onenote;outlook;
@@ -11,30 +12,30 @@ Keywords=Office;Microsoft;excel;onedrive;onenote;outlook;powerpoint;word;
 
 [Desktop Action word]
 Name=Word
-Icon=/home/nicolas/.mydock/msoffice/word.png
+Icon=msword
 Exec=xdg-open https://www.office.com/launch/word?auth=1
 
 [Desktop Action excel]
 Name=Excel
-Icon=/home/nicolas/.mydock/msoffice/excel.png
+Icon=msexcel
 Exec=xdg-open https://www.office.com/launch/excel?auth=1
 
 [Desktop Action powerpoint]
 Name=PowerPoint
-Icon=/home/nicolas/.mydock/msoffice/powerpoint.png
+Icon=mspowerpoint
 Exec=xdg-open https://www.office.com/launch/powerpoint?auth=1
 
 [Desktop Action onedrive]
 Name=OneDrive
-Icon=/home/nicolas/.mydock/msoffice/onedrive.png
+Icon=msonedrive
 Exec=xdg-open https://onedrive.live.com/
 
 [Desktop Action onenote]
 Name=OneNote
-Icon=/home/nicolas/.mydock/msoffice/onenote.png
+Icon=msonenote
 Exec=xdg-open https://www.onenote.com/notebooks?auth=1
 
 [Desktop Action outlook]
 Name=Outlook
-Icon=/home/nicolas/.mydock/msoffice/outlook.png
+Icon=msoutlook
 Exec=xdg-open https://office.live.com/start/Outlook.aspx?ui=en%2DUS&rs=US

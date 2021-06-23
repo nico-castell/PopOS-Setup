@@ -2,8 +2,9 @@
 Name=Launcher Fenix
 Comment=Play minecraft, for free.
 GenericName=Minecraft Server
-Exec=java -jar /home/nicolas/.mydock/launcher_fenix.jar
-Icon=/home/nicolas/.mydock/mccoffee.png
+Exec=/usr/bin/java -jar /usr/local/games/launcher_fenix.jar
+Icon=mccoffee
+# Place the .svg icon in ~/.local/share/icons/hicolor/apps/scalable
 Type=Application
 StartupNotify=false
 Terminal=false
