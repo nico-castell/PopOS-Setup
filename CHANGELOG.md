@@ -24,6 +24,8 @@ All significant changes to **PopOS Setup** will be documented here.
   - Added `-r` flag, which tells the script to replace the latest backup.
 - [packages.txt](packages.txt):
   - Added [Neovim](https://neovim.io/) package.
+- [golang.sh](post-install.d/golang.sh):
+  - Added the choice to install development tools for Visual Studio Code.
 - [nvim.vim](samples/nvim.vim):
   - Added a config file for neovim with many of the features of the current [.vimrc](samples/vimrc).
 - [neovim.sh](post-install.d):
