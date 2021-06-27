@@ -16,6 +16,12 @@ if !isdirectory(&undodir)   | call mkdir(&undodir, "p", "0700")   | endif
 let &shada = expand('~/.cache/nvim/shada')
 let &shadafile = expand('~/.cache/nvim/shada/main.shada')
 
+" Remember last cursor position
+autocmd BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
+
 " Editor settings:
 set tabstop=3
 set shiftwidth=0
@@ -34,9 +40,12 @@ set fillchars+=vert:\│
 hi clear StatusLine
 hi clear StatusLineNC
 hi StatusLine   term=bold cterm=bold gui=bold ctermbg=234 guibg=Grey11
-hi StatusMode   term=bold cterm=bold gui=bold ctermbg=234 guibg=Grey11 ctermfg=34 guifg=Green3
 hi StatusLineNC ctermbg=232 guibg=Grey3
-if $USER == 'root' | hi Statusline ctermfg=124 | else | hi Statusline ctermfg=15 | endif
+if $USER == 'root'
+	hi StatusMode   term=bold cterm=bold gui=bold ctermfg=15  guifg=White  ctermbg=124 guibg=Red3
+else
+	hi StatusMode   term=bold cterm=bold gui=bold ctermfg=234 guifg=Grey11 ctermbg=34  guibg=Green3
+endif
 
 let g:currentmode={
 	\ 'n' : 'NORMAL',
@@ -50,13 +59,22 @@ let g:currentmode={
 	\ 'R' : 'REPLACE',
 	\ 'Rv': 'V-REPLACE',
 	\ 'c' : 'COMMAND',
+	\ 't' : 'TERMINAL',
 	\}
+
+function! PrepInfo()
+	let l:full_info = ""
+	if strlen(&filetype) > 0     | let l:full_info = l:full_info . &filetype . "|"     | endif
+	if strlen(&fileencoding) > 0 | let l:full_info = l:full_info . &fileencoding . "|" | endif
+	if strlen(&ff) > 0           | let l:full_info = l:full_info . &ff                 | endif
+	return l:full_info
+endfunction
 
 " Dinamically set the statusline based on active/inactive split.
 augroup statusline
 	autocmd!
-	autocmd WinEnter,BufEnter * setlocal statusline=%#StatusMode#\ %{g:currentmode[mode()]}\ »%#StatusLine#\ %t\ %l:%c/%L\ %M%=%R\ %{&filetype}\ (%{&ff})\ %p%%\ 
-	autocmd WinLeave,BufLeave * setlocal statusline=%#StatusLineNC#\ %t\ %M%=%R\ %{&filetype}\ %p%%\ 
+	autocmd WinEnter,BufEnter * setlocal statusline=%#StatusMode#\ %{g:currentmode[mode()]}\ %#StatusLine#\ %t\ %M%=%r\ %l:%c/%L\ %{PrepInfo()}\ %p%%\ 
+	autocmd WinLeave,BufLeave * setlocal statusline=%#StatusLineNC#\ %t\ %M%=%R\ %L\ %p%%\ 
 augroup end
 
 " Cursor line:
