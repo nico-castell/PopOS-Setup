@@ -15,6 +15,7 @@ USAGE_MSG() {
 \e[00mOptions:
 	\e[01m-m\e[00m) Backup .minecraft folder.
 	\e[01m-v\e[00m) Backup virtual machines.
+	\e[01m-s\e[00m) Backup ~/.ssh and ~/.safe folders.
 	\e[01m-r\e[00m) Replace last backup.
 	\e[01m-k\e[00m) Override numbers of backups to keep.
 	\e[01m-d\e[00m) Override backup drive.
@@ -35,9 +36,10 @@ Examples:
 	./$(basename "$0") -m -v -k 4 -d \"Storage drive\"\n" "$DRIVE" "$KEEP"
 }
 
-replace_latest=no
 backup_minecraft=no
 backup_vms=no
+replace_latest=no
+backup_safe_dirs=no
 
 # Process arguments
 while [ -n "$1" ]; do
@@ -45,6 +47,7 @@ case "$1" in
 	-m) backup_minecraft=yes ;;
 	-v) backup_vms=yes       ;;
 	-r) replace_latest=yes   ;;
+	-s) backup_safe_dirs=yes ;;
 	-k) KEEP="$2"; shift     ;;
 	-d) DRIVE="$2"; shift    ;;
 	-h | --help)
@@ -67,22 +70,24 @@ destination="/media/$USER/$DRIVE"
 LIST+=("Desktop")
 LIST+=("Documents")
 LIST+=("Development")
+LIST+=("Projects")
 LIST+=("Templates")
 LIST+=("Pictures")
 LIST+=("Music")
 LIST+=("Videos")
 LIST+=("GIMP")
 LIST+=(".mydock")
-LIST+=(".bashrc")
 LIST+=(".zshrc")
 LIST+=(".zsh_aliases")
 LIST+=(".zshrc.d")
+LIST+=(".bashrc")
 LIST+=(".bash_aliases")
 LIST+=(".bashrc.d")
 LIST+=(".vimrc")
 LIST+=(".clang-format")
 [ "$backup_minecraft" = "yes" ] && LIST+=(".minecraft")
 [ "$backup_vms" = "yes"       ] && LIST+=(".vms" "VirtualBox VMs")
+[ "$backup_safe_dirs" = "yes" ] && LIST+=(".safe" ".ssh")
 
 # The pretty animation to display
 Animate() {

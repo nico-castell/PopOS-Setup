@@ -22,6 +22,7 @@ All significant changes to **PopOS Setup** will be documented here.
 ### Added
 - [back_me_up.sh](back_me_up.sh):
   - Added `-r` flag, which tells the script to replace the latest backup.
+  - Added `-s` flag, which tells the script to backup the `~/.ssh` and `~/.safe` directories.
 - [packages.txt](packages.txt):
   - Added [Neovim](https://neovim.io/) package.
 - [golang.sh](post-install.d/golang.sh):
