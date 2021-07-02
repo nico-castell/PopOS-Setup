@@ -22,6 +22,15 @@ autocmd BufReadPost *
   \   exe "normal! g`\"" |
   \ endif
 
+" Text width settings
+hi clear ColorColumn
+hi ColorColumn ctermbg=237 guibg=Grey23
+augroup vimrcEx
+	au!
+	autocmd FileType text     setlocal textwidth=100 colorcolumn=100
+	autocmd FileType markdown setlocal textwidth=100 colorcolumn=100
+augroup END
+
 " Editor settings:
 set tabstop=3
 set shiftwidth=0
@@ -76,6 +85,10 @@ augroup statusline
 	autocmd WinEnter,BufEnter * setlocal statusline=%#StatusMode#\ %{g:currentmode[mode()]}\ %#StatusLine#\ %t\ %M%=%r\ %l:%c/%L\ %{PrepInfo()}\ %p%%\ 
 	autocmd WinLeave,BufLeave * setlocal statusline=%#StatusLineNC#\ %t\ %M%=%R\ %L\ %p%%\ 
 augroup end
+
+" The custom statusline shows the current mode, hide it from command line to
+" avoid redundancy.
+set noshowmode
 
 " Cursor line:
 hi clear CursorLine
