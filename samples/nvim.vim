@@ -90,6 +90,9 @@ augroup end
 " avoid redundancy.
 set noshowmode
 
+" Use system clipboard
+set clipboard+=unnamedplus
+
 " Cursor line:
 hi clear CursorLine
 hi clear CursorLineNr

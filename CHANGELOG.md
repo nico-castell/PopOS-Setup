@@ -16,7 +16,6 @@ All significant changes to **PopOS Setup** will be documented here.
   - [Version 0.1.8 - *2021-04-14*](#version-018---2021-04-14)
   - [Version 0.1.7 - *2021-04-02*](#version-017---2021-04-02)
   - [Version 0.1.6 [YANKED] - *2021-04-01*](#version-016-yanked---2021-04-01)
-  - [Version 0.1.5 - *2021-03-04*](#version-015---2021-03-04)
 
 ## Unreleased
 ### Added
@@ -35,6 +34,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [.vimrc](samples/vimrc):
   - A dynamic statusline for non-powerline vim editors. It changes based on wether the user is in an active or inactive split.
   - Set a scroll offset of 5 lines to keep your sight further from the edge of the screen.
+  - Integrate with the system clipboard.
 - [vim.sh](post-install.d/vim.sh):
   - Can write a special function to the config file to check which editor you're running when you also install **Neovim**.
 - [git.sh](post-install.d/git.sh):
@@ -300,19 +300,3 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 #### Fixed
 - Fixed APT's preconfigured preference to install and update **google-chrome-stable** and **code** from Pop!_OS' PPA instead of the respective package's official repository. ([pop_OS_start](pop_OS_start.sh))
 - Minor fixes in [mc_server_builder](mc_server_builder.sh).
-
-### Version [0.1.5](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.5) - *2021-03-04*
-#### Added
-- Git aliases in vscode setup ([pop_OS_start](pop_OS_start.sh))
-- Choice of git core editor in vscode setup ([pop_OS_start](pop_OS_start.sh))
-
-#### Changed
-- General improvements and fixes in [mc_server_builder](mc_server_builder.sh).
-- Favorite apps in [gnome_settings](gnome_settings.sh).
-- Now using tabs to indent.
-
-#### Fixed
-- Excel browser [shortcut](deskcuts/browser-msexcel.desktop).
-- Java JDK installation in [pop_OS_start](pop_OS_start.sh).
-- Git ppa repository reporting fail after success [pop_OS_start](pop_OS_start.sh).
-- Fixed bugs in [gnome_appearance](gnome_appearance.sh).
