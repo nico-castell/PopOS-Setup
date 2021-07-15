@@ -104,17 +104,17 @@ git_info () {
 	_status="$(git status -b --porcelain=v2 2>/dev/null)"
 
 	# Prepare branch name (or commit name)
-	_branch="$(echo "$_status" | grep "^#\sbranch\.head" | rev | cut -d ' ' -f 1 | rev)"
+	_branch="$(echo "$_status" | awk '$2 ~ /head/ {print $NF}')"
 	[ "$_branch" = "(detached)" ] && \
-		_branch="$(echo "$_status" | grep "^#\sbranch\.oid" | rev | cut -d ' ' -f 1 | rev | colrm 8)"
+		_branch="$(echo "$_status" | awk '$2 ~ /oid/ {print substr($NF,1,8)}')"
 	[ -n "$_branch" ] && branch="$_branch"
 
 	# Process info
-	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]." | wc -l)"
-	_ahead="$(echo "$_status"     | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | sed -e "s/\+//")"
-	_behind="$(echo "$_status"    | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | sed -e "s/\-//")"
-	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]" | wc -l)"
-	_untracked="$(echo "$_status" | grep "^\?"               | wc -l)"
+	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]."   | wc -l)"
+	_ahead="$(echo "$_status"     | awk '$2 ~ /ab/ {print $3}' | sed -e "s/\+//")"
+	_behind="$(echo "$_status"    | awk '$2 ~ /ab/ {print $4}' | sed -e "s/\-//")"
+	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]"   | wc -l)"
+	_untracked="$(echo "$_status" | grep "^\?"                 | wc -l)"
 
 	# Prepare simbols for the reader
 	[ "$_commiting" -gt 0 ] && info+=" +"
@@ -249,9 +249,11 @@ fi
 
 # some more ls aliases
 alias lla='ls -lahF --group-directories-first'
+alias llz='ls -lahFZ --group-directories-first'
 alias ll='ls -lABhF --group-directories-first'
 alias la='ls -ABhF'
 alias l='ls -lBhF --group-directories-first'
+alias lz='ls -lBhFZ --group-directories-first'
 
 # Create a directory and cd into it
 new() {
