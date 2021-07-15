@@ -1,11 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-	- [Added](#added)
-	- [Changed](#changed)
-	- [Fixed](#fixed)
 - [Released](#released)
+	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
 	- [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
 	- [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
 	- [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
@@ -17,8 +14,13 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.1.7 - *2021-04-02*](#version-017---2021-04-02)
 	- [Version 0.1.6 [YANKED] - *2021-04-01*](#version-016-yanked---2021-04-01)
 
-## Unreleased
-### Added
+## Released
+### Version [2.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.1.0) - *2021-07-15*
+This update had many more commits than usual, though there aren't that many new things. The main improvements are:
+- Heavily improved the configuration of Vim and added Neovim with a similar configuration.
+- Added flags to the [back_me_up.sh](back_me_up.sh) script.
+- Reworked the [mc_server_builder.sh](scripts/mc_server_builder.sh) script to make it more stable.
+#### Added
 - [back_me_up.sh](back_me_up.sh):
 	- Added `-r` flag, which tells the script to replace the latest backup.
 	- Added `-s` flag, which tells the script to backup the `~/.ssh` and `~/.safe` directories.
@@ -42,7 +44,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [git.sh](post-install.d/git.sh):
 	- Integrate **Vim** and **Neovim** more deeply with Git.
 	- New aliases `eflog` and `now-ignores`. They show commit log with commiter emails and tracked files that should be ignored by git, respectively.
-### Changed
+#### Changed
 - [deskcuts](deskcuts):
 	- Many files inside the folder were updated to use paths such as `~/.local/share/icons/hicolor` and `/usr/local`.
 - [mc_server_builder.sh](scripts/mc_server_builder.sh):
@@ -61,13 +63,12 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Reconfigured some of the coloring to be more consistent on terminal and gui.
 - [vim.sh](post-install.d/vim.sh):
 	- Reworded some prompts to avoid confusion with neovim.
-### Fixed
+#### Fixed
 - [vim.sh](post-install.d/vim.sh):
 	- Fixed typo in *.csh* config file.
 - [mc_server_builder.sh](scripts/mc_server_builder.sh):
 	- The animation does no longer lingers in your shell if you interrupt the script (*^C*).
 
-## Released
 ### Version [2.0.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.0.0) - *2021-06-19*
 This version, while it doesn't bring much new. Reworked an important step of the main script, installing **apt repositories**, to be much more expandable than before, without requiring editing the main script to modify the step. However, some small features were added, such as:
 - New packages in the installation list.

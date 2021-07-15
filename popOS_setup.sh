@@ -54,7 +54,7 @@ sources_folder="$script_location/sources.d"
 [ -f "$remove_file"        ] || MISSING "$remove_file"
 [ -d "$scripts_folder"     ] || MISSING "$scripts_folder"
 [ -d "$postinstall_folder" ] || MISSING "$postinstall_folder"
-[ -d "$sources_folder" ] || MISSING "$sources_folder"
+[ -d "$sources_folder"     ] || MISSING "$sources_folder"
 
 unset USAGE_MSG MISSING
 
