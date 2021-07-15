@@ -4,96 +4,113 @@
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information
 
+# TODO: Keep link up to date.
+# Copy the download link from https://www.minecraft.net/en-us/download/server if there's a newer version.
+version="1.17.1"
+download_link="https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
+
+# Exit codes:
+# 1   - Java not found
+# 2   - Argument not recognized
+# 3   - Failed to gain sudo privileges
+# 4   - Server already exists
+# 5   - No internet
+# 10  - Something went wrong while setting up the server
+# 130 - Process interrupted
+
 # Get script variables now, use them later.
-delete_server=false
-hide_mc_folder=true
+hide_mc_folder=yes
+setup_firewall=no
+delete_server=no
 
-cWGET=$(which wget)
-cJAVA=$(which java)
-if [ -z $cWGET ] || [ -z $cJAVA ]; then
-	printf "\e[31mERROR: Make sure you have \e[01mjava\e[00;31m and \e[01mwget\e[00;31m installed before you run this script\e[00m\n" >&2
-	exit 1
-fi
-
-pushd . >/dev/null
 cd "`dirname "$0"`"
 script_location="$(pwd)"
 
-#region Options
+# We need java for the initial setup of the server
+which java &>/dev/null || exit 1
+
+# Process options
 while [ -n "$1" ]; do
 	case "$1" in
-		-d | --delete) delete_server=true ;;         # Delete the server
-		-mc | --no-hide-mc) hide_mc_folder=false ;;  # Don't hide server folder
-		-h | --help)                                 # Brief help menu
-			printf "This script deploys a Minecraft Java server and utilities.\nOptions are:\n  -d  | --delete    ) Delete the server\n  -mc | --no-hide-mc) Don't hide server folder\n"
-			exit 0
+		-d | --delete)   delete_server=yes  ;; # Delete the server
+		-v | --visible)  hide_mc_folder=no  ;; # Don't prefix folder with a .
+		-f | --firewall) setup_firewall=yes ;; # Set up the firewall (requires sudo)
+		-h | --help)                          # Show help menu
+		cat <<EOF >&2
+This script deploys a minecraft server to your computer. In the process it
+also sets up some tools to help you manage it.
+
+Options:
+  -d | --delete)   Delete the server.
+  -v | --visible)  Don't hide the minecraft folder.
+  -f | --firewall) Set up firewall rules using ufw.
+  -h | --help)     Show this menu.
+EOF
+		exit 0
 		;;
-
-		*) printf "ERROR: Option \e[01m$1\e[00m not recognized\n" >&2 && exit 1 ;;
+		*)
+		printf "ERROR: Option \e[01m%s\e[00m not recognized\n" "$1" >&2
+		exit 2
+		;;
 esac; shift; done
-#endregion Options
 
-# Request root privileges now
-sudo echo >/dev/null
-if [ ! $? -eq 0 ]; then
-	exit 1
+# Get sudo privileges now if we'll need them
+if [ "$setup_firewall" = "yes" ]; then
+	sudo echo >/dev/null || exit 3
 fi
 
-# Define script variables here, use them later.
-if $hide_mc_folder; then
-	mc_folder=("$HOME/.mcserver")
+# Define location of the server's folder and files
+if [ "$hide_mc_folder" = "yes" ]; then
+	mc_folder="$HOME/.mcserver"
 else
-	mc_folder=("$HOME/mcserver")
+	mc_folder="$HOME/mcserver"
 fi
-
-appmenu=("$HOME/.local/share/applications")
-mc_entry=("$appmenu/mcserver.desktop")
+appmenu="$HOME/.local/share/applications"
+desktop_entry="$appmenu/mcserver.desktop"
 
 #region Deleting the server
-if $delete_server; then
-	read -p "Are you sure you want to delete the server `tput setaf 01`permanently`tput sgr0`? (y/N) "
-	if [[ ${REPLY,,} == "y" ]]; then
+if [ "$delete_server" = "yes" ]; then
+	read -rp "Are you sure you want to permanently delete the server? (y/N) "
+	if [ "$REPLY" = "y" ]; then
 		if [ ! -d "$mc_folder" ]; then
-			printf "Server was deleted previously\n";
+			printf "Server was deleted previously\n"
 		else
-			# Show an animation while waiting for a process to finish (usage: Animate & pid=$!; kill $pid)
 			Animate() {
 				CICLE=('|' '/' '-' '\')
+				trap return 2
 				while true; do
 					for i in "${CICLE[@]}"; do
-						printf "Deleting server files %s\r" $i
+						printf "Deleting server files %s\r" "$i"
 						sleep 0.2
 					done
 				done
 			}
 
-			Animate & pid=$!
-			# Delete server contents
-			code_1=0
-			rm -r "$mc_folder"; code_1=$?
+			# Delete server files
+			Animate & PID=$!
+			trap "kill -n 2 $PID ; exit 130" 2
+			status=ok
+			rm -r "$mc_folder"  || status=bad
+			rm "$desktop_entry" || status=bad
+			kill -n 2 $PID
+			trap - 2
 
-			# Delete app menu entries
-			code_2=0
-			if [ -f "$mc_entry" ]; then
-				rm "$mc_entry"; code_2=$?
-			fi
-			kill $pid
-
-			# Print results
-			if [ $code_1 -eq 0 ] && [ $code_2 -eq 0 ]; then
+			# Announce status of the removal
+			if [ "$status" = "ok" ]; then
 				printf "Deleting server files, \e[32mSuccess\e[00m\n"
 			else
 				printf "Deleting server files, \e[31mFailed\e[00m\n"
 			fi
 
-			# Delete firewall rules (user assisted)
-			printf "Choose the rules for port 25565 # MC-SERVER, press ENTER without typing a rule when you're done."
-			sudo ufw status numbered
-			while [ true ]; do
-				read -p "> "
-				if [ -z $REPLY ]; then break; fi
-				sudo ufw delete $REPLY
-			done
+			# Remove firewall rules
+			if [ "$setup_firewall" = "yes" ]; then
+				RULES=($(sudo ufw status numbered 2>&1 | awk '$NF ~ /MC-SERVER/ {print $2}' | tr -d ']'))
+				RULES=($(echo ${RULES[@]} | rev))
+				for i in ${RULES[@]}; do
+					echo "y" | sudo ufw delete $i &>/dev/null
+				done
+				unset RULES
+			fi
 		fi
 	fi
 	exit 0
@@ -101,35 +118,25 @@ fi
 #endregion
 
 if [ -d "$mc_folder" ]; then
-	printf "\e[31mERROR: Server already exists, cannot re-create it\e[00m\n"
-	exit 1
+	printf "\e[31mERROR: Server already exists\e[00m\n" >&2
+	exit 4
 fi
 
 # Test for an internet connection and exit if none is found.
 ping -c 1 google.com &>/dev/null
 if [ ! $? -eq 0 ]; then
 	printf "\e[31mERROR: No internet\e[00m\n" >&2
-	exit 1
+	exit 5
 fi
 
-mkdir -p "$mc_folder"
-cd "$mc_folder"
+# Ask user how much RAM to use (Default= 512M)
+RAM='512M'
+read -rp "$(printf "How much \e[01mRAM\e[00m do you want the server to use? \e[02m(-Xmx\e[04m   \e[24m)\e[00m\n> ")"
+[ -n "$REPLY" ] && RAM="$REPLY"
 
-# Prompt the user for the ammount of RAM to be used by the server. Default to 1/2 GB
-RAM=512M
-read -p "How much `tput setaf 3`RAM`tput sgr0` do you want the server to use? "
-if [ ! -z $REPLY ]; then
-	RAM=$REPLY
-fi
-
-# Download server and icon
-
-# TODO: Keep link up to date.
-# Copy the download link from https://www.minecraft.net/en-us/download/server if there's a newer version.
-version="1.17.1"
-download_link="https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
-
+# Show a fancy animation while the user waits to set things up.
 Animate() {
+	trap return 2
 	CICLE=('|' '/' '-' '\')
 	while true; do
 		for i in "${CICLE[@]}"; do
@@ -139,111 +146,109 @@ Animate() {
 	done
 }
 
-Animate & pid=$!
+Animate & PID=$!
+trap "kill -n 2 $PID &>/dev/null ; exit 130" 2 # Close animation if users hits ^C
 
-# Download server executable
-code_1=0
-wget -q "$download_link" -O server.jar ; code_1=$?
+status=ok # Set to 'bad' if something goes wrong
 
-# Copy server icon
-code_2=0
-cp "$script_location/../assets/mcserver/server-icon.png" . ; code_2=$?
+# 1. Download server executable
+mkdir -p "$mc_folder"
+cd "$mc_folder"
+wget -q "$download_link" -O "server-${version}.jar" || status=bad
 
-#region run_file =============================================================
-run_file="#!/bin/bash
+# 2. Copy server icon
+if [ -f "$script_location/../assets/mcserver/server-icon.png" ] ; then
+	cp "$script_location/../assets/mcserver/server-icon.png" . || status=bad
+fi
+
+# 3. Write run script
+cat <<EOF > run.sh || status=bad
+#!/bin/bash
 
 # The desktop entry file should be in:
-# $mc_entry
+# $desktop_entry
 
-if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
-	printf \"\\e[32mERROR: The server is already running\\e[00m\\n\"
+# Avoid problems
+if [[ \$(ps -aux | grep 'jar server*.jar' | grep -v grep) ]]; then
+	printf "\\e[32mERROR: The server is already running\\e[00m\\n"
 	exit 1
 fi
 
-if [[ \$(ps aux | grep 'compress.sh' | grep -v grep) ]]; then
-	printf \"\\e[32mERROR: The server cannot be run while it's being backed up\\e[00m\\n\"
+if [[ \$(ps -aux | grep 'compress.sh' | grep -v grep) ]]; then
+	printf "\\e[32mERROR: The server cannot be run while it's being backed up.\\e[00m\\n"
 	exit 1
 fi
 
-SLEEP=false
-PERSIST=false
-while [ -n \"\$1\" ]; do
-	case \"\$1\" in
-		-s) SLEEP=true   ;; # Don't skip final timer
-		-p) PERSIST=true ;; # Persist open at the end.
-		*) printf \"ERROR: Option\\e[01m\$1\\e[00m not recognized\\n\" >&2 && exit 1 ;;
+# Process options
+SLEEP=no
+PERSIST=no
+while [ -n "\$1" ]; do
+	case "\$1" in
+		-s) SLEEP=yes   ;; # Don't skip final timer
+		-p) PERSIST=yes ;; # Persist open at the end
+		*) printf "ERROR: Option \\e[01m%s\\e[00m not recognized\\n" "\$1" >&2 ; exit 1 ;;
 esac; shift; done
 
-# Draw a line across the width of the console.
-Separate () {
-	printf \"\\e[36m\"
-	printf \"%\`tput cols\`s\\n\" | tr \" \" \"=\"
-	printf \"\\e[00m\"
-}
-
-cd \"\$(dirname \"\$0\")\"
-printf \"Starting the server...\\n\"
-Separate
+# Run the server
+cd "\$(dirname "\$0")"
+printf "Starting the server...\\n"
+printf "\\e[36m%\$(tput cols)s\\e[00m\\n" | tr ' ' '='
 java -Xmx$RAM -Xms$RAM -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:G1HeapRegionSize=32M -XX:MaxGCPauseMillis=50 -jar server*.jar --nogui
-Separate
-printf \"Server has stopped.\\n\"
+printf "\\e[36m%\$(tput cols)s\\e[00m\\n" | tr ' ' '='
+printf "Server has stopped.\\n"
 
 # Options take effect here
-if \$SLEEP;   then sleep 1.5; fi
-if \$PERSIST; then read -p \"Press ENTER to exit...\"; fi
-exit 0"
-#endregion ===================================================================
-code_3=0
-printf "%s\n" "$run_file" > run.sh ; code_3=$?
-chmod +x run.sh
+[ "\$SLEEP" = "yes"   ] && sleep 1.5
+[ "\$PERSIST" = "yes" ] && read -rp "Press ENTER to exit..."
+exit 0
+EOF
+chmod 744 run.sh
 
-#region compress_file ========================================================
-compress_file="#!/bin/bash
+# 4. Write compress script
+cat <<EOF > compress.sh || status=bad
+#!/bin/bash
 
 pushd . >/dev/null
-cd \"$mc_folder\"
+cd "$mc_folder"
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
-	printf \"\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n\" >&2
-	exit 1
-fi
-
-if [[ \$(ps aux | grep 'compress.sh' | grep -v grep) ]]; then
-	printf \"\\e[31ERROR: You're already backing up the server\\e[00m\\n\" >&2
+	printf "\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n" >&2
 	exit 1
 fi
 
 if [ \$# -lt 1 ]; then
-	printf \"\\e[31mERROR: You must use one argument\\e[00m\\n\" >&2
-	printf \"\\e[33mUsage:\\e[00m ./%s (-xz | -gz | -zip)\\n\" \`basename \"\$0\"\` >&2
+	printf "\\e[31mERROR: You must use one argument\\e[00m\\n" >&2
+	printf "\\e[33mUsage:\\e[00m ./%s (-xz | -gz | -zip)\\n" \`basename "\$0"\` >&2
 	exit 1
 fi
 
-case \"\$1\" in
-	-xz)  ARCHIVE=\"xz\"  ;; # Use tar.xz
-	-gz)  ARCHIVE=\"gz\"  ;; # Use tar.gz
-	-zip) ARCHIVE=\"zip\" ;; # Use .zip
-	*) printf \"ERROR: Option \\e[01m\$1\\e[00m not reconognized\\n\"; exit 1 ;;
+case "\$1" in
+	-xz)  ARCHIVE="xz"  ;; # Use tar.xz
+	-gz)  ARCHIVE="gz"  ;; # Use tar.gz
+	-zip) ARCHIVE="zip" ;; # Use .zip
+	*) printf "ERROR: Option \\e[01m\$1\\e[00m not reconognized\\n"; exit 1 ;;
 esac
 
 Animate() {
+	trap return 2
 	CICLE=('|' '/' '-' '\')
 	while true; do
-		for i in \"\${CICLE[@]}\"; do
-			printf \"Compressing the server (\\e[36m%s\\e[00m) %s\\r\" \$ARCHIVE \$i
+		for i in "\${CICLE[@]}"; do
+			printf "Compressing the server (\\e[36m%s\\e[00m) %s\\r" \$ARCHIVE \$i
 			sleep 0.2
 		done
 	done
 }
 
-old_backups=\"\$(ls | grep -e '\\.tar\\...\$' -e '\\.zip\$')\"
-if [ -n \"\$old_backups\" ]; then
-	printf \"Deleting \\e[31mold\\e[00m backups...\\r\"
-	rm \"\$old_backups\"
+old_backups="\$(ls | grep -e '\\.tar\\...\$' -e '\\.zip\$')"
+if [ -n "\$old_backups" ]; then
+	printf "Deleting \\e[31mold\\e[00m backups...\\r"
+	rm "\$old_backups"
 fi
 
-DATE=\"\$(date +\"%Y-%m-%d\")\"
-Animate & pid=\$!
+DATE="\$(date +"%Y-%m-%d")"
+Animate & PID=\$!
+trap "kill -n 2 $PID; exit 130" 2
 
 case \$ARCHIVE in
 	xz) XZ_OPT=-9 tar -Jcf server_\$DATE.tar.xz * &>/dev/null; O=\$? ;;
@@ -251,28 +256,29 @@ case \$ARCHIVE in
 	zip) zip -rq server_\$DATE.zip * &>/dev/null; O=\$? ;;
 esac
 
-kill \$pid
+kill -n 2 \$PID
+trap - 2
 popd >/dev/null
 
 if [ \$O -eq 0 ]; then
-	printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[32mSuccess\\e[00m\\n\" \$ARCHIVE
+	printf "Compressing the server (\\e[36m%s\\e[00m), \\e[32mSuccess\\e[00m\\n" \$ARCHIVE
 else
-	printf \"Compressing the server (\\e[36m%s\\e[00m), \\e[31mFail\\e[00m\\n\" \$ARCHIVE
+	printf "Compressing the server (\\e[36m%s\\e[00m), \\e[31mFail\\e[00m\\n" \$ARCHIVE
 fi
 
-if [[ \$2 == \"-p\" ]]; then
-	read -sp \"Press ENTER to exit...\"
+if [[ \$2 == "-p" ]]; then
+	read -sp "Press ENTER to exit..."
 	echo
 fi
 
-exit \$O"
-#endregion ===================================================================
-code_4=0
-printf '%s\n' "$compress_file" > compress.sh ; code_4=$?
-chmod +x compress.sh
+exit \$O
+EOF
+chmod 744 compress.sh
 
-#region desktop_file =========================================================
-desktop_file="[Desktop Entry]
+# 5. Write desktop entry
+mkdir -p "$appmenu"
+cat <<EOF > "$desktop_entry" || status=bad
+[Desktop Entry]
 Type=Application
 Name=MC Server
 GenericName=Minecraft;Server;mcserver;
@@ -297,46 +303,40 @@ Icon=$mc_folder/server-icon.png
 [Desktop Action backup]
 Name=Archive the server
 Exec=$mc_folder/compress.sh -gz -p
-Icon=$mc_folder/server-icon.png"
-#endregion ===================================================================
-code_5=0
-mkdir -p "$appmenu"
-printf '%s\n' "$desktop_file" > "$mc_entry" ; code_5=$?
-chmod -x "$mc_entry"
+Icon=$mc_folder/server-icon.png
+EOF
+chmod 644 "$desktop_entry"
 
-# Allow Minecraft port through firewall
-code_6=0
-sudo ufw allow 25565 comment 'MC-SERVER' &>/dev/null ; code_6=$?
-sudo ufw reload &>/dev/null
-
-# Run the server for the first time and perform initial settings.
-java -jar server.jar --nogui --initSettings &>/dev/null
-
-kill $pid
-
-# Announce status of the setup
-if [[ $code_1 -eq 0 ]] && [[ $code_2 -eq 0 ]] && [[ $code_3 -eq 0 ]] && \
-   [[ $code_4 -eq 0 ]] && [[ $code_5 -eq 0 ]] && [[ $code_6 -eq 0 ]]; then
-	printf "Setting up minecraft server \e[01m%s\e[00m, \e[32mSuccess\e[00m\n" $version
-else
-	printf "Setting up minecraft server \e[01m%s\e[00m, \e[31mFail\e[00m\n" $version
-	exit 1
+# 6. (Optional) Set up firewall
+if [ "$setup_firewall" = "yes" ]; then
+	sudo ufw allow 25565 comment 'MC-SERVER' &>/dev/null || status=bad
+	sudo ufw reload &>/dev/null                          || status=bad
 fi
 
-# Promt the user to agree to the EULA
-read -p "Do you agree to the `tput setaf 5`EULA`tput sgr0` (https://account.mojang.com/documents/minecraft_eula)? (Y/n) -> " -e -r
-[[ ${REPLY,,} == "y" ]] && sed -i 's/eula=false/eula=true/' eula.txt
+# Run the server for the first time and perform initial settings
+java -Xmx"$RAM" -Xms"$RAM" -jar server*.jar --nogui --initSettings &>/dev/null || status=bad
+
+# Stop animation and announce status of the setup
+kill -n 2 $PID
+trap - 2
+if [ "$status" = "ok" ]; then
+	printf "Setting up minecraft server \e[01m%s\e[00m, \e[01;32mSuccess\e[00m\n" $version
+else
+	printf "Setting up minecraft server \e[01m%s\e[00m, \e[01;31mFail\e[00m\n" $version
+	exit 10
+fi
+
+read -rp "$(printf "Do you agree to the \e[35mEULA\e[00m? \e[02m(https://account.mojang.com/documents/minecraft_eula)\e[00m\n(Y/n) > ")"
+[ "$REPLY" == "y" -o -z "$REPLY" ] && sed -i 's/^eula=false/eula=true/' eula.txt
 
 # Configure some "defaults"
-sed -i 's/enable-command-block=false/enable-command-block=true/' server.properties
-LAN=$(hostname -I)
-LAN=${LAN//" "/""}
-sed -i "s/server-ip=/server-ip=$LAN/" server.properties
+sed -i 's/^enable-command-block=false/enable-command-block=true/' server.properties
+sed -i "s/^server-ip=/server-ip=$(hostname -I)/" server.properties
 
 ask_setting () {
-	read -p "$1 (`tput setaf 5`$2`tput sgr0`) -> " -e -r
-	if [[ -z $REPLY ]]; then REPLY=("$2"); fi # Default to the specified value.
-	REPLY="$(printf '%q' "$REPLY")"
+	read -erp "$(printf "%s (\e[35m%s\e[00m) -> " "$1" "$2")"
+	[ -z "$REPLY" ] && REPLY="$2"
+	REPLY=$(printf '%q' "$REPLY")
 	REPLACE=$(cat server.properties | grep "^$3=")
 	sed -i "s/$REPLACE/$3=$REPLY/" server.properties
 }
@@ -350,8 +350,9 @@ ask_setting "What will be the maximum ammount of players?"   "2"                
 ask_setting "What will be the view distance?"                "7"                  "view-distance"
 ask_setting "What will be the player idle timeout?"          "14"                 "player-idle-timeout"
 
-printf "\n\e[01;32mCongratulations! \e[00;32mYou now have a minecraft server.\e[00m\n"
-popd >/dev/null
+# Clear all trailing whitespace in properties file
+sed -i 's/\s*$//g' server.properties
 
+printf "\n\e[01;32mCongratulations! \e[00;32mYou now have a minecraft server.\e[00m\n"
 exit 0
 # Thanks for downloading, and enjoy!

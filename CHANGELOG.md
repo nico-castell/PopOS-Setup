@@ -2,55 +2,68 @@
 All significant changes to **PopOS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
-  - [Added](#added)
-  - [Changed](#changed)
-  - [Fixed](#fixed)
+	- [Added](#added)
+	- [Changed](#changed)
+	- [Fixed](#fixed)
 - [Released](#released)
-  - [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
-  - [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
-  - [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
-  - [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
-  - [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
-  - [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
-  - [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
-  - [Version 0.1.8 - *2021-04-14*](#version-018---2021-04-14)
-  - [Version 0.1.7 - *2021-04-02*](#version-017---2021-04-02)
-  - [Version 0.1.6 [YANKED] - *2021-04-01*](#version-016-yanked---2021-04-01)
+	- [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
+	- [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
+	- [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
+	- [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
+	- [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
+	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
+	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
+	- [Version 0.1.8 - *2021-04-14*](#version-018---2021-04-14)
+	- [Version 0.1.7 - *2021-04-02*](#version-017---2021-04-02)
+	- [Version 0.1.6 [YANKED] - *2021-04-01*](#version-016-yanked---2021-04-01)
 
 ## Unreleased
 ### Added
 - [back_me_up.sh](back_me_up.sh):
-  - Added `-r` flag, which tells the script to replace the latest backup.
-  - Added `-s` flag, which tells the script to backup the `~/.ssh` and `~/.safe` directories.
+	- Added `-r` flag, which tells the script to replace the latest backup.
+	- Added `-s` flag, which tells the script to backup the `~/.ssh` and `~/.safe` directories.
 - [packages.txt](packages.txt):
-  - Added [Neovim](https://neovim.io/) package.
+	- Added [Neovim](https://neovim.io/) package.
 - [golang.sh](post-install.d/golang.sh):
-  - Added the choice to install development tools for Visual Studio Code.
+	- Added the choice to install development tools for Visual Studio Code.
 - [nvim.vim](samples/nvim.vim):
-  - Added a config file for neovim with many of the features of the current [.vimrc](samples/vimrc).
+	- Added a config file for neovim with many of the features of the current [.vimrc](samples/vimrc).
 - [neovim.sh](post-install.d):
-  - Can set up **Neovim** as the default `$EDITOR`.
-  - Can write a special function to the config file to check which editor you're running when you also install **Vim**.
+	- Can set up **Neovim** as the default `$EDITOR`.
+	- Can write a special function to the config file to check which editor you're running when you also install **Vim**.
 - [.vimrc](samples/vimrc):
-  - A dynamic statusline for non-powerline vim editors. It changes based on wether the user is in an active or inactive split.
-  - Set a scroll offset of 5 lines to keep your sight further from the edge of the screen.
-  - Integrate with the system clipboard.
+	- A dynamic statusline for non-powerline vim editors. It changes based on wether the user is in an active or inactive split.
+	- Set a scroll offset of 5 lines to keep your sight further from the edge of the screen.
+	- Integrate with the system clipboard.
 - [vim.sh](post-install.d/vim.sh):
-  - Can write a special function to the config file to check which editor you're running when you also install **Neovim**.
+	- Can write a special function to the config file to check which editor you're running when you also install **Neovim**.
 - [git.sh](post-install.d/git.sh):
-  - Integrate **Vim** and **Neovim** more deeply with Git.
-  - New aliases `eflog` and `now-ignores`. They show commit log with commiter emails and tracked files that should be ignored by git, respectively.
+	- Integrate **Vim** and **Neovim** more deeply with Git.
+	- New aliases `eflog` and `now-ignores`. They show commit log with commiter emails and tracked files that should be ignored by git, respectively.
 ### Changed
 - [deskcuts](deskcuts):
-  - Many files inside the folder were updated to use paths such as `~/.local/share/icons/hicolor` and `/usr/local`.
-### Fixed
+	- Many files inside the folder were updated to use paths such as `~/.local/share/icons/hicolor` and `/usr/local`.
+- [mc_server_builder.sh](scripts/mc_server_builder.sh):
+	- The script was heavily modified to make it more stable.
+	- It no longer sets up the firewall by default.
+	- Option `-mc` is now `-v` (for *visible*).
+	- You now use the `-f` flag to tell the script to configure the firewall.
+	- It no longer needs user assistance to delete firewall rules.
+	- The download link is now at the top of the script for it to be easy to update.
+	- There's a list of possible exit codes and their meanings.
+- [.zshrc](samples/zshrc):
+	- Use `awk` commands instead of combining `grep`, `rev` and `cut` for the git prompt. (Less subprocesses)
 - [.vimrc](samples/vimrc):
-  - Put backup, undo, and swap files in `~/.cache/vim`, and set their permissions so other users cannot read them.
-  - Set textwidth for *plain text* and *markdown* to 100 characters.
-  - Reconfigured some of the coloring to be more consistent on terminal and gui.
+	- Put backup, undo, and swap files in `~/.cache/vim`, and set their permissions so other users cannot read them.
+	- Set textwidth for *plain text* and *markdown* to 100 characters.
+	- Reconfigured some of the coloring to be more consistent on terminal and gui.
 - [vim.sh](post-install.d/vim.sh):
-  - Fixed typo in *.csh* config file.
-  - Reworded some prompts to avoid confusion with neovim.
+	- Reworded some prompts to avoid confusion with neovim.
+### Fixed
+- [vim.sh](post-install.d/vim.sh):
+	- Fixed typo in *.csh* config file.
+- [mc_server_builder.sh](scripts/mc_server_builder.sh):
+	- The animation does no longer lingers in your shell if you interrupt the script (*^C*).
 
 ## Released
 ### Version [2.0.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.0.0) - *2021-06-19*
@@ -60,29 +73,29 @@ This version, while it doesn't bring much new. Reworked an important step of the
 - A post-install script to set up the GNOME Sdk
 #### Added
 - [sources.d](sources.d):
-  - This folder will contain sources to be added before installing packages.
+	- This folder will contain sources to be added before installing packages.
 - [packages.txt](packages.txt):
-  - Added [Kitty Terminal](https://sw.kovidgoyal.net/kitty/), and [Visual Studio Code Insiders](https://code.visualstudio.com/insiders/) packages.
+	- Added [Kitty Terminal](https://sw.kovidgoyal.net/kitty/), and [Visual Studio Code Insiders](https://code.visualstudio.com/insiders/) packages.
 - [gnome-builder.sh](post-install.d/gnome-builder.sh):
-  - Added the file, it gives the user a choice to install the **GNOME SDK** before they start using **GNOME Builder**.
+	- Added the file, it gives the user a choice to install the **GNOME SDK** before they start using **GNOME Builder**.
 - [flatpaks.txt](flatpaks.txt):
-  - Added [Bitwarden](https://bitwarden.com/) flatpak to the list.
+	- Added [Bitwarden](https://bitwarden.com/) flatpak to the list.
 - [.zshrc](samples/zshrc):
-  - Added support for Kitty terminal.
+	- Added support for Kitty terminal.
 - [.vimrc](samples/vimrc):
-  - Added line highlighting.
+	- Added line highlighting.
 #### Changed
 - [popOS_setup.sh](popOS_setup.sh):
-  - Changed methodology for adding repositories. Now the [sources.d](sources.d) folder contains the sources in files named according to the package that needs the source.
+	- Changed methodology for adding repositories. Now the [sources.d](sources.d) folder contains the sources in files named according to the package that needs the source.
 - [.zshrc](samples/zshrc):
-  - The **vscode prompt** can now be chosen by assigning the value `vscode` to the `prompt_style` variable.
-  - Made **vscode prompt** trigger when `$VSCODE_GIT_IPC_HANDLE` is set, instead of `"$VSCODE_TERM" == "yes"`. This means the user won't have to manually set the variable from the vscode settings.
-  - Now edits the `$PATH` more carefully.
+	- The **vscode prompt** can now be chosen by assigning the value `vscode` to the `prompt_style` variable.
+	- Made **vscode prompt** trigger when `$VSCODE_GIT_IPC_HANDLE` is set, instead of `"$VSCODE_TERM" == "yes"`. This means the user won't have to manually set the variable from the vscode settings.
+	- Now edits the `$PATH` more carefully.
 #### Fixed
 - [.vimrc](post-install.d/vim.sh):
-  - Fixed root user not getting powerline set up after the user chooses to install it.
+	- Fixed root user not getting powerline set up after the user chooses to install it.
 - [.zshrc](samples/zshrc):
-  - Fixed prompt starting with error code 1 when `~/.zsh_aliases` is missing.
+	- Fixed prompt starting with error code 1 when `~/.zsh_aliases` is missing.
 
 ### Version [1.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.2.0) - *2021-06-11*
 This version contains a few improvements, a rewritten script, and fixes. The most significant additions were:
@@ -92,64 +105,64 @@ This version contains a few improvements, a rewritten script, and fixes. The mos
 - Rewrote the **duc_noip_install.sh** script.
 #### Added
 - [packages.txt](packages.txt):
-  - Added [**VS Codium**](https://vscodium.com/) package.
-  - Added [**Golang**](https://golang.org/) programming language, algng with a post install [script](post-install.d/golang.sh).
+	- Added [**VS Codium**](https://vscodium.com/) package.
+	- Added [**Golang**](https://golang.org/) programming language, algng with a post install [script](post-install.d/golang.sh).
 - [popOS_setup.sh](popOS_setup.sh):
-  - Added **VS Codium** source.
+	- Added **VS Codium** source.
 - [.zshrc](samples/zshrc):
-  - Added info about staged and untracked files to the git prompt.
-  - Aliases and configs are now sourced from files under the `~/.zshrc.d` folder, as well as from a `~/.zsh_aliases` file.
+	- Added info about staged and untracked files to the git prompt.
+	- Aliases and configs are now sourced from files under the `~/.zshrc.d` folder, as well as from a `~/.zsh_aliases` file.
 - [.bashrc](samples/bashrc):
-  - Brought some of the powerful git prompt to this file.
+	- Brought some of the powerful git prompt to this file.
 - [back_me_up.sh](back_me_up.sh):
-  - The script now also looks for `~/.zshrc.d`, `~/.bashrc.d`, and `~/.bash_aliases`.
+	- The script now also looks for `~/.zshrc.d`, `~/.bashrc.d`, and `~/.bash_aliases`.
 #### Changed
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
-  - Rewrote the script to be much more reliable and simple to edit.
+	- Rewrote the script to be much more reliable and simple to edit.
 - [popOS_setup.sh](popOS_setup.sh):
-  - The extra scripts are now loaded and executed through loops, this is much more expandable (and reliable) than loading them individually.
+	- The extra scripts are now loaded and executed through loops, this is much more expandable (and reliable) than loading them individually.
 - [vim.sh](post-install.d/vim.sh):
-  - Switched from user installation of powerline-status to sytem installation.
+	- Switched from user installation of powerline-status to sytem installation.
 - [zsh.sh](post-install.d/zsh.sh):
-  - Switched from user installation of powerline-shell to sytem installation.
+	- Switched from user installation of powerline-shell to sytem installation.
 - [.zshrc](samples/zshrc):
-  - Improved performance of the git info in the prompt.
+	- Improved performance of the git info in the prompt.
 #### Fixed
 - [vim.sh](post-install.d/vim.sh):
-  - Fixed excessive arguments.
+	- Fixed excessive arguments.
 - [zsh.sh](post-install.d/zsh.sh):
-  - Fixed missing space when prompting the user.
+	- Fixed missing space when prompting the user.
 - [git.sh](post-install.d/git.sh):
-  - Fixed faulty config for the vim editor.
+	- Fixed faulty config for the vim editor.
 #### Deprecated
 - [.zshrc](samples/zshrc):
-  - This file will continue sourcing the `~/.zsh_aliases` file, but it will be fully replaced by `~/.zshrc.d` in an upcoming release. Because of this, the `~/.zsh_aliases` file will no longer be automatically created.
+	- This file will continue sourcing the `~/.zsh_aliases` file, but it will be fully replaced by `~/.zshrc.d` in an upcoming release. Because of this, the `~/.zsh_aliases` file will no longer be automatically created.
 
 ### Version [1.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.1.0) - *2021-06-05*
 This update is mostly a cumulative release of minor additions. The biggest introductions are the choice to use the powerline plugin in **Vim**, better prompts for the **Z-Shell**, and a few changes and fixes.
 #### Added
 - [.vimrc](samples/vimrc):
-  - Added variable fg color for the vim statusline: red if you're root, white if you're not.
+	- Added variable fg color for the vim statusline: red if you're root, white if you're not.
 - [vim.sh](post-install.d/vim.sh):
-  - Added the posibility to set vim as the default `$EDITOR`.
-  - Added the posibility of installing the powerline-status plugin for the editor.
+	- Added the posibility to set vim as the default `$EDITOR`.
+	- Added the posibility of installing the powerline-status plugin for the editor.
 - [.zshrc](samples/zshrc):
-  - Added gear (`⚙`) for fedora and ubuntu sytle prompts to show there are background jobs running.
-  - Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
+	- Added gear (`⚙`) for fedora and ubuntu sytle prompts to show there are background jobs running.
+	- Ubuntu style prompt (default) now has path shortening when deep in a directory structure.
 - [git.sh](post-install.d/git.sh):
-  - Added `now-ignored` alias to find files that should be untracked after updating a `.gitignore`.
+	- Added `now-ignored` alias to find files that should be untracked after updating a `.gitignore`.
 #### Changed
 - [.zshrc](samples/zshrc):
-  - Kali style prompt now has softer edges: `╭──` instead of `┌──`.
+	- Kali style prompt now has softer edges: `╭──` instead of `┌──`.
 - [zsh.sh](post-install.d/zsh.sh):
-  - The script will no longer attempt to install powerline automatically, instead, it will ask the user if they want to install it.
+	- The script will no longer attempt to install powerline automatically, instead, it will ask the user if they want to install it.
 - [git.sh](post-install.d/git.sh):
-  - Changed `flog` and `sflog` aliases. You can specify a path to the `unstage` alias now.
+	- Changed `flog` and `sflog` aliases. You can specify a path to the `unstage` alias now.
 #### Fixed
 - [.vimrc](samples/vimrc):
-  - Fixed the statusline showing current line instead of total lines after the `/`.
+	- Fixed the statusline showing current line instead of total lines after the `/`.
 - [back_me_up.sh](back_me_up.sh):
-  - Fixed trying to keep less than 1 backup.
+	- Fixed trying to keep less than 1 backup.
 
 ### Version [1.0.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/1.0.0) - *2021-05-28*
 Some time before this release, the [Fedora Setup](https://githbub.com/nico-castell/Fedora-Setup) project started by reworking this project to work in Fedora. There were a lot of innovations. This release focuses on porting them back. Some of the most notable innovations have been:
@@ -158,118 +171,118 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 - And many improvements to the codebase that make expanding and modifying functionality easier.
 #### Added
 - [popOS_setup.sh](popOS_setup.sh)
-  - The script now gives a welcome message when started.
+	- The script now gives a welcome message when started.
 - [packages.txt](packages.txt):
-  - This file contains the list of packages and dependencies that the [popOS_setup.sh](popOS_setup.sh) script installs. By putting this list in a file, adding and removing packages becomes very easy.
+	- This file contains the list of packages and dependencies that the [popOS_setup.sh](popOS_setup.sh) script installs. By putting this list in a file, adding and removing packages becomes very easy.
 - [post-install.d](post-install.d):
-  - This new folder contains shell scripts that should be sourced from [popOS_setup.sh](popOS_setup.sh), they contain the post-installation instructions previously found **in** the main script.
+	- This new folder contains shell scripts that should be sourced from [popOS_setup.sh](popOS_setup.sh), they contain the post-installation instructions previously found **in** the main script.
 - [scripts](scripts):
-  - The scritps folder contains a few scripts that can be run without being sourced by [popOS_setup.sh](popOS_setup.sh). These scripts were previously in the root of the repository.
+	- The scritps folder contains a few scripts that can be run without being sourced by [popOS_setup.sh](popOS_setup.sh). These scripts were previously in the root of the repository.
 - [update_recovery.sh](scripts/update_recovery.sh):
-  - The functionality to update the recovery partition was moved from the main script to this external script.
+	- The functionality to update the recovery partition was moved from the main script to this external script.
 - [.zshrc](samples/zshrc):
-  - Introduced "prompt styles", so the user can choose a prompt style from the templates when the main script is sourcing the [zsh.sh](post-install.d/zsh.sh) script.
-  - Now the paths `~/.local/bin` and `~/bin` are added to the $PATH environment variable.
-  - A few other small changes.
+	- Introduced "prompt styles", so the user can choose a prompt style from the templates when the main script is sourcing the [zsh.sh](post-install.d/zsh.sh) script.
+	- Now the paths `~/.local/bin` and `~/bin` are added to the $PATH environment variable.
+	- A few other small changes.
 - [.vimrc](samples/vimrc):
-  - The file now creates a `~/.vimdata` folder to store all the temporary files used by vim.
-  - The file lightly customizes some of the coloring and style of the vim editor.
+	- The file now creates a `~/.vimdata` folder to store all the temporary files used by vim.
+	- The file lightly customizes some of the coloring and style of the vim editor.
 #### Changed
 - [popOS_setup.sh](popOS_setup.sh):
-  - The main script (pop_OS_start.sh) was renamed to be like the name of the project.
-  - There were innumerable changes to how the script works, but the user experience remains very familiar.
+	- The main script (pop_OS_start.sh) was renamed to be like the name of the project.
+	- There were innumerable changes to how the script works, but the user experience remains very familiar.
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
-  - The script now writes its files in `~/.local/bin` and `~/.local/share/applications`.
+	- The script now writes its files in `~/.local/bin` and `~/.local/share/applications`.
 #### Removed
 - [popOS_setup.sh](popOS_setup.sh):
-  - The script no longer restarts the computer, making the code simpler.
-  - The script no longer copies the *deskcuts*.
-  - The script no longer supports installing downloaded packages in the `~/Downloads` folder.
+	- The script no longer restarts the computer, making the code simpler.
+	- The script no longer copies the *deskcuts*.
+	- The script no longer supports installing downloaded packages in the `~/Downloads` folder.
 - [deskcuts](deskcuts):
-  - Removed a few redundant deskcuts.
+	- Removed a few redundant deskcuts.
 - [mc_server_builder.sh](scripts/mc_server_builder.sh):
-  - The script no longer executes the command `sudo update-desktop-database`.
+	- The script no longer executes the command `sudo update-desktop-database`.
 - **vscode.sh**:
-  - The script was removed as it is no longer necessary.
+	- The script was removed as it is no longer necessary.
 - **Fonts** folder:
-  - The fonts folder was removed.
+	- The fonts folder was removed.
 
 ### Version [0.2.2](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-05-07*
 #### Added
 - [.zshrc](samples/zshrc)
-  - `new` function to create a directory and cd into it.
+	- `new` function to create a directory and cd into it.
 - [vscode.sh](vscode.sh)
-  - Added git alias `sflog` to show output like `flog` and check gpg signatures for each commit.
+	- Added git alias `sflog` to show output like `flog` and check gpg signatures for each commit.
 
 #### Changed
 - [.zshrc](samples/zshrc)
-  - Improved gpg filter from history.
-  - Improved comment with instructions to use powerline prompt.
+	- Improved gpg filter from history.
+	- Improved comment with instructions to use powerline prompt.
 - [gnome_appearance.sh](gnome_appearance.sh)
-  - Changed terminal transparency to be less transparent as it makes it difficult to read.
+	- Changed terminal transparency to be less transparent as it makes it difficult to read.
 
 #### Fixed
 - [gnome_appearance.sh](gnome_appearance.sh)
-  - Fixed uncommented comment.
+	- Fixed uncommented comment.
 
 ### Version [0.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-04-26*
 #### Added
 - [pop_OS_start.sh](pop_OS_start.sh)
-  - Added installation and configuration of `tlp` (improves power efficiency on battery) package for laptops.
-  - Added suspend when closing the lid for laptops.
-  - When installing `zsh` make it roots default shell too.
+	- Added installation and configuration of `tlp` (improves power efficiency on battery) package for laptops.
+	- Added suspend when closing the lid for laptops.
+	- When installing `zsh` make it roots default shell too.
 - [mc_server_builder.sh](mc_server_builder.sh)
-  - Now updates the desktop database after installation and deletion.
+	- Now updates the desktop database after installation and deletion.
 
 #### Changed
 - [.zshrc](samples/zshrc)
-  - Changed ls aliases.
-  - Changed `erase-history` function for a filter where the user can specify commands that should not be stored in history.
+	- Changed ls aliases.
+	- Changed `erase-history` function for a filter where the user can specify commands that should not be stored in history.
 
 #### Fixed
 - [mc_server_builder.sh](mc_server_builder.sh)
-  - Fixed colored prompts (the user can now type delete without deleting the prompt).
-  - Fixed inconsistent new-line behaviour when configuring the server.properties.
+	- Fixed colored prompts (the user can now type delete without deleting the prompt).
+	- Fixed inconsistent new-line behaviour when configuring the server.properties.
 - [pop_OS_start.sh](pop_OS_start.sh)
-  - Fixed colored prompts (the user can now type delete without deleting the prompt).
+	- Fixed colored prompts (the user can now type delete without deleting the prompt).
 - [vscode.sh](vscode.sh)
-  - Fixed colored prompts (the user can now type delete without deleting the prompt).
-  - Fixed git recursive alias `slog`.
+	- Fixed colored prompts (the user can now type delete without deleting the prompt).
+	- Fixed git recursive alias `slog`.
 
 ### Version [0.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.0) - *2021-04-14*
 #### Changed
 - [pop_OS_start.sh](pop_OS_start.sh):
-  - DETACHED VSCODE SETUP FROM THE SCRIPT:
-    - Deleted post-installation instructions for the `code` package.
-    - Created [vscode.sh](vscode.sh) to fulfill that role.
-    - [pop_OS_start.sh](pop_OS_start.sh) now sources [vscode.sh](vscode.sh)
+	- DETACHED VSCODE SETUP FROM THE SCRIPT:
+		- Deleted post-installation instructions for the `code` package.
+		- Created [vscode.sh](vscode.sh) to fulfill that role.
+		- [pop_OS_start.sh](pop_OS_start.sh) now sources [vscode.sh](vscode.sh)
 
 #### Fixed
 - [pop_OS_start.sh](pop_OS_start.sh):
-  - Fixed [.vimrc](samples/vimrc) sample file not being found.
-  - Create .tmp directories for user and root so vim can use them to keep *.swp* files.
-  - Fixed "missing [" when ensuring all packages are up to date.
+	- Fixed [.vimrc](samples/vimrc) sample file not being found.
+	- Create .tmp directories for user and root so vim can use them to keep *.swp* files.
+	- Fixed "missing [" when ensuring all packages are up to date.
 - [gnome_appearance.sh](gnome_appearance.sh):
-  - Fixed configuring favorite-apps.
+	- Fixed configuring favorite-apps.
 
 ### Version [0.1.8](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.8) - *2021-04-14*
 #### Added
 - [.vimrc](samples/vimrc):
-  - Set up a statusline
-  - Set tabsize to 3
+	- Set up a statusline
+	- Set tabsize to 3
 
 #### Changed
 - [pop_OS_start](pop_OS_start.sh)
-  - Simplified copying deskcuts.
+	- Simplified copying deskcuts.
 
 #### Fixed
 - [pop_OS_start](pop_OS_start.sh):
-  - Fixed colored prompt when confirming packages.
-  - Fixed appending to powerline config file when it should be rewritten.
-  - Fixed missing ANSI escape after SSH setup.
-  - Fixed ~/.vimrc and ~/.config/powerline-shell/config.json owned by root.
-  - Fixed not creating ~/.zsh_aliases before writing an alias there.
-  - Clear stdin before users pastes the GPG key to use as git signingkey.
+	- Fixed colored prompt when confirming packages.
+	- Fixed appending to powerline config file when it should be rewritten.
+	- Fixed missing ANSI escape after SSH setup.
+	- Fixed ~/.vimrc and ~/.config/powerline-shell/config.json owned by root.
+	- Fixed not creating ~/.zsh_aliases before writing an alias there.
+	- Clear stdin before users pastes the GPG key to use as git signingkey.
 
 ### Version [0.1.7](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.7) - *2021-04-02*
 #### Added
