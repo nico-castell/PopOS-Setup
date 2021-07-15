@@ -4,7 +4,7 @@ Separate 4
 printf "Successfully installed \e[36mtlp\e[00m, configuring...\n"
 
 # Conditionally execute all the steps to configure tlp.
-sudo mv /etc/tlp.conf /etc/tlp.conf-og && \
+sudo cp /etc/tlp.conf /etc/tlp.conf-og && \
 cat "$script_location/samples/tlp.conf" | sudo tee /etc/tlp.conf >/dev/null && \
 sudo systemctl enable tlp && \
 sudo systemctl restart tlp
