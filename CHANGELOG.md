@@ -22,10 +22,12 @@ All significant changes to **PopOS Setup** will be documented here.
 - [back_me_up.sh](back_me_up.sh):
 	- Added `-r` flag, which tells the script to replace the latest backup.
 	- Added `-s` flag, which tells the script to backup the `~/.ssh` and `~/.safe` directories.
-- [packages.txt](packages.txt):
-	- Added [Neovim](https://neovim.io/) package.
 - [golang.sh](post-install.d/golang.sh):
 	- Added the choice to install development tools for Visual Studio Code.
+- [packages.txt](packages.txt):
+	- Added [Neovim](https://neovim.io/) package.
+- [.zshrc](samples/zshrc):
+  - Added `lz` and `llz` aliases to easily see SELinux tags when listing files.
 - [nvim.vim](samples/nvim.vim):
 	- Added a config file for neovim with many of the features of the current [.vimrc](samples/vimrc).
 - [neovim.sh](post-install.d):
