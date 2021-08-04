@@ -3,10 +3,10 @@
 	<br>Pop!_OS Setup<br>
 </h1>
 <p align="center">
-  <a href="https://github.com/nico-castell/PopOS-Setup/commits"><img alt="Commits since last release" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&color=informational&logo=git&logoColor=white&style=flat-square"></a>
-  <a href="https://github.com/nico-castell/PopOS-Setup/releases"><img alt="release" src="https://img.shields.io/github/v/release/nico-castell/PopOS-Setup?color=informational&label=Release&logo=GitHub&logoColor=white&style=flat-square"></a>
-  <a href="LICENSE"><img alt="LICENSE" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=informational&label=License&logo=Open%20Source%20Initiative&logoColor=white&style=flat-square"></a>
-  <a href="https://github.com/nico-castell/PopOS-Setup"><img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&color=informational&logo=GNU%20bash&logoColor=white&style=flat-square"></a>
+	<a href="https://github.com/nico-castell/PopOS-Setup/commits"><img alt="Commits since last release" src="https://img.shields.io/github/commits-since/nico-castell/PopOS-Setup/latest?label=Commits%20since%20last%20release&color=informational&logo=git&logoColor=white&style=flat-square"></a>
+	<a href="https://github.com/nico-castell/PopOS-Setup/releases"><img alt="release" src="https://img.shields.io/github/v/release/nico-castell/PopOS-Setup?color=informational&label=Release&logo=GitHub&logoColor=white&style=flat-square"></a>
+	<a href="LICENSE"><img alt="LICENSE" src="https://img.shields.io/github/license/nico-castell/PopOS-Setup?color=informational&label=License&logo=Open%20Source%20Initiative&logoColor=white&style=flat-square"></a>
+	<a href="https://github.com/nico-castell/PopOS-Setup"><img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/nico-castell/PopOS-Setup?label=Lines%20of%20code&color=informational&logo=GNU%20bash&logoColor=white&style=flat-square"></a>
 </p>
 
 <h2 align="center">How to use</h2>
@@ -14,32 +14,32 @@
 I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) successfully.
 
 1. Clone this repo, you can do a shallow clone if you wish (by adding `--depth=1` to the following command).
-    ```shell
-    $ git clone https://github.com/nico-castell/PopOS-Setup.git
-    ```
+	```shell
+	$ git clone https://github.com/nico-castell/PopOS-Setup.git
+	```
 2. Given that the main branch is always under development, you might want to checkout the last tag, which will be the last known stable version.
-    ```shell
-    $ git checkout $(git describe --tags --abrev=0) # Go to the last tag
-    $ git checkout main                             # Go back to main
-    ```
+	```shell
+	$ git checkout $(git describe --tags --abrev=0) # Go to the last tag
+	$ git checkout main                             # Go back to main
+	```
 3. (Optional) Look at the instuctions in thme [gnome_apperance](scripts/gnome_appearance.sh) script, and configure the file structure for the script to set up the GNOME appearance with your themes.
-    ```
-    scripts
-    └── themes
-        ├── background
-        │   └── image.png
-        ├── cursor
-        │   └── cursor.tar.gz
-        ├── icons
-        │   └── icons.tar.gz
-        └── theme
-            └── theme.tar.gz
-    ```
+	```
+	scripts
+	└── themes
+	    ├── background
+	    │   └── image.png
+	    ├── cursor
+	    │   └── cursor.tar.gz
+	    ├── icons
+	    │   └── icons.tar.gz
+	    └── theme
+	        └── theme.tar.gz
+	```
 4. (Optional) If you plan on building a minecraft server, you should check that the `$download_link` and `$version` variables are up to date, they're always market as `TODO` to be easy to find.
 5. Run the [popOS_setup.sh](popOS_setup.sh) script.
-    ```shell
-    $ ./popOS_setup.sh
-    ```
+	```shell
+	$ ./popOS_setup.sh
+	```
 6. Follow the instructions from the script.
 7. Wait, this script will as for further instructions as it goes about doing it's thing.
 
@@ -54,11 +54,11 @@ I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) succes
 This project can set up some powerful features, such as:
 
 - Advanced, stylized prompts for the **Z-Shell**:
-  <p align="center"><img width="600" height="272" src="assets/prompts.png"></p>
+	<p align="center"><img width="600" height="272" src="assets/prompts.png"></p>
 - Powerline plugin for the **Vim** editor:
-  <p align="center"><img width="600" height="390" src="assets/vim-powerline.png"></p>
+	<p align="center"><img width="600" height="390" src="assets/vim-powerline.png"></p>
 - Setting up **GnuPG** to sign **Git** commits:
-  <p align="center"><img width="600" height="326" src="assets/seahorse.png"></p>
+	<p align="center"><img width="600" height="326" src="assets/seahorse.png"></p>
 - Easily expandable lists of packages for the script to work with: [packages.txt](packages.txt), [flatpaks.txt](flatpaks.txt) and [remove.txt](remove.txt)
 - Desktop entry files that you can add at your convenience.
 - A [script](scripts/mc_server_builder.sh) to set up a minecraft server.

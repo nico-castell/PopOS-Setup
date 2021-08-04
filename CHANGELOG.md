@@ -1,6 +1,9 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+	- [Added](#added)
+	- [Changed](#changed)
 - [Released](#released)
 	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
 	- [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
@@ -11,8 +14,23 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
 	- [Version 0.1.8 - *2021-04-14*](#version-018---2021-04-14)
-	- [Version 0.1.7 - *2021-04-02*](#version-017---2021-04-02)
-	- [Version 0.1.6 [YANKED] - *2021-04-01*](#version-016-yanked---2021-04-01)
+
+## Unreleased
+### Added
+- [popOS_setup.sh](popOS_setup.sh):
+	- The script now stops if you run it as root, you should run it as your user. You can use the `-s`
+- [duc_noip_install.sh](scripts/duc_noip_install.sh):
+	- Now, if you pass the `-s` flag to the script, it will set up a systemd service and a systemd
+		timer so it runs every time you boot the computer.
+	- If you run the script as root, the "supporting" files such as No-IP's icon and the desktop entry
+		will be placed in `/usr/local` instead of `~/.local`.
+	- The script now shows the status of the installation as *Success* or *Failed* when it finishes.
+	- The script now writes an installation log to `/usr/local/src` to help system admins delete the
+		program if they no longer need it.
+### Changed
+- [tlp.sh](post-install.d/tlp.sh):
+	- The script now offers many more configuration choices for handling the lid switch.
+	- The script now restarts the *systemd-logind* service after writing to the config file.
 
 ## Released
 ### Version [2.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.1.0) - *2021-07-15*
@@ -286,33 +304,3 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 	- Fixed ~/.vimrc and ~/.config/powerline-shell/config.json owned by root.
 	- Fixed not creating ~/.zsh_aliases before writing an alias there.
 	- Clear stdin before users pastes the GPG key to use as git signingkey.
-
-### Version [0.1.7](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.7) - *2021-04-02*
-#### Added
-- Added [.editorconfig](.editorconfig) for previewing files on GitHub.
-
-#### Changed
-- [mc_server_builder](mc_server_builder.sh) now prompts the user to agree to the EULA.
-- [pop_OS_start](pop_OS_start.sh) now installs *apt-transport-https* before installing https repositories.
-
-#### Fixed
-- Fixed the prompt when [mc_server_builder](mc_server_builder.sh) asked the user for some configurations.
-- Fixed calling [duc_noip_install](duc_noip_install.sh) from the [pop_OS_start](pop_OS_start.sh) script.
-- Fixed new-lines in APT preferences for *google-chrome-stable* and *code*. ([pop_OS_start](pop_OS_start.sh))
-- Returned old setup for the vscode repository, the new one was failing to install the gpg signing key.
-- Fixed bad completion of the script's repository when installing deskcuts. ([pop_OS_start](pop_OS_start.sh))
-- Fixed detection of upgrades to the kernel and rebooting after the upgrade. ([pop_OS_start](pop_OS_start.sh))
-
-### Version [0.1.6](https://github.com/nico-castell/PopOS-Setup/tree/0.1.6) [YANKED] - *2021-04-01*
-#### Added
-- Added more packages for the user to select in [pop_OS_start](pop_OS_start.sh).
-- The [.zshrc](samples/zshrc) file now binds `ctrl+del` to delete a whole word.
-
-#### Changed
-- Minor improvements to [back_me_up](back_me_up.sh).
-- Some improvements to the look of the code for writing files in [duc_noip_install](duc_noip_install.sh) and [pop_OS_start](pop_OS_start.sh).
-- Updated the setup for the vscode repository. ([pop_OS_start](pop_OS_start.sh))
-
-#### Fixed
-- Fixed APT's preconfigured preference to install and update **google-chrome-stable** and **code** from Pop!_OS' PPA instead of the respective package's official repository. ([pop_OS_start](pop_OS_start.sh))
-- Minor fixes in [mc_server_builder](mc_server_builder.sh).
