@@ -6,16 +6,19 @@
 
 # Set up script variables for later
 load_tmp_file=no
+run_as_root=no
 
 USAGE_MSG () {
 	printf "Usage: \e[01m./%s (-f)\e[00m
-	-f) Load previous choices\n" "$(basename "$0")"
+	-f) Load previous choices
+	-s) Run as root (not recommended)\n" "$(basename "$0")"
 }
 
 # Process options
 while [ -n "$1" ]; do
 	case "$1" in
 		-f) load_tmp_file=yes ;; # Load from temporary file
+		-s) run_as_root=yes   ;; # Don't stop if run as root
 		-h | --help)
 		USAGE_MSG >&2
 		exit 0
@@ -64,6 +67,14 @@ Separate () {
 	printf "\n\n%`tput cols`s\n" |tr " " "="
 	tput sgr0
 }
+
+# The script should not be run as root
+if [ $(id -u) == 0 -a "$run_as_root" = "no" ]; then
+	printf "\e[31mThe script should not be run as root, as some things might break\e[00m
+Instead, run it as your user and let the script ask for root privileges
+To force the script to run as root, use the -s flag\n" >&2
+	exit 1
+fi
 
 # Aquire root privileges now
 sudo echo >/dev/null || exit 1
