@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Minecraft
+Comment=Play Minecraft!
+Comment[es]=Juega a Minecraft!
+GenericName=Minecraft
+Exec=minecraft-launcher
+# Place the binary executable file in /usr/local/bin
+# Get it from: https://www.minecraft.net/en-us/download
+Icon=com.mojang.Minecraft
+# Place the .svg icon in /usr/local/share/icons/hicolor/scalable/apps
+Type=Application
+StartupNotify=false
+Terminal=false
+Categories=Game;
+Keywords=Minecraft;Server;
