@@ -3,12 +3,10 @@
 	"bashIde.explainshellEndpoint": "http://localhost:5000",
 	// Configure git to autofetch:
 	"git.autofetch": true,
-	// Use these rulers to know when to type a new line: (Prefer 78)
-	"editor.rulers": [
-		78,
-		120
-	],
+	"git.pruneOnFetch": true,
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": false,
+	"files.eol": "\n",
+	// Markdown all-in-one settings
 	"markdown.extension.toc.levels": "2..3"
 }
