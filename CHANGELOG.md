@@ -4,6 +4,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [Unreleased](#unreleased)
 	- [Added](#added)
 	- [Changed](#changed)
+	- [Removed](#removed)
 - [Released](#released)
 	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
 	- [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
@@ -13,7 +14,6 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
-	- [Version 0.1.8 - *2021-04-14*](#version-018---2021-04-14)
 
 ## Unreleased
 ### Added
@@ -27,10 +27,21 @@ All significant changes to **PopOS Setup** will be documented here.
 	- The script now shows the status of the installation as *Success* or *Failed* when it finishes.
 	- The script now writes an installation log to `/usr/local/src` to help system admins delete the
 		program if they no longer need it.
+- [mc_server_builder.sh](scripts/mc_server_builder.sh):
+	- The `compress.sh` script written by this script now shows a progress percentage while creating
+		backups of the server.
 ### Changed
 - [tlp.sh](post-install.d/tlp.sh):
 	- The script now offers many more configuration choices for handling the lid switch.
 	- The script now restarts the *systemd-logind* service after writing to the config file.
+- [zsh.sh](post-install.d/zsh.sh):
+	- The script now writes to `/etc/zsh/zshenv` code to add `~/.local/bin` to the $PATH for all
+		users.
+- [.zshrc](post-install.d/zshrc):
+	- The file no longer modifies the $PATH. As that is now handled by `/etc/zsh/zshenv`.
+### Removed
+- [.zshrc](post-install.d/zshrc):
+	- The file no longer reads `~/.zsh_aliases`.
 
 ## Released
 ### Version [2.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.1.0) - *2021-07-15*
@@ -285,22 +296,3 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 	- Fixed "missing [" when ensuring all packages are up to date.
 - [gnome_appearance.sh](gnome_appearance.sh):
 	- Fixed configuring favorite-apps.
-
-### Version [0.1.8](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.1.8) - *2021-04-14*
-#### Added
-- [.vimrc](samples/vimrc):
-	- Set up a statusline
-	- Set tabsize to 3
-
-#### Changed
-- [pop_OS_start](pop_OS_start.sh)
-	- Simplified copying deskcuts.
-
-#### Fixed
-- [pop_OS_start](pop_OS_start.sh):
-	- Fixed colored prompt when confirming packages.
-	- Fixed appending to powerline config file when it should be rewritten.
-	- Fixed missing ANSI escape after SSH setup.
-	- Fixed ~/.vimrc and ~/.config/powerline-shell/config.json owned by root.
-	- Fixed not creating ~/.zsh_aliases before writing an alias there.
-	- Clear stdin before users pastes the GPG key to use as git signingkey.
