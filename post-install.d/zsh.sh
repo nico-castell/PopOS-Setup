@@ -43,6 +43,18 @@ if [ $O -eq 0 ]; then
 	unset FILE
 fi
 
+# Modify PATH for all users
+sudo cat <<EOF >> /etc/zsh/zshenv
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin" ]]; then
+	PATH="$HOME/.local/bin:$PATH"
+fi
+if ! [[ "$PATH" =~ "$HOME/bin" ]]; then
+	PATH="$HOME/bin:$PATH"
+fi
+export PATH
+EOF
+
 printf "Choose the prompt style you prefer: \n"
 select s in $(cat "$HOME/.zshrc" | grep "# Choose a prompt style between" | sed -e 's/\s*#.*: //'); do
 	if [ $O -ne 0 ] && [ $s = "powerline" ]; then

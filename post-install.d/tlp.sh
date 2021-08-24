@@ -12,6 +12,7 @@ sudo systemctl restart tlp
 printf "%s\e[00m\n" $([ $? -eq 0 ] && printf "\e[32mSuccess" || printf "\e[31mFail")
 
 printf "If you have a laptop. What do you want to do when you close the lid?\n"
+CHOICE=none
 select s in ignore poweroff suspend hibernate "I don't have a laptop"; do
 case $s in
 	ignore)                  CHOICE=ignore    ;;
