@@ -208,70 +208,48 @@ chmod 744 run.sh
 cat <<EOF > compress.sh || status=bad
 #!/bin/bash
 
-pushd . >/dev/null
-cd "$mc_folder"
+FILE_NAME="server_\$(date +"%Y-%m-%d")" # The name of the archive file
+LOCATION="${mcfolder%/*}/mcserver-backups" # The location to store the file
+MCFOLDER="$mcfolder" # The location of the server folder
 
 if [[ \$(ps aux | grep 'jar server.jar' | grep -v grep) ]]; then
-	printf "\\e[31mERROR: You can't back up the server while it's running\\e[00m\\n" >&2
+	printf "\e[31mERROR: You can't back up the server while it's running\e[00m\n" >&2
 	exit 1
 fi
 
 if [ \$# -lt 1 ]; then
-	printf "\\e[31mERROR: You must use one argument\\e[00m\\n" >&2
-	printf "\\e[33mUsage:\\e[00m ./%s (-xz | -gz | -zip)\\n" \`basename "\$0"\` >&2
+	printf "\e[31mERROR: You must use one argument\e[00m\n" >&2
+	printf "\e[33mUsage:\e[00m ./%s (-xz | -gz | -zip)\n" `basename "\$0"` >&2
 	exit 1
 fi
 
+cd "\${MCFOLDER%/*}"
 case "\$1" in
-	-xz)  ARCHIVE="xz"  ;; # Use tar.xz
-	-gz)  ARCHIVE="gz"  ;; # Use tar.gz
-	-zip) ARCHIVE="zip" ;; # Use .zip
-	*) printf "ERROR: Option \\e[01m\$1\\e[00m not reconognized\\n"; exit 1 ;;
+	-xz)  COMMAND="tar -Jvcf \$LOCATION/\$FILE_NAME.tar.xz \$(basename \$MCFOLDER)" ;;
+	-gz)  COMMAND="tar -zvcf \$LOCATION/\$FILE_NAME.tar.gz \$(basename \$MCFOLDER)" ;;
+	-zip) COMMAND="zip -r \$LOCATION/\$FILE_NAME.zip \$(basename \$MCFOLDER)"       ;;
+	*) printf "ERROR: Option \e[01m\$1\e[00m not reconognized\n"; exit 1         ;;
 esac
 
-Animate() {
-	trap return 2
-	CICLE=('|' '/' '-' '\')
-	while true; do
-		for i in "\${CICLE[@]}"; do
-			printf "Compressing the server (\\e[36m%s\\e[00m) %s\\r" \$ARCHIVE \$i
-			sleep 0.2
-		done
-	done
-}
+# Declare variables used for progress
+let TOTAL_FILES=\$(find mcserver -depth | wc -l)
+let COUNT=0
 
-old_backups="\$(ls | grep -e '\\.tar\\...\$' -e '\\.zip\$')"
-if [ -n "\$old_backups" ]; then
-	printf "Deleting \\e[31mold\\e[00m backups...\\r"
-	rm "\$old_backups"
-fi
-
-DATE="\$(date +"%Y-%m-%d")"
-Animate & PID=\$!
-trap "kill -n 2 $PID; exit 130" 2
-
-case \$ARCHIVE in
-	xz) XZ_OPT=-9 tar -Jcf server_\$DATE.tar.xz * &>/dev/null; O=\$? ;;
-	gz) tar -zcf server_\$DATE.tar.gz * &>/dev/null; O=\$? ;;
-	zip) zip -rq server_\$DATE.zip * &>/dev/null; O=\$? ;;
-esac
-
-kill -n 2 \$PID
-trap - 2
-popd >/dev/null
-
-if [ \$O -eq 0 ]; then
-	printf "Compressing the server (\\e[36m%s\\e[00m), \\e[32mSuccess\\e[00m\\n" \$ARCHIVE
-else
-	printf "Compressing the server (\\e[36m%s\\e[00m), \\e[31mFail\\e[00m\\n" \$ARCHIVE
-fi
+# Display progress as the command is running
+export XZ_OPT=-9
+while read -r i; do
+	let COUNT++
+	printf "Compressing server: %s\r" \$(echo "scale=2; (\$COUNT/\$TOTAL_FILES)*100" | bc | sed -e 's/\.[0-9]\{,2\}//g' -e 's/^[0-9]\{,3\}/&%/g')
+done< <(\$COMMAND)
+echo
+unset COUNT TOTAL_FILES XZ_OPT
 
 if [[ \$2 == "-p" ]]; then
 	read -sp "Press ENTER to exit..."
 	echo
 fi
 
-exit \$O
+exit 0
 EOF
 chmod 744 compress.sh
 
