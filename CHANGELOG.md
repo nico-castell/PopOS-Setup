@@ -28,6 +28,8 @@ All significant changes to **PopOS Setup** will be documented here.
 	- The script now shows the status of the installation as *Success* or *Failed* when it finishes.
 	- The script now writes an installation log to `/usr/local/src` to help system admins delete the
 		program if they no longer need it.
+- [gnome_settings.sh](scripts/gnome_settings.sh):
+	- The script now sets up **geary** in a lot more depth.
 - [mc_server_builder.sh](scripts/mc_server_builder.sh):
 	- The `compress.sh` script written by this script now shows a progress percentage while creating
 		backups of the server.
