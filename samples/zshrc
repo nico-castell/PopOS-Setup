@@ -266,4 +266,4 @@ fi
 [ -d ~/.zshrc.d ] && \
 	for i in $(ls ~/.zshrc.d); do
 		. ~/.zshrc.d/$i
-	done
+	done || :

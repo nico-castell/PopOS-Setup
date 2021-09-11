@@ -16,6 +16,9 @@ export GOPATH="$HOME/.local/golang"
 export GOBIN="$HOME/.local/bin"
 
 if which code &>/dev/null || which code-insiders &>/dev/null; then
+	Separate 4
+	printf "Successfully installed \e[36mGolang\e[00m, configuring...\n"
+
 	read -rp "$(printf "Do you want to install tools to develop \e[01mGolang\e[00m in \e[01mVisual Studio Code\e[00m? 
 These tools can weigh about 250 MB, but the download may be slow.
 You answer (Y/n) > ")"

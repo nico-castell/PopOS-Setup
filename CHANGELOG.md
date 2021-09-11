@@ -4,6 +4,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [Unreleased](#unreleased)
 	- [Added](#added)
 	- [Changed](#changed)
+	- [Fixed](#fixed)
 	- [Removed](#removed)
 - [Released](#released)
 	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
@@ -39,6 +40,11 @@ All significant changes to **PopOS Setup** will be documented here.
 		users.
 - [.zshrc](post-install.d/zshrc):
 	- The file no longer modifies the $PATH. As that is now handled by `/etc/zsh/zshenv`.
+### Fixed
+- [post-install.d](post-install.d/golang.sh):
+	- It now shows the separator to avoid cluttering in the terminal.
+- [.zshrc](samples/zshrc):
+	- The file no longer causes the shell to open with error code 1.
 ### Removed
 - [.zshrc](post-install.d/zshrc):
 	- The file no longer reads `~/.zsh_aliases`.
