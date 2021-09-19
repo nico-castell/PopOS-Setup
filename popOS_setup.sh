@@ -108,6 +108,7 @@ if [ "$load_tmp_file" = "no" ]; then
 		[ "${REPLY,,}" = "y" ] && \
 			TO_REMOVE+=("$(printf %s "$i" | cut -d ' ' -f 2-)")
 	done
+	TO_REMOVE=($(echo ${TO_REMOVE[@]} | tr ' ' '\n' | sort -u))
 	echo "TO_REMOVE - ${TO_REMOVE[@]}" >> "$choices_file"
 
 	# Go through a list of packages asking the user to choose which ones to install
@@ -118,6 +119,7 @@ if [ "$load_tmp_file" = "no" ]; then
 			TO_APT+=("$(printf %s "$i" | cut -d ' ' -f 2-)")
 	done
 	TO_APT+=("ufw" "xclip") # Append "essential packages"
+	TO_APT=($(echo ${TO_APT[@]} | tr ' ' '\n' | sort -u))
 	echo "TO_APT - ${TO_APT[@]}" >> "$choices_file"
 
 	# Go through a list of flatpaks asking the user to choose which ones to install
@@ -127,6 +129,7 @@ if [ "$load_tmp_file" = "no" ]; then
 		[ "${REPLY,,}" = "y" ] || [ -z $REPLY ] && \
 			TO_FLATPAK+=("$(printf %s $i | cut -d ' ' -f 2-)")
 	done
+	TO_FLATPAK=($(echo ${TO_FLATPAK[@]} | tr ' ' '\n' | sort -u))
 	echo "TO_FLATPAK - ${TO_FLATPAK[@]}" >> "$choices_file"
 
 	IFS="$IFSB"
@@ -137,6 +140,8 @@ if [ "$load_tmp_file" = "no" ]; then
 	CHOSEN_DRIVER=none
 	if lspci | grep "NVIDIA" &>/dev/null; then
 		DRIVERS+=("system76-driver-nvidia")
+		DRIVERS+=("nvidia-driver-470")
+		DRIVERS+=("nvidia-driver-440")
 		DRIVERS+=("nvidia-driver-390")
 		DRIVERS+=("nvidia-driver-360")
 		DRIVERS+=("none")
