@@ -65,6 +65,7 @@ let g:currentmode={
 	\ 'S' : 'S-LINE',
 	\ '': 'S-BLOCK',
 	\ 'i' : 'INSERT',
+	\ 'r' : 'HIT-ENTER',
 	\ 'R' : 'REPLACE',
 	\ 'Rv': 'V-REPLACE',
 	\ 'c' : 'COMMAND',

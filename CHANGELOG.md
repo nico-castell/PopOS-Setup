@@ -49,6 +49,10 @@ All significant changes to **PopOS Setup** will be documented here.
 	- It now shows the separator to avoid cluttering in the terminal.
 - [.zshrc](samples/zshrc):
 	- The file no longer causes the shell to open with error code 1.
+- [.vimrc](samples/vimrc):
+	- Fixed mode() related eror when interactively replacing text.
+- [init.vim](samples/nvim.vim):
+	- Fixed mode() related eror when interactively replacing text.
 ### Removed
 - [.zshrc](post-install.d/zshrc):
 	- The file no longer reads `~/.zsh_aliases`.
