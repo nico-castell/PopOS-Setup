@@ -22,6 +22,8 @@ All significant changes to **PopOS Setup** will be documented here.
 	- The script now stops if you run it as root, you should run it as your user. You can use the `-s`
 	- The script now sorts the package lists and removes duplicates.
 	- Added a few more options for nvidia drivers.
+- [packages.txt](packages.txt):
+	- Added Krita drawing software.
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
 	- Now, if you pass the `-s` flag to the script, it will set up a systemd service and a systemd
 		timer so it runs every time you boot the computer.

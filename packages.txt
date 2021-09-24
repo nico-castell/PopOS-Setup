@@ -26,6 +26,7 @@ GNOME_Mines gnome-mines
 Steam steam
 GIMP gimp
 Inkscape inkscape
+Krita krita
 Brave_Browser brave-browser
 Google_Chrome google-chrome-stable
 Signal_Desktop signal-desktop
