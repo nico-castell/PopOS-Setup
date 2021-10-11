@@ -1,4 +1,9 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+#    _               _
+#   | |__   __ _ ___| |__  _ __ ___
+#   | '_ \ / _` / __| '_ \| '__/ __|
+#  _| |_) | (_| \__ \ | | | | | (__
+# (_)_.__/ \__,_|___/_| |_|_|  \___|
+# file for interactive shells executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -38,6 +43,7 @@ fi
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 	xterm-color|*-256color) color_prompt=yes;;
+	xterm-kitty)            color_prompt=yes ;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -64,18 +70,19 @@ git_info () {
 	# Get easy to parse info
 	_status="$(git status -b --porcelain=v2 2>/dev/null)"
 
-	# Prepare branch name (or commit name)
-	_branch="$(echo "$_status" | grep "^#\sbranch\.head" | rev | cut -d ' ' -f 1 | rev)"
-	[ "$_branch" = "(detached)" ] && \
-		_branch="$(echo "$_status" | grep "^#\sbranch\.oid" | rev | cut -d ' ' -f 1 | rev | colrm 8)"
-	[ -n "$_branch" ] && branch="$_branch"
+	# Prepare tag, branch name or commit hash (that's the order of priority)
+	branch="$(echo "$_status" | awk '$2 ~ /head/ {print $NF}')"
+	[ "$branch" = "(detached)" ] && \
+		branch="$(echo "$_status" | awk '$2 ~ /oid/ {print substr($NF,1,8)}')"
+	_tag=$(git describe --tags --exact-match $branch 2>/dev/null)
+	[ -n "$_tag" ] && branch=$_tag
 
 	# Process info
-	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]." | wc -l)"
-	_ahead="$(echo "$_status"     | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 2 | rev | sed -e "s/\+//")"
-	_behind="$(echo "$_status"    | grep "^#\sbranch.ab"     | rev | cut -d ' ' -f 1 | rev | sed -e "s/\-//")"
-	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]" | wc -l)"
-	_untracked="$(echo "$_status" | grep "^\?"               | wc -l)"
+	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]."   | wc -l)"
+	_ahead="$(echo "$_status"     | awk '$2 ~ /ab/ {print $3}' | sed -e "s/\+//")"
+	_behind="$(echo "$_status"    | awk '$2 ~ /ab/ {print $4}' | sed -e "s/\-//")"
+	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]"   | wc -l)"
+	_untracked="$(echo "$_status" | grep "^\?"                 | wc -l)"
 
 	# Prepare simbols for the reader
 	[ "$_commiting" -gt 0 ] && info+=" +"
@@ -85,9 +92,10 @@ git_info () {
 	[ "$_untracked" -gt 0 ] && info+=" ?"
 
 	# Build the prompt info
-	[ -n "$branch" ] && printf "%s%s%%f%s" "$1" "$branch" "$info"
-	unset branch _branch _ahead _behind _modified _untracked _status info
+	[ -n "$branch" ] && printf "%s%s%f%s" "$1" "$branch" "$info"
+	unset branch _branch _ahead _behind _modified _untracked _status _tag info
 }
+
 
 if [ "$color_prompt" = yes ]; then
 	PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]: \[\033[02m\][\$?]\[\033[00;01;33m\]\$(git_info ' ') \[\033[00;01;34m\]\w\[\033[00m\]\$ "
@@ -109,7 +117,6 @@ unset color_prompt force_color_prompt
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
 	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-	alias ls='ls --color=auto'
 	#alias dir='dir --color=auto'
 	#alias vdir='vdir --color=auto'
 
@@ -121,20 +128,32 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# some more ls aliases
+# Some ls aliases
 alias lla='ls -lahF --group-directories-first'
+alias llz='ls -lahFZ --group-directories-first'
 alias ll='ls -lABhF --group-directories-first'
 alias la='ls -ABhF'
 alias l='ls -lBhF --group-directories-first'
+alias lz='ls -lBhFZ --group-directories-first'
+
+# Create a new directory and cd into it
+new() {
+	mkdir "$1" && cd "$1"
+}
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+# You may want to put all your additions into separate files in the ~/.bashrc.d folder
+# like ~/.bashrc.d/aliases.sh, instead of adding them here directly.
+
+# User specific aliases and functions
+[ -d ~/.bashrc.d ] && \
+	for i in $(ls ~/.bashrc.d); do
+		. ~/.bashrc.d/$i
+	done
 
 if [ -f ~/.bash_aliases ]; then
 	. ~/.bash_aliases

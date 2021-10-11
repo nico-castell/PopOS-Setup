@@ -1,15 +1,12 @@
 [Desktop Entry]
 Version=1.0
-Type=Application
 Name=CMake
 Comment=Cross-platform buildsystem
-Exec=/usr/local/bin/cmake-gui %f
+Exec=cmake-gui %f
 Icon=CMakeSetup
-X-MultipleArgs=false
 Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=Development;
 StartupNotify=true
-Categories=Development;Utility;
-Keywords=cmake;
 MimeType=application/x-cmakecache;
-
-X-Desktop-File-Install-Version=0.26

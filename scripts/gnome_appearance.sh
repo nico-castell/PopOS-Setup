@@ -8,7 +8,8 @@
 
 # TODO: Configure your theme
 # Add this folder structure to the root of this repository to auto-configure your theme.
-# The files must end in '.tar.gz' and there can only be one file in each subfolder of 'themes'.
+# There can only be one file in each subfolder of 'themes' 
+
 # script's location
 # └── themes
 #     ├── background
@@ -19,9 +20,9 @@
 #     │   └── icons.tar.gz
 #     └── theme
 #         └── theme.tar.gz
-#
+
 # Git will ignore the themes folder.
-# The script assumes the archives' basenames (before '.tar.gz') are the names of the themes.
+# The script assumes the archives' basenames (before '.tar.{xz,gz}') are the names of the themes.
 
 cd "$(dirname "$0")"
 location="$(pwd)"
@@ -36,10 +37,9 @@ cursor_name=""
 if [ -d "$location/themes/cursor" ]; then
 	cd "$location/themes/cursor"
 	f="$(ls)"
-	tar -zxf "$f"
-	mkdir -p ~/.icons
-	cursor_name="${f/".tar.gz"/""}"
-	mv "$cursor_name" ~/.icons
+	mkdir -p ~/.local/share/icons
+	tar -C ~/.local/share/icons -xf "$f"
+	cursor_name="${f/.tar.*/}"
 fi
 unset f
 
@@ -47,10 +47,9 @@ icons_name=""
 if [ -d "$location/themes/icons" ]; then
 	cd "$location/themes/icons"
 	f="$(ls)"
-	tar -zxf "$f"
-	mkdir -p ~/.icons
-	icons_name="${f/".tar.gz"/""}"
-	mv "$icons_name" ~/.icons
+	mkdir -p ~/.local/share/icons
+	tar -C ~/.local/share/icons -xf "$f"
+	icons_name="${f/.tar.*/}"
 fi
 unset f
 
@@ -58,10 +57,9 @@ theme_name=""
 if [ -d "$location/themes/theme" ]; then
 	cd "$location/themes/theme"
 	f="$(ls)"
-	tar -zxf "$f"
-	mkdir -p ~/.themes
-	theme_name="${f/".tar.gz"/""}"
-	mv "$theme_name" ~/.themes
+	mkdir -p ~/.local/share/themes
+	tar -C ~/.local/share/themes -xf "$f"
+	theme_name="${f/.tar.*/}"
 fi
 unset f
 
@@ -98,7 +96,7 @@ fi
 # Configuring background
 bk="$(ls "$location/themes/background" | grep -e '\.png$' -e '\.jpg$')"
 if [ "$bk" ]; then
-	destination="/home/$USER/.local/share/backgrounds"
+	destination="$HOME/.local/share/backgrounds"
 	echo "Configuring background..."
 	DATE="$(date +"%Y-%m-%d-%H-%M-%S")"
 	mkdir -p "$destination"
@@ -106,26 +104,5 @@ if [ "$bk" ]; then
 	gsettings set org.gnome.desktop.background picture-uri "file://$destination/$DATE-$bk"
 	unset destination
 fi
-
-# Configuring interface.
-echo "Configuring interface..."
-gsettings set org.gnome.desktop.calendar show-weekdate true
-gsettings set org.gnome.desktop.interface clock-format 24h
-gsettings set org.gnome.desktop.interface clock-show-weekday true
-gsettings set org.gnome.desktop.interface show-battery-percentage true
-gsettings set org.gnome.shell.extensions.ding show-volumes false
-
-# Configuring terminal.
-echo "Configuring the terminal..."
-GNOME_TERMINAL_PROFILE=`gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'`
-
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ cursor-shape "underline"
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-theme-colors false
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-theme-transparency false
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-transparent-background true
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ background-color "'rgb(5,5,5)'"
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ background-transparency-percent 5
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy "'never'"
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ font "Hack 12"
 
 # Thanks for downloading, and enjoy!

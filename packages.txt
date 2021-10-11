@@ -24,10 +24,12 @@ Discord discord
 GNOME_Chess gnome-chess
 GNOME_Mines gnome-mines
 Steam steam
+Terminal_fun fortune cowsay toilet figlet lolcat
 GIMP gimp
 Inkscape inkscape
 Krita krita
 Brave_Browser brave-browser
+Chromium chromium-browser
 Google_Chrome google-chrome-stable
 Signal_Desktop signal-desktop
 Vivaldi vivaldi

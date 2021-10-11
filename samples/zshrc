@@ -1,4 +1,9 @@
-# ~/.zshrc file for zsh interactive shells.
+#            _
+#    _______| |__  _ __ ___
+#   |_  / __| '_ \| '__/ __|
+#  _ / /\__ \ | | | | | (__
+# (_)___|___/_| |_|_|  \___|
+# file for interactive shells
 # see /usr/share/doc/zsh/examples/zshrc for examples
 
 # This zshrc is based on Kali Linux's zsh.
@@ -94,11 +99,12 @@ git_info () {
 	# Get easy to parse info
 	_status="$(git status -b --porcelain=v2 2>/dev/null)"
 
-	# Prepare branch name (or commit name)
-	_branch="$(echo "$_status" | awk '$2 ~ /head/ {print $NF}')"
-	[ "$_branch" = "(detached)" ] && \
-		_branch="$(echo "$_status" | awk '$2 ~ /oid/ {print substr($NF,1,8)}')"
-	[ -n "$_branch" ] && branch="$_branch"
+	# Prepare tag, branch name or commit hash (that's the order of priority)
+	branch="$(echo "$_status" | awk '$2 ~ /head/ {print $NF}')"
+	[ "$branch" = "(detached)" ] && \
+		branch="$(echo "$_status" | awk '$2 ~ /oid/ {print substr($NF,1,8)}')"
+	_tag=$(git describe --tags --exact-match $branch 2>/dev/null)
+	[ -n "$_tag" ] && branch=$_tag
 
 	# Process info
 	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]."   | wc -l)"
@@ -116,7 +122,7 @@ git_info () {
 
 	# Build the prompt info
 	[ -n "$branch" ] && printf "%s%s%%f%s" "$1" "$branch" "$info"
-	unset branch _branch _ahead _behind _modified _untracked _status info
+	unset branch _branch _ahead _behind _modified _untracked _status _tag info
 }
 
 # Powerline style shell
@@ -154,7 +160,7 @@ if [ "$color_prompt" = yes ]; then
 		fedora) PROMPT=$'[%n@%m %1~%(1j. ⚙.)\$(git_info " - ")]%# ' ;;
 		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)\$(git_info " %F{%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
 		kali) PROMPT=$'%F{%(#.red.blue)}╭──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " - %F{%(#.blue.yellow)}")\n%F{%(#.red.blue)}╰─%#%f ' ;;
-		vscode) PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)\$(git_info " %F{%(#.blue.yellow)} ") %(#.%F{red}🕱.%F{blue}>)%f ' ;;
+		vscode) PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)\$(git_info " %F{%(#.blue.yellow)} ") %(#.%F{red}.%F{blue})⟩%f ' ;;
 		powerline) use_powerline ;;
 	esac
 	RPROMPT=$'%(?.. %F{red}%? ✘%f)'

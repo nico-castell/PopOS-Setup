@@ -1,12 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-	- [Added](#added)
-	- [Changed](#changed)
-	- [Fixed](#fixed)
-	- [Removed](#removed)
 - [Released](#released)
+	- [Version 2.2.0 - *2021-10-11*](#version-220---2021-10-11)
 	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
 	- [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
 	- [Version 1.2.0 - *2021-06-11*](#version-120---2021-06-11)
@@ -16,14 +12,22 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
 
-## Unreleased
-### Added
+<!-- TODO: Add support for kernel-development and virtualization -->
+
+## Released
+### Version [2.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.2.0) - *2021-10-11*
+This update comes after a **very** long time, the main things it brings are:
+- Defined behaviour for running the *popOS_setup.sh* script as root.
+- Using `/etc/zsh/zshenv` to configure the **$PATH** for all users.
+#### Added
 - [popOS_setup.sh](popOS_setup.sh):
 	- The script now stops if you run it as root, you should run it as your user. You can use the `-s`
 	- The script now sorts the package lists and removes duplicates.
 	- Added a few more options for nvidia drivers.
 - [packages.txt](packages.txt):
 	- Added Krita drawing software.
+	- Added Chromium browser.
+	- Added some fun terminal commands.
 - [duc_noip_install.sh](scripts/duc_noip_install.sh):
 	- Now, if you pass the `-s` flag to the script, it will set up a systemd service and a systemd
 		timer so it runs every time you boot the computer.
@@ -37,16 +41,23 @@ All significant changes to **PopOS Setup** will be documented here.
 - [mc_server_builder.sh](scripts/mc_server_builder.sh):
 	- The `compress.sh` script written by this script now shows a progress percentage while creating
 		backups of the server.
-### Changed
+- [remove.txt](remove.txt):
+	- Added *Videos* and *Archive Manager* to the list of possible packages to remove.
+#### Changed
+- [gnome_appearance.sh](scripts/gnome_appearance.sh):
+	- The file now has support for compressed archives that are not gzip format.
+	- The file now extracts the themes and icons into `~/.local/share`.
 - [tlp.sh](post-install.d/tlp.sh):
 	- The script now offers many more configuration choices for handling the lid switch.
 	- The script now restarts the *systemd-logind* service after writing to the config file.
 - [zsh.sh](post-install.d/zsh.sh):
 	- The script now writes to `/etc/zsh/zshenv` code to add `~/.local/bin` to the $PATH for all
 		users.
-- [.zshrc](post-install.d/zshrc):
+- [.zshrc](samples/zshrc):
 	- The file no longer modifies the $PATH. As that is now handled by `/etc/zsh/zshenv`.
-### Fixed
+- [.bashrc](samples/bashrc):
+	- Some of the improvements for the Z-Shell were added to this file.
+#### Fixed
 - [post-install.d](post-install.d/golang.sh):
 	- It now shows the separator to avoid cluttering in the terminal.
 - [.zshrc](samples/zshrc):
@@ -55,11 +66,10 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Fixed mode() related eror when interactively replacing text.
 - [init.vim](samples/nvim.vim):
 	- Fixed mode() related eror when interactively replacing text.
-### Removed
+#### Removed
 - [.zshrc](post-install.d/zshrc):
 	- The file no longer reads `~/.zsh_aliases`.
 
-## Released
 ### Version [2.1.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.1.0) - *2021-07-15*
 This update had many more commits than usual, though there aren't that many new things. The main improvements are:
 - Heavily improved the configuration of Vim and added Neovim with a similar configuration.

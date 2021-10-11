@@ -1,3 +1,5 @@
-Libre_Office libreoffice*
-Geary_Mail geary
 Firefox firefox*
+Geary_Mail geary
+Libre_Office libreoffice*
+Archive_Manager file-roller
+Videos totem
