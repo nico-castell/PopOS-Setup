@@ -1,6 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+	- [Fixed](#fixed)
 - [Released](#released)
 	- [Version 2.2.0 - *2021-10-11*](#version-220---2021-10-11)
 	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
@@ -13,6 +15,12 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
 
 <!-- TODO: Add support for kernel-development and virtualization -->
+## Unreleased
+### Fixed
+- [.zshrc](samples/zshrc):
+	- The git prompt now doesn't dissapear if you're not in the root folder of a repository.
+- [.bashrc](samples/bashrc):
+	- The git prompt now doesn't dissapear if you're not in the root folder of a repository.
 
 ## Released
 ### Version [2.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.2.0) - *2021-10-11*

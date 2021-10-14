@@ -65,7 +65,7 @@ fi
 # Find info about git and add it to the prompt.
 git_info () {
 	# Don't run this code if it's not going to be useful
-	[ ! -d .git ] && return
+	git rev-parse --git-dir &>/dev/null || return
 
 	# Get easy to parse info
 	_status="$(git status -b --porcelain=v2 2>/dev/null)"
