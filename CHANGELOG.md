@@ -27,6 +27,8 @@ All significant changes to **PopOS Setup** will be documented here.
 - [kdev.sh](samples/kdev.sh):
 	- This file will be installed by [fakeroot.sh](post-install.d/fakeroot.sh) and it's role is to
 		help the user manage config files and kernel installations and uninstallations.
+- [popOS_setup.sh](popOS_setup.sh):
+	- The package **pixz** is now installed as essential.
 - [flatpaks.txt](flatpaks.txt):
 	- Added **Discord** to the list.
 - [remove.txt](remove.txt):

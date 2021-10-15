@@ -118,7 +118,7 @@ if [ "$load_tmp_file" = "no" ]; then
 		[ "${REPLY,,}" = "y" ] || [ -z $REPLY ] && \
 			TO_APT+=("$(printf %s "$i" | cut -d ' ' -f 2-)")
 	done
-	TO_APT+=("ufw" "xclip") # Append "essential packages"
+	TO_APT+=(ufw xclip pixz) # Append "essential packages"
 	TO_APT=($(echo ${TO_APT[@]} | tr ' ' '\n' | sort -u))
 	echo "TO_APT - ${TO_APT[@]}" >> "$choices_file"
 
