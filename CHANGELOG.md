@@ -22,6 +22,8 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Added **Trash CLI** to the list.
 - [flatpaks.txt](flatpaks.txt):
 	- Added **Discord** to the list.
+- [remove.txt](remove.txt):
+	- Added **popsicle** and **gnome help** to the list.
 ### Fixed
 - [popOS_setup.sh](popOS_setup.sh):
 	- Fixed the welcome message.
