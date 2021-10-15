@@ -305,8 +305,8 @@ sudo apt install ${TO_APT[@]}
 # Install user-selected flatpaks:
 if [ -n "$TO_FLATPAK" ]; then
 	Separate 4
-	flatpak --user remote-delete flathub
-	flatpak --system remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	flatpak --user remote-delete flathub &>/dev/null
+	flatpak --system remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &>/dev/null
 	printf "Installing user-selected flatpaks...\n"
 	printf "Which type of installation do you want to do?\n"
 	select i in "system" "user"; do
