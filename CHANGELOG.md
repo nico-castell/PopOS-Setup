@@ -15,11 +15,18 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
 
-<!-- TODO: Add support for kernel-development and virtualization -->
+<!-- TODO: Add support for virtualization (virt-manager) -->
 ## Unreleased
 ### Added
 - [packages.txt](packages.txt):
+	- Added **Kernel development** to the list
 	- Added **Trash CLI** to the list.
+- [fakeroot.sh](post-install.d/fakeroot.sh):
+	- This file is triggered by the selection of **Kernel development**, and helps to help the user
+		set up some kernel development tools.
+- [kdev.sh](samples/kdev.sh):
+	- This file will be installed by [fakeroot.sh](post-install.d/fakeroot.sh) and it's role is to
+		help the user manage config files and kernel installations and uninstallations.
 - [flatpaks.txt](flatpaks.txt):
 	- Added **Discord** to the list.
 - [remove.txt](remove.txt):
