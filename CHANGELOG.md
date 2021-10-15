@@ -1,6 +1,9 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+	- [Added](#added)
+	- [Fixed](#fixed)
 - [Released](#released)
 	- [Version 2.2.1 - *2021-10-15*](#version-221---2021-10-15)
 	- [Version 2.2.0 - *2021-10-11*](#version-220---2021-10-11)
@@ -12,6 +15,14 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
+
+## Unreleased
+### Added
+- [remove.txt](remove.txt):
+	- Added **Eddy** to the list.
+### Fixed
+- [remove.txt](remove.txt):
+	- Fixed *popsicle* package not removing *popsicle-gtk*
 
 ## Released
 ### Version [2.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.2.1) - *2021-10-15*

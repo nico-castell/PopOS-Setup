@@ -1,7 +1,8 @@
 Firefox firefox*
 Geary_Mail geary
 Libre_Office libreoffice*
+Eddy com.github.donadigo.eddy
 Archive_Manager file-roller
 GNOME_Help yelp
-USB_Flasher popsicle
+USB_Flasher popsicle*
 Videos totem
