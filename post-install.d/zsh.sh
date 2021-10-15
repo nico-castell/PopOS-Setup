@@ -44,7 +44,7 @@ if [ $O -eq 0 ]; then
 fi
 
 # Modify PATH for all users
-cat <<EOF | tee -a /etc/zsh/zshenv >/dev/null
+cat <<EOF | sudo tee -a /etc/zsh/zshenv >/dev/null
 # User specific environment
 if ! [[ "\$PATH" =~ "\$HOME/.local/bin" ]]; then
 	PATH="\$HOME/.local/bin:\$PATH"

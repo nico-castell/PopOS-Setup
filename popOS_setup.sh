@@ -87,7 +87,7 @@ version="$(git describe --tags --abbrev=0 2>/dev/null)"
 [ -z "$version" -a -n "$commit" ] && \
 	version=" at commit $commit"
 
-printf "Welcome to \e[36m01mPop!_OS Setup\e[00m%s!
+printf "Welcome to \e[36;01mPop!_OS Setup\e[00m%s!
 Follow the instructions and you should be up and running soon
 THE SOFTWARE IS PROVIDED \"AS IS\", read the license for more information\n\n" "$version"
 unset version commit
@@ -305,12 +305,14 @@ sudo apt install ${TO_APT[@]}
 # Install user-selected flatpaks:
 if [ -n "$TO_FLATPAK" ]; then
 	Separate 4
+	flatpak --user remote-delete flathub
+	flatpak --system remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	printf "Installing user-selected flatpaks...\n"
 	printf "Which type of installation do you want to do?\n"
 	select i in "system" "user"; do
 	case $i in
-		system) sudo flatpak install ${TO_FLATPAK[@]}        ;;
-		user)   flatpak install ${TO_FLATPAK[@]}             ;;
+		system) flatpak --system install ${TO_FLATPAK[@]}    ;;
+		user)   flatpak --user   install ${TO_FLATPAK[@]}    ;;
 		*) printf "You must choose a valid option"; continue ;;
 	esac; break; done
 	Separate 4

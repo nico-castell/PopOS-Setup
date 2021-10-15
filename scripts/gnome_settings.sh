@@ -15,7 +15,7 @@ fi
 
 if which gedit &>/dev/null; then
 	echo "Configuring the text editor (gedit)..."
-	which dconf &>/dev/null && dconf reset /org/gnome/gedit/
+	which dconf &>/dev/null && dconf reset -f /org/gnome/gedit/
 
 	gsettings set org.gnome.gedit.plugins active-plugins "['time', 'spell', 'sort', 'snippets', 'quickhighlight', 'modelines', 'filebrowser', 'docinfo']"
 	gsettings set org.gnome.gedit.preferences.editor tabs-size "3"
@@ -28,8 +28,7 @@ if which gedit &>/dev/null; then
 	gsettings set org.gnome.gedit.preferences.ui side-panel-visible true
 
 	gsettings set org.gnome.gedit.preferences.editor scheme 'oblivion'
-	gsettings set org.gnome.gedit.preferences.editor background-pattern 'grid'
-	gsettings set org.gnome.gedit.preferences.editor display-overview-map true
+	gsettings set org.gnome.gedit.preferences.editor background-pattern 'none'
 	gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 	gsettings set org.gnome.gedit.preferences.editor right-margin-position 100
 
