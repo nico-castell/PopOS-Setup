@@ -1,10 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-	- [Added](#added)
-	- [Fixed](#fixed)
 - [Released](#released)
+	- [Version 2.2.1 - *2021-10-15*](#version-221---2021-10-15)
 	- [Version 2.2.0 - *2021-10-11*](#version-220---2021-10-11)
 	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
 	- [Version 2.0.0 - *2021-06-19*](#version-200---2021-06-19)
@@ -15,9 +13,11 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
 
-<!-- TODO: Add support for virtualization (virt-manager) -->
-## Unreleased
-### Added
+## Released
+### Version [2.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.2.1) - *2021-10-15*
+This release completes the plan for 2.2.0 by adding support for installing **Virt Manager** (a type
+1 hypervisor) and tools for kernel development. Additionally, many bugs were patched.
+#### Added
 - [packages.txt](packages.txt):
 	- Added **Kernel development** to the list.
 	- Added **Virt Manager** to the list.
@@ -36,7 +36,7 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Added **Discord** to the list.
 - [remove.txt](remove.txt):
 	- Added **popsicle** and **gnome help** to the list.
-### Fixed
+#### Fixed
 - [popOS_setup.sh](popOS_setup.sh):
 	- Fixed the welcome message.
 	- Fixed system installation of flatpaks.
@@ -49,7 +49,6 @@ All significant changes to **PopOS Setup** will be documented here.
 - [.bashrc](samples/bashrc):
 	- The git prompt now doesn't dissapear if you're not in the root folder of a repository.
 
-## Released
 ### Version [2.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.2.0) - *2021-10-11*
 This update comes after a **very** long time, the main things it brings are:
 - Defined behaviour for running the *popOS_setup.sh* script as root.
