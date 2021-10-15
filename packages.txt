@@ -16,6 +16,7 @@ Java_Runtime default-jre
 Kernel_development build-essentials fakeroot ncurses-dev xz-utils zstd libssl-dev bc flex libelf-dev bison
 Ninja_Build ninja-build
 Node.JS nodejs
+Virt_Manager virt-manager bridge-utils
 Virtual_Box virtualbox
 Visual_Studio_Code code
 Visual_Studio_Code_Insiders code-insiders

@@ -19,7 +19,8 @@ All significant changes to **PopOS Setup** will be documented here.
 ## Unreleased
 ### Added
 - [packages.txt](packages.txt):
-	- Added **Kernel development** to the list
+	- Added **Kernel development** to the list.
+	- Added **Virt Manager** to the list.
 	- Added **Trash CLI** to the list.
 - [fakeroot.sh](post-install.d/fakeroot.sh):
 	- This file is triggered by the selection of **Kernel development**, and helps to help the user
@@ -27,6 +28,8 @@ All significant changes to **PopOS Setup** will be documented here.
 - [kdev.sh](samples/kdev.sh):
 	- This file will be installed by [fakeroot.sh](post-install.d/fakeroot.sh) and it's role is to
 		help the user manage config files and kernel installations and uninstallations.
+- [virt-manager.sh](post-install.d/virt-manager.sh):
+	- This file configures libvirt to allow the user to run and manage virtual machines.
 - [popOS_setup.sh](popOS_setup.sh):
 	- The package **pixz** is now installed as essential.
 - [flatpaks.txt](flatpaks.txt):
