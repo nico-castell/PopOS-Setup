@@ -2,6 +2,7 @@
 All significant changes to **PopOS Setup** will be documented here.
 
 - [Unreleased](#unreleased)
+	- [Added](#added)
 	- [Fixed](#fixed)
 - [Released](#released)
 	- [Version 2.2.0 - *2021-10-11*](#version-220---2021-10-11)
@@ -16,7 +17,19 @@ All significant changes to **PopOS Setup** will be documented here.
 
 <!-- TODO: Add support for kernel-development and virtualization -->
 ## Unreleased
+### Added
+- [packages.txt](packages.txt):
+	- Added **Trash CLI** to the list.
+- [flatpaks.txt](flatpaks.txt):
+	- Added **Discord** to the list.
 ### Fixed
+- [popOS_setup.sh](popOS_setup.sh):
+	- Fixed the welcome message.
+	- Fixed system installation of flatpaks.
+- [gnome_settings.sh](scripts/gnome_settings.sh):
+	- Fixed bad usage of dconf when configuring gedit.
+- [zsh.sh](post-install.d/zsh.sh):
+	- Fixed permission denied when writing to `/etc/zsh/zshenv`.
 - [.zshrc](samples/zshrc):
 	- The git prompt now doesn't dissapear if you're not in the root folder of a repository.
 - [.bashrc](samples/bashrc):

@@ -46,5 +46,6 @@ GParted gparted
 Kitty_Terminal kitty
 Neofetch neofetch
 Neovim neovim
+Trash_CLI trash-cli
 Tree tree
 Vim vim

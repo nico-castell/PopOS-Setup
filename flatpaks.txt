@@ -1,5 +1,6 @@
-DropBox com.dropbox.Client
-Spotify com.Spotify.Client
-KdenLive org.kde.kdenlive
-GitKraken com.axosoft.GitKraken
 Bitwarden com.bitwarden.desktop
+Discord com.discordapp.Discord
+DropBox com.dropbox.Client
+GitKraken com.axosoft.GitKraken
+KdenLive org.kde.kdenlive
+Spotify com.Spotify.Client
