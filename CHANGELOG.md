@@ -1,10 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-	- [Added](#added)
-	- [Fixed](#fixed)
 - [Released](#released)
+	- [Version 2.3.0 - *2021-10-17*](#version-230---2021-10-17)
 	- [Version 2.2.1 - *2021-10-15*](#version-221---2021-10-15)
 	- [Version 2.2.0 - *2021-10-11*](#version-220---2021-10-11)
 	- [Version 2.1.0 - *2021-07-15*](#version-210---2021-07-15)
@@ -16,15 +14,18 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
 
-## Unreleased
-### Added
+## Released
+### Version [2.3.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.3.0) - *2021-10-17*
+This is a small release made in parity with the
+[Fedora Setup](https://github.com/nico-castell/Fedora-Setup) project to syncronize changes to this
+date.
+#### Added
 - [remove.txt](remove.txt):
 	- Added **Eddy** to the list.
-### Fixed
+#### Fixed
 - [remove.txt](remove.txt):
 	- Fixed *popsicle* package not removing *popsicle-gtk*
 
-## Released
 ### Version [2.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.2.1) - *2021-10-15*
 This release completes the plan for 2.2.0 by adding support for installing **Virt Manager** (a type
 1 hypervisor) and tools for kernel development. Additionally, many bugs were patched.
