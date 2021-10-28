@@ -1,6 +1,9 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+	- [Added](#added)
+	- [Changed](#changed)
 - [Released](#released)
 	- [Version 2.3.0 - *2021-10-17*](#version-230---2021-10-17)
 	- [Version 2.2.1 - *2021-10-15*](#version-221---2021-10-15)
@@ -13,6 +16,22 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
+
+## Unreleased
+### Added
+- [init.vim](samples/nvim.vim):
+	- The file type *limits* was added to use tabs with a length of 8.
+- [vimrc](samples/vimrc):
+	- The file type *limits* was added to use tabs with a length of 8.
+### Changed
+- [kdev.sh](samples/kdev.sh):
+	- The config option no longer reads the `Makefile` if you don't specify a config name, instead,
+		it reads `.config`.
+- [.zshrc](samples/zshrc):
+	- The shell can now detect when it is running inside GNOME Builder, and use the vscode prompt.
+	- The `la` alias now groups folders first.
+- [.bashrc](samples/bashrc):
+	- The `la` alias now groups folders first.
 
 ## Released
 ### Version [2.3.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.3.0) - *2021-10-17*

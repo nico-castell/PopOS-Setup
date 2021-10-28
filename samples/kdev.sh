@@ -13,7 +13,7 @@
 config() {
 	# Use specified config file, or find the config in use now, if all fails, return error
 	TYPE=$1
-	[ -z $TYPE ] && TYPE=$(head Makefile | awk 'NR == 5 {print $3}' | sed 's/\-//' )
+	[ -z $TYPE ] && TYPE=$(head -n 29 .config | awk -F\" 'NR == 29 {print substr($2,2)}')
 	[ -z $TYPE ] && return 1
 
 	# If the config file hasn't yet been created, create it from the original

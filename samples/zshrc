@@ -4,7 +4,6 @@
 #  _ / /\__ \ | | | | | (__
 # (_)___|___/_| |_|_|  \___|
 # file for interactive shells
-# see /usr/share/doc/zsh/examples/zshrc for examples
 
 # This zshrc is based on Kali Linux's zsh.
 
@@ -155,7 +154,7 @@ if [ "$color_prompt" = yes ]; then
 	# Configure the prompt, include a special prompt for vscode.
 	# The vscode prompt is advanced like the others, but small and easy to
 	# render. This helps when you're in vscode's tiny, gpu accelerated terminal
-	[ -n "$VSCODE_GIT_IPC_HANDLE" ] && prompt_style=vscode
+	[ -n "$VSCODE_GIT_IPC_HANDLE" -o -n "$INSIDE_GNOME_BUILDER" ] && prompt_style=vscode
 	case ${(L)prompt_style} in
 		fedora) PROMPT=$'[%n@%m %1~%(1j. ⚙.)\$(git_info " - ")]%# ' ;;
 		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)\$(git_info " %F{%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
@@ -248,7 +247,7 @@ fi
 alias lla='ls -lahF --group-directories-first'
 alias llz='ls -lahFZ --group-directories-first'
 alias ll='ls -lABhF --group-directories-first'
-alias la='ls -ABhF'
+alias la='ls -ABhF --group-directories-first'
 alias l='ls -lBhF --group-directories-first'
 alias lz='ls -lBhFZ --group-directories-first'
 

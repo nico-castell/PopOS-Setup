@@ -33,6 +33,7 @@ augroup vimrcEx
 	au!
 	autocmd FileType text     setlocal textwidth=100 colorcolumn=100
 	autocmd FileType markdown setlocal textwidth=100 colorcolumn=100
+	autocmd FileType limits   setlocal tabstop=8
 augroup END
 
 " Add optional packages.

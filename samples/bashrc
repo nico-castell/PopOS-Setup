@@ -132,7 +132,7 @@ fi
 alias lla='ls -lahF --group-directories-first'
 alias llz='ls -lahFZ --group-directories-first'
 alias ll='ls -lABhF --group-directories-first'
-alias la='ls -ABhF'
+alias la='ls -ABhF --group-directories-first'
 alias l='ls -lBhF --group-directories-first'
 alias lz='ls -lBhFZ --group-directories-first'
 
