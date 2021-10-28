@@ -2,6 +2,7 @@
 # Configure gsettings for gnome.
 
 # MIT License - Copyright (c) 2021 Nicolás Castellán
+# SPDX License identifier: MIT
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information
 

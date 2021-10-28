@@ -3,6 +3,7 @@
 # Originally developed in Gnome Shell 3.38.1.
 
 # MIT License - Copyright (c) 2021 Nicolás Castellán
+# SPDX License identifier: MIT
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information
 
