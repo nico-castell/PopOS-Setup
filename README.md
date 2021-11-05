@@ -63,7 +63,7 @@ I'm assuming you have just installed [Pop!_OS](https://pop.system76.com/) succes
 This project can set up some powerful features, such as:
 
 - Advanced, stylized prompts for the **Z-Shell**:
-	<p align="center"><img width="600" height="272" src="assets/prompts.png"></p>
+	<p align="center"><img width="600" height="315" src="assets/prompts.png"></p>
 - Powerline plugin for the **Vim** editor:
 	<p align="center"><img width="600" height="390" src="assets/vim-powerline.png"></p>
 - Setting up **GnuPG** to sign **Git** commits:
