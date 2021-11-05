@@ -4,6 +4,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [Unreleased](#unreleased)
 	- [Added](#added)
 	- [Changed](#changed)
+	- [Fixed](#fixed)
 - [Released](#released)
 	- [Version 2.3.0 - *2021-10-17*](#version-230---2021-10-17)
 	- [Version 2.2.1 - *2021-10-15*](#version-221---2021-10-15)
@@ -30,10 +31,17 @@ All significant changes to **PopOS Setup** will be documented here.
 	- The config option no longer reads the `Makefile` if you don't specify a config name, instead,
 		it reads `.config`.
 - [.zshrc](samples/zshrc):
+	- The code for the git prompt was changed to be much faster by using zsh's *vcs_info*. This means
+		less functionality, but much less code to run every time the prompt needs to be renderes.
 	- The shell can now detect when it is running inside GNOME Builder, and use the vscode prompt.
 	- The `la` alias now groups folders first.
+	- Made many other tweaks to improve code maintainability and speed.
 - [.bashrc](samples/bashrc):
 	- The `la` alias now groups folders first.
+### Fixed
+- [kdev.sh](samples/kdev.sh):
+	- Stop assuming the user's *cwd* when using `kdev config`.
+	- Fixed `kdev config` failing to find the config type currently in use.
 
 ## Released
 ### Version [2.3.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.3.0) - *2021-10-17*

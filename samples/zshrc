@@ -5,7 +5,7 @@
 # (_)___|___/_| |_|_|  \___|
 # file for interactive shells
 
-# This zshrc is based on Kali Linux's zsh.
+# This .zshrc is based on Kali Linux's .zshrc, though it's been modified in significant ways.
 
 setopt autocd               # change directory just by typing its name
 #setopt correct             # auto correct mistakes
@@ -19,7 +19,7 @@ setopt promptsubst          # enable command substitution in prompt
 WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 
 # hide EOL sign ('%')
-PROMPT_EOL_MARK=""
+export PROMPT_EOL_MARK=""
 
 # configure key keybindings
 bindkey -e                                      # emacs key bindings
@@ -40,6 +40,17 @@ autoload -Uz compinit
 compinit -d ~/.cache/zcompdump
 zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # case insensitive tab completion
+
+# Enable zsh's git prompt features through vcs_info
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' unstagedstr ' ✎'
+zstyle ':vcs_info:*' stagedstr ' +'
+zstyle ':vcs_info:*' formats '%b%u%c'
 
 # History configurations
 HISTFILE=~/.zsh_history
@@ -71,14 +82,14 @@ function zshaddhistory() {
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
-# Find if we have color prompt
-# Uncomment to force color prompt
-#force_color_prompt=yes
 case "$TERM" in
 	xterm-color|*-256color) color_prompt=yes ;;
 	xterm-kitty)            color_prompt=yes ;;
 esac
 
+# Find if we have color prompt
+# Uncomment to force color prompt
+#force_color_prompt=yes
 if [ -n "$force_color_prompt" ]; then
 	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
@@ -89,60 +100,6 @@ if [ -n "$force_color_prompt" ]; then
 	color_prompt=
 	fi
 fi
-
-# Find info about git and add it to the prompt.
-git_info () {
-	# Don't run this code if it's not going to be useful
-	git rev-parse --git-dir &>/dev/null || return
-
-	# Get easy to parse info
-	_status="$(git status -b --porcelain=v2 2>/dev/null)"
-
-	# Prepare tag, branch name or commit hash (that's the order of priority)
-	branch="$(echo "$_status" | awk '$2 ~ /head/ {print $NF}')"
-	[ "$branch" = "(detached)" ] && \
-		branch="$(echo "$_status" | awk '$2 ~ /oid/ {print substr($NF,1,8)}')"
-	_tag=$(git describe --tags --exact-match $branch 2>/dev/null)
-	[ -n "$_tag" ] && branch=$_tag
-
-	# Process info
-	_commiting="$(echo "$_status" | grep "^[0-9]\s[MADRCU]."   | wc -l)"
-	_ahead="$(echo "$_status"     | awk '$2 ~ /ab/ {print $3}' | sed -e "s/\+//")"
-	_behind="$(echo "$_status"    | awk '$2 ~ /ab/ {print $4}' | sed -e "s/\-//")"
-	_modified="$(echo "$_status"  | grep "^[0-9]\s.[MADRCU]"   | wc -l)"
-	_untracked="$(echo "$_status" | grep "^\?"                 | wc -l)"
-
-	# Prepare simbols for the reader
-	[ "$_commiting" -gt 0 ] && info+=" +"
-	[ "$_ahead"     -gt 0 ] && info+=" ↑"
-	[ "$_behind"    -gt 0 ] && info+=" ↓"
-	[ "$_modified"  -gt 0 ] && info+=" ✎"
-	[ "$_untracked" -gt 0 ] && info+=" ?"
-
-	# Build the prompt info
-	[ -n "$branch" ] && printf "%s%s%%f%s" "$1" "$branch" "$info"
-	unset branch _branch _ahead _behind _modified _untracked _status _tag info
-}
-
-# Powerline style shell
-use_powerline () {
-	if [ $color_prompt ]; then
-		function powerline_precmd() {
-			PS1="$(powerline-shell --shell zsh $?)"
-		}
-		function install_powerline_precmd() {
-			for s in "${precmd_functions[@]}"; do
-				if [ "$s" = "powerline_precmd" ]; then
-					return
-				fi
-			done
-			precmd_functions+=(powerline_precmd)
-		}
-		if [ "$TERM" != "linux" ]; then
-			install_powerline_precmd
-		fi
-	fi
-}
 
 if [ "$color_prompt" = yes ]; then
 	# Fallback prompt
@@ -156,16 +113,34 @@ if [ "$color_prompt" = yes ]; then
 	# render. This helps when you're in vscode's tiny, gpu accelerated terminal
 	[ -n "$VSCODE_GIT_IPC_HANDLE" -o -n "$INSIDE_GNOME_BUILDER" ] && prompt_style=vscode
 	case ${(L)prompt_style} in
-		fedora) PROMPT=$'[%n@%m %1~%(1j. ⚙.)\$(git_info " - ")]%# ' ;;
-		ubuntu) PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)\$(git_info " %F{%(#.blue.yellow)}") %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# ' ;;
-		kali) PROMPT=$'%F{%(#.red.blue)}╭──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}\$(git_info " - %F{%(#.blue.yellow)}")\n%F{%(#.red.blue)}╰─%#%f ' ;;
-		vscode) PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)\$(git_info " %F{%(#.blue.yellow)} ") %(#.%F{red}.%F{blue})⟩%f ' ;;
-		powerline) use_powerline ;;
+		fedora)
+			PROMPT=$'[%n@%m %1~%(1j. ⚙.)${vcs_info_msg_0_}]%# '
+			zstyle ':vcs_info:*' formats ' - %b%u%c'
+		;;
+		ubuntu)
+			PROMPT=$'%B%F{%(#.red.green)}%n@%m%f%b:%(1j. ⚙.)${vcs_info_msg_0_} %B%F{%(#.yellow.blue)}%(4~.%-1~/…/%2~.%3~)%f%b%# '
+			zstyle ':vcs_info:*' formats ' %F{yellow}%b%f%u%c'
+		;;
+		kali)
+			PROMPT=$'%F{%(#.red.blue)}╭──(%B%F{%(#.red.cyan)}%n%(#.🕱.@)%m%f%b%F{%(#.red.blue)})-[%B%F{%(#.yellow.green)}%(4~.%-1~/…/%2~.%3~)%f%b%F{%(#.red.blue)}]%(1j. %F{grey}⚙%f.)%F{%(#.red.blue)}${vcs_info_msg_0_}\n%F{%(#.red.blue)}╰─%#%f '
+			zstyle ':vcs_info:*' formats ' - %F{yellow}%b%f%u%c'
+		;;
+		vscode)
+			PROMPT=$'%F{%(#.red.blue)}(%B%F{%(#.yellow.cyan)}%1~%F{%(#.red.blue)}%b)%(1j. %F{grey}⚙.)${vcs_info_msg_0_} %(#.%F{red}.%F{blue})⟩%f '
+			zstyle ':vcs_info:*' formats ' %F{yellow} %b%f%u%c'
+		;;
+		powerline)
+			function powerline_precmd() {
+				PS1="$(powerline-shell --shell zsh $?)"
+			}
+			[ ! "$precmd_functions" =~ 'powerline_precmd' ] && \
+				precmd_functions+=(powerline_precmd)
+		;;
 	esac
 	RPROMPT=$'%(?.. %F{red}%? ✘%f)'
 
 	# enable syntax-highlighting
-	if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && [ "$color_prompt" = yes ]; then
+	if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh -a "$color_prompt" = yes ]; then
 	. /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 	ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 	ZSH_HIGHLIGHT_STYLES[default]=none
@@ -251,11 +226,6 @@ alias la='ls -ABhF --group-directories-first'
 alias l='ls -lBhF --group-directories-first'
 alias lz='ls -lBhFZ --group-directories-first'
 
-# Create a directory and cd into it
-new() {
-	mkdir "$1" && cd "$1"
-}
-
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
 	. /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -266,6 +236,11 @@ if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
 		ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#999"
 	fi
 fi
+
+# Create a directory and cd into it
+new() {
+	mkdir "$1" && cd "$1"
+}
 
 # Put all your aliases and configs in files under the ~/.zshrc.d folder
 [ -d ~/.zshrc.d ] && \

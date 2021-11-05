@@ -14,7 +14,7 @@
 config() {
 	# Use specified config file, or find the config in use now, if all fails, return error
 	TYPE=$1
-	[ -z $TYPE ] && TYPE=$(head -n 29 .config | awk -F\" 'NR == 29 {print substr($2,2)}')
+	[ -z $TYPE ] && TYPE=$(awk -F\" '$1 ~ /CONFIG_LOCALVERSION=/ {print substr($2,2)}' .config)
 	[ -z $TYPE ] && return 1
 
 	# If the config file hasn't yet been created, create it from the original
@@ -29,7 +29,8 @@ config() {
 
 	# Compare user-edited file with the one which was copied, if they differ, update the .old backup
 	# file.
-	cmp .config ../$TYPE.config &>/dev/null || cp ~/kernel/configs/$TYPE.config ~/kernel/configs/$TYPE.config.old
+	cmp .config ~/kernel/configs/$TYPE.config &>/dev/null || \
+		cp ~/kernel/configs/$TYPE{.config,.config.old}
 	cp .config ~/kernel/configs/$TYPE.config
 
 	unset TYPE
