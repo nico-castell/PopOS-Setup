@@ -172,7 +172,7 @@ for i in ${LIST[@]}; do
 
 		.minecraft) # Copy only relevant files
 		Animate "Copying \e[33m$i\e[00m" & PID=$!
-		printf "assets\nlibraries\nlogs\nmods\nversions\nlauncher.jar\nlauncher.pack.lzma\nusercache.json" > "$helper_file"
+		printf "assets\nlibraries\nlogs\nmods\nversions\nlauncher.jar\nlauncher\nlauncher.pack.lzma\nusercache.json" > "$helper_file"
 		rsync -r --exclude-from "$helper_file" "$i" "$destination"
 		kill $PID; printf "Copying \e[33m%s\e[00m, \e[32mDone\e[00m\n" "$i"
 		;;
@@ -185,6 +185,12 @@ for i in ${LIST[@]}; do
 	esac
 done
 
+notify-send              \
+	-t 5000               \
+	-a org.gnome.Nautilus \
+	-i org.gnome.Nautilus \
+	-c transfer.complete  \
+	'Backup complete' 'Your files have been backed up to the external disk'
 rm "$helper_file"
 
 exit 0

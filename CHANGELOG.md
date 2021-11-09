@@ -26,6 +26,8 @@ All significant changes to **PopOS Setup** will be documented here.
 	- The file type *limits* was added to use tabs with a length of 8.
 - [remove.txt](remove.txt):
 	- *Document Scanner* was added to the list.
+- [back_me_up.sh](back_me_up.sh):
+	- Added a notification to signal when the backup is finished.
 ### Changed
 - [kdev.sh](samples/kdev.sh):
 	- The config option no longer reads the `Makefile` if you don't specify a config name, instead,
