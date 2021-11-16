@@ -28,6 +28,7 @@ All significant changes to **PopOS Setup** will be documented here.
 	- *Document Scanner* was added to the list.
 - [back_me_up.sh](back_me_up.sh):
 	- Added a notification to signal when the backup is finished.
+	- The script now also backs up the `~/.gitconfig` file.
 ### Changed
 - [kdev.sh](samples/kdev.sh):
 	- The config option no longer reads the `Makefile` if you don't specify a config name, instead,
@@ -44,6 +45,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [kdev.sh](samples/kdev.sh):
 	- Stop assuming the user's *cwd* when using `kdev config`.
 	- Fixed `kdev config` failing to find the config type currently in use.
+	- The `kdev clean` option on levels 3 and 4 now also removes git untracked directories.
 
 ## Released
 ### Version [2.3.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.3.0) - *2021-10-17*
