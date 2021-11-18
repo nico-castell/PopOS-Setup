@@ -46,6 +46,12 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Stop assuming the user's *cwd* when using `kdev config`.
 	- Fixed `kdev config` failing to find the config type currently in use.
 	- The `kdev clean` option on levels 3 and 4 now also removes git untracked directories.
+- [init.vim](samples/nvim.vim):
+	- Fixed local settings that lingered when changing filetype from markdown, text, or limits to
+	  anything else.
+- [.vimrc](samples/vimrc):
+	- Fixed local settings that lingered when changing filetype from markdown, text, or limits to
+	  anything else.
 
 ## Released
 ### Version [2.3.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.3.0) - *2021-10-17*

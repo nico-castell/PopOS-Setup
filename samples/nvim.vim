@@ -27,6 +27,7 @@ hi clear ColorColumn
 hi ColorColumn ctermbg=237 guibg=Grey23
 augroup vimrcEx
 	au!
+	autocmd FileType *        setlocal textwidth=0 colorcolumn=0 tabstop=3
 	autocmd FileType text     setlocal textwidth=100 colorcolumn=100
 	autocmd FileType markdown setlocal textwidth=100 colorcolumn=100
 	autocmd FileType limits   setlocal tabstop=8
