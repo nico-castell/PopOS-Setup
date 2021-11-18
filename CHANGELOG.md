@@ -45,7 +45,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [kdev.sh](samples/kdev.sh):
 	- Stop assuming the user's *cwd* when using `kdev config`.
 	- Fixed `kdev config` failing to find the config type currently in use.
-	- The `kdev clean` option on levels 3 and 4 now also removes git untracked directories.
+	- The `kdev clean` option on level 4 now also removes git untracked directories.
 - [init.vim](samples/nvim.vim):
 	- Fixed local settings that lingered when changing filetype from markdown, text, or limits to
 	  anything else.
