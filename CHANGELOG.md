@@ -30,6 +30,18 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Added a notification to signal when the backup is finished.
 	- The script now also backs up the `~/.gitconfig` file.
 ### Changed
+- [popOS_setup.sh](popOS_setup.sh):
+	- The mecanism to process the *packages.txt* file was changed for something that allows the user
+		to skip entire categories of software.
+	- The loops that process *remove.txt*, *packages.txt*, and *flatpaks.txt* now use a file in
+		memory for performance optimizations, this file is protected by unique names, chmod and umask.
+- [packages.txt](packages.txt):
+	- The format of the file was changed:
+		1. Lines that are not indented represent categories
+		2. Indented lines represent apps
+		3. Indented lines belong to the category above them
+		4. Indented lines must use a hard tab for indentation
+	- The packages **Firefox** and **Geary Mail** were added in their categories.
 - [kdev.sh](samples/kdev.sh):
 	- The config option no longer reads the `Makefile` if you don't specify a config name, instead,
 		it reads `.config`.
