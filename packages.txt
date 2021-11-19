@@ -1,53 +1,63 @@
-Audacity audacity
-Spotify spotify-client
-OBS_Studio obs-studio
-VLC vlc
-.NET_3.1_SDK dotnet-sdk-3.1 aspnetcore-runtime-3.1
-.NET_5.0_SDK dotnet-sdk-5.0 aspnetcore-runtime-5.0
-C/C++_development build-essential
-CMake cmake
-Gitg gitg git git-lfs
-Glade glade
-GNOME_Boxes gnome-boxes
-GNOME_Builder gnome-builder
-Go_Language golang
-Java_JDK default-jdk
-Java_Runtime default-jre
-Kernel_development build-essentials fakeroot ncurses-dev xz-utils zstd libssl-dev bc flex libelf-dev bison
-Ninja_Build ninja-build
-Node.JS nodejs
-Virt_Manager virt-manager bridge-utils
-Virtual_Box virtualbox
-Visual_Studio_Code code
-Visual_Studio_Code_Insiders code-insiders
-VS_Codium codium
-cmatrix cmatrix
-Discord discord
-GNOME_Chess gnome-chess
-GNOME_Mines gnome-mines
-Steam steam
-Terminal_fun fortune cowsay toilet figlet lolcat
-GIMP gimp
-Inkscape inkscape
-Krita krita
-Brave_Browser brave-browser
-Chromium chromium-browser
-Google_Chrome google-chrome-stable
-Signal_Desktop signal-desktop
-Vivaldi vivaldi
-Thunderbird thunderbird
-HTOP htop
-LM_Sensors lm-sensors hddtemp
-TLP tlp powertop
-Ubuntu_Restricted_Extras ubuntu-restricted-extras
-Z-Shell zsh zsh-syntax-highlighting zsh-autosuggestions fonts-powerline python3-pip
-7zip p7zip-full
-dconf-Editor dconf-editor
-GNOME_Tweaks gnome-tweaks gnome-shell-extensions
-GParted gparted
-Kitty_Terminal kitty
-Neofetch neofetch
-Neovim neovim
-Trash_CLI trash-cli
-Tree tree
-Vim vim
+Audio Apps for working with audio
+	Audacity audacity
+	Spotify spotify-client
+AudioVideo Apps for working with audio-video
+	OBS_Studio obs-studio
+	VLC vlc
+Development Apps and tools for developers
+	.NET_3.1_SDK dotnet-sdk-3.1 aspnetcore-runtime-3.1
+	.NET_5.0_SDK dotnet-sdk-5.0 aspnetcore-runtime-5.0
+	C/C++_development build-essential
+	CMake cmake
+	Gitg gitg git git-lfs
+	Glade glade
+	GNOME_Boxes gnome-boxes
+	GNOME_Builder gnome-builder
+	Go_Language golang
+	Java_JDK default-jdk
+	Java_Runtime default-jre
+	Kernel_development build-essentials fakeroot ncurses-dev xz-utils zstd libssl-dev bc flex libelf-dev bison
+	Ninja_Build ninja-build
+	Node.JS nodejs
+	Virt_Manager virt-manager bridge-utils
+	Virtual_Box virtualbox
+	Visual_Studio_Code code
+	Visual_Studio_Code_Insiders code-insiders
+	VS_Codium codium
+Game Apps to have fun
+	cmatrix cmatrix
+	Discord discord
+	GNOME_Chess gnome-chess
+	GNOME_Mines gnome-mines
+	Steam steam
+	Terminal_fun fortune cowsay toilet figlet lolcat
+Graphics Apps for working with images and graphic design
+	GIMP gimp
+	Inkscape inkscape
+	Krita krita
+Network Web browsers and networking apps
+	Brave_Browser brave-browser
+	Chromium chromium-browser
+	Google_Chrome google-chrome-stable
+	Signal_Desktop signal-desktop
+	Vivaldi vivaldi
+Office Apps to work
+	Geary_Mail geary
+	Thunderbird thunderbird
+System Shells and apps to configure and monitor the system
+	HTOP htop
+	LM_Sensors lm-sensors hddtemp
+	TLP tlp powertop
+	Ubuntu_Restricted_Extras ubuntu-restricted-extras
+	Z-Shell zsh zsh-syntax-highlighting zsh-autosuggestions fonts-powerline python3-pip
+Utilities Apps such as terminal emulators, text editors, tools, and other stuff
+	7zip p7zip-full
+	dconf-Editor dconf-editor
+	GNOME_Tweaks gnome-tweaks gnome-shell-extensions
+	GParted gparted
+	Kitty_Terminal kitty
+	Neofetch neofetch
+	Neovim neovim
+	Trash_CLI trash-cli
+	Tree tree
+	Vim vim

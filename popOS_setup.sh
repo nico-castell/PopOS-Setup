@@ -98,16 +98,25 @@ if [ "$load_tmp_file" = "no" ]; then
 	# We're about to make a new choices file
 	[ -f "$choices_file" ] && rm "$choices_file"
 
-	# Set the $IFS to process the files line by line
+	# Configure IFS and umask
 	IFSB="$IFS"
 	IFS="$(echo -en "\n\b")"
+	MASK=$(umask)
+	umask 077
+
+	# Use the following file in memory
+	MEMFILE=/tmp/$$-line
 
 	# Go through a list of packages asking the user to choose which ones to remove
 	printf "Confirm packages to remove:\n"
 	for i in $(cat "$remove_file"); do
-		read -rp "Confirm: `tput setaf 1``printf %s $i | cut -d ' ' -f 1 | tr '_' ' '``tput sgr0` (y/N) "
-		[ "${REPLY,,}" = "y" ] && \
-			TO_REMOVE+=("$(printf %s "$i" | cut -d ' ' -f 2-)")
+		echo "$i" > $MEMFILE && chmod u-w $MEMFILE
+
+		read -rp "$(printf "Confirm: \e[31m%s\e[00m (y/N) " "$(cut -d' ' -f1 $MEMFILE | tr '_' ' ')" )"
+		[ "${REPLY,,}" == "y" ] && \
+			TO_REMOVE+=($(cut -d' ' -f2- $MEMFILE))
+
+		chmod u+w $MEMFILE
 	done
 	TO_REMOVE=($(echo ${TO_REMOVE[@]} | tr ' ' '\n' | sort -u))
 	echo "TO_REMOVE - ${TO_REMOVE[@]}" >> "$choices_file"
@@ -115,27 +124,46 @@ if [ "$load_tmp_file" = "no" ]; then
 	# Go through a list of packages asking the user to choose which ones to install
 	printf "Confirm packages to install:\n"
 	for i in $(cat "$packages_file"); do
-		read -rp "Confirm: `tput setaf 3``printf %s $i | cut -d ' ' -f 1 | tr '_' ' '``tput sgr0` (Y/n) "
-		[ "${REPLY,,}" = "y" ] || [ -z $REPLY ] && \
-			TO_APT+=("$(printf %s "$i" | cut -d ' ' -f 2-)")
+		echo "$i" > $MEMFILE && chmod u-w $MEMFILE
+
+		# Detect category and user choice to skip or not skip
+		if [ -n "$(awk '$0 ~ /^\S/' $MEMFILE)" ]; then
+			read -rp "$(printf "Do you want to install \e[01;33m%s\e[00m software? (%s) (Y/n) > " "$(awk '{print $1}' $MEMFILE | tr '_' ' ')" "$(cut -d' ' -f2- $MEMFILE)")"
+			[ "${REPLY,,}" == 'y' -o -z "$REPLY" ] && SKIP_CATEGORY=no || SKIP_CATEGORY=yes
+		fi
+		# Process apps in a category
+		if [ -n "$(awk '$0 ~ /\t/' $MEMFILE)" -a "$SKIP_CATEGORY" = 'no' ]; then
+			read -rp "$(printf "  Confirm: \e[33m%s\e[00m (Y/n) " "$(awk '{print $1}' $MEMFILE | tr '_' ' ')")"
+			[ "${REPLY,,}" == 'y' -o -z "$REPLY" ] && \
+				TO_DNF+=($(cut -d' ' -f2- $MEMFILE))
+		fi
+
+		chmod u+w $MEMFILE
 	done
-	TO_APT+=(ufw xclip pixz) # Append "essential packages"
+	# Append essential packages, sort, and write
+	TO_APT+=(ufw xclip pixz)
 	TO_APT=($(echo ${TO_APT[@]} | tr ' ' '\n' | sort -u))
 	echo "TO_APT - ${TO_APT[@]}" >> "$choices_file"
 
 	# Go through a list of flatpaks asking the user to choose which ones to install
 	printf "Confirm flatpaks to install:\n"
 	for i in $(cat "$flatpaks_file"); do
-		read -rp "Confirm: `tput setaf 6``printf %s $i | cut -d ' ' -f 1 | tr '_' ' '``tput sgr0` (Y/n) "
-		[ "${REPLY,,}" = "y" ] || [ -z $REPLY ] && \
-			TO_FLATPAK+=("$(printf %s $i | cut -d ' ' -f 2-)")
+		echo "$i" > $MEMFILE && chmod u-w $MEMFILE
+
+		read -rp "$(printf "Confirm: \e[36m%s\e[00m (Y/n) " "$(cut -d' ' -f1 $MEMFILE | tr '_' ' ')")"
+		[ "${REPLY,,}" == "y" -o -z "$REPLY" ] && \
+			TO_FLATPAK+=($(cut -d' ' -f2- $MEMFILE))
+
+		chmod u+w $MEMFILE
 	done
 	TO_FLATPAK=($(echo ${TO_FLATPAK[@]} | tr ' ' '\n' | sort -u))
 	echo "TO_FLATPAK - ${TO_FLATPAK[@]}" >> "$choices_file"
 
+	# Remove MEMFILE and return IFS and umask to normal
+	rm $MEMFILE
 	IFS="$IFSB"
-	unset IFSB
-	Separate 4
+	umask $MASK
+	unset IFSB MASK MEMFILE
 
 	# Choose an NVIDIA driver
 	CHOSEN_DRIVER=none
