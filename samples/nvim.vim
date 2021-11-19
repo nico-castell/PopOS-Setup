@@ -1,4 +1,9 @@
-" nvim init file
+"  _  _             _                      __ _
+" | \| |___ _____ _(_)_ __    __ ___ _ _  / _(_)__ _
+" | .` / -_) _ \ V / | '  \  / _/ _ \ ' \|  _| / _` |
+" |_|\_\___\___/\_/|_|_|_|_| \__\___/_||_|_| |_\__, |
+"                                              |___/
+" ~/.config/nvim/init.vim
 
 " Configure directories used by nvim
 set undofile
@@ -34,7 +39,6 @@ augroup vimrcEx
 augroup END
 
 " Editor settings:
-set tabstop=3
 set shiftwidth=0
 "set expandtab
 set number
@@ -89,8 +93,7 @@ augroup statusline
 	autocmd WinLeave,BufLeave * setlocal statusline=%#StatusLineNC#\ %t\ %M%=%R\ %L\ %p%%\ 
 augroup end
 
-" The custom statusline shows the current mode, hide it from command line to
-" avoid redundancy.
+" The custom statusline shows the current mode, hide it from command line to avoid redundancy.
 set noshowmode
 
 " Use system clipboard
