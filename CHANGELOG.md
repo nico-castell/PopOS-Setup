@@ -1,11 +1,8 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
-- [Unreleased](#unreleased)
-	- [Added](#added)
-	- [Changed](#changed)
-	- [Fixed](#fixed)
 - [Released](#released)
+	- [Version 2.4.0 - *2021-11-21*](#version-240---2021-11-21)
 	- [Version 2.3.0 - *2021-10-17*](#version-230---2021-10-17)
 	- [Version 2.2.1 - *2021-10-15*](#version-221---2021-10-15)
 	- [Version 2.2.0 - *2021-10-11*](#version-220---2021-10-11)
@@ -18,8 +15,16 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
 	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
 
-## Unreleased
-### Added
+## Released
+### Version [2.4.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.4.0) - *2021-11-21*
+This release comes after 16 commits, though the changes are extensive. These were the most important
+changes:
+- Fixing bugs
+- Improving (slightly) code maintainabilty
+- Correcting outdated comments
+- **Categorizing the apt packages** so the user can now choose to skip an entire software category
+	when selecting packages to install
+#### Added
 - [init.vim](samples/nvim.vim):
 	- The file type *limits* was added to use tabs with a length of 8.
 - [vimrc](samples/vimrc):
@@ -29,7 +34,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [back_me_up.sh](back_me_up.sh):
 	- Added a notification to signal when the backup is finished.
 	- The script now also backs up the `~/.gitconfig` file.
-### Changed
+#### Changed
 - [popOS_setup.sh](popOS_setup.sh):
 	- The mecanism to process the *packages.txt* file was changed for something that allows the user
 		to skip entire categories of software.
@@ -53,7 +58,7 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Made many other tweaks to improve code maintainability and speed.
 - [.bashrc](samples/bashrc):
 	- The `la` alias now groups folders first.
-### Fixed
+#### Fixed
 - [kdev.sh](samples/kdev.sh):
 	- Stop assuming the user's *cwd* when using `kdev config`.
 	- Fixed `kdev config` failing to find the config type currently in use.
@@ -65,7 +70,6 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Fixed local settings that lingered when changing filetype from markdown, text, or limits to
 	  anything else.
 
-## Released
 ### Version [2.3.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.3.0) - *2021-10-17*
 This is a small release made in parity with the
 [Fedora Setup](https://github.com/nico-castell/Fedora-Setup) project to syncronize changes to this
