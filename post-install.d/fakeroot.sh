@@ -1,6 +1,6 @@
 # bash script to be sourced from popOS_setup.sh
 
-Separate 4
+Separate
 printf "Successfully installed \e[36mKernel development\e[00m, configuring...\n"
 read -rep "Do you want to configure your system for developing the linux kernel? (y/N) "
 if [ ${REPLY,,} == "y" ]; then

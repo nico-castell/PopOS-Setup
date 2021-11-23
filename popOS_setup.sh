@@ -64,9 +64,7 @@ unset USAGE_MSG MISSING
 
 # Function to draw a line across the width of the console.
 Separate () {
-	if [ ! -z $1 ]; then tput setaf $1; fi
-	printf "\n\n%`tput cols`s\n" |tr " " "="
-	tput sgr0
+	printf "\n\n\e[34m%`tput cols`s\e[00m\n" | tr ' ' '='
 }
 
 # The script should not be run as root
@@ -186,7 +184,7 @@ if [ "$load_tmp_file" = "no" ]; then
 		esac
 		break
 		done
-		Separate 4
+		Separate
 	fi
 
 	# Store chosen driver
@@ -204,7 +202,7 @@ if [ "$load_tmp_file" = "no" ]; then
 	# Store selected scripts
 	echo "SCRIPTS - ${SCRIPTS[@]}" >> "$choices_file"
 	unset prompt_user
-	Separate 4
+	Separate
 fi
 #endregion
 
@@ -238,7 +236,7 @@ if [ "$load_tmp_file" = "yes" ]; then
 	SCRIPTS=$(cat "$choices_file" | grep "SCRIPTS")
 	SCRIPTS=${SCRIPTS/"SCRIPTS - "/""}
 
-	Separate 4
+	Separate
 fi
 #endregion
 
@@ -247,24 +245,15 @@ fi
 # Set BIOS time to UTC
 sudo timedatectl set-local-rtc 0
 
-# Ensure these hidden folders are present and have the right permissions
-# Normal folders
-for i in mydock icons themes; do
-	[ ! -d ~/.$i ] && [ -d ~/$i ] && mv ~/$i ~/.$i
-	[ ! -d ~/.$i ] && mkdir ~/.$i
-	chmod 755 ~/.$i
-done
+# Create themes and icons folders
+mkdir -p ~/.local/share/{themes,icons}
 
 # Secret folders
-for i in ssh safe; do
-	[ ! -d ~/.$i ] && [ -d ~/$i ] && mv ~/$i ~/.$i
-	[ ! -d ~/.$i ] && mkdir ~/.$i
-	chmod 700 ~/.$i
-done
+mkdir -p ~/.{ssh,safe} -m 700
 
 # Back up the following files if present
-for i in .bashrc .clang-format .zshrc .vimrc; do
-	[ ! -f ~/$i-og ] && [ -f ~/$i ] && cp ~/$i ~/$i-og
+for i in .bashrc .clang-format .zshrc .vimrc .config/{nvim/init.vim,htop/htoprc}; do
+	[ ! -f ~/$i-og -a -f ~/$i ] && cp ~/{$i,$1-og}
 	# "-og" stands for original
 done
 
@@ -290,7 +279,7 @@ for i in $(ls "$sources_folder" | grep \.sh$); do
 		source "$sources_folder/$i"
 done
 
-[[ "${REPOS_CONFIGURED[@]}" ]] && Separate 4
+[[ "${REPOS_CONFIGURED[@]}" ]] && Separate
 unset REPOS_CONFIGURED URL KEY
 
 # Update all repositories.
@@ -299,18 +288,18 @@ sudo apt update
 
 # Remove user-selected packages:
 if [ -n "$TO_REMOVE" ]; then
-	Separate 4
+	Separate
 	printf "Removing user-selected packages...\n"
 	sudo apt --purge remove ${TO_REMOVE[@]}
-	Separate 4
+	Separate
 fi
 
 # Install the NVIDIA driver
 if [ "$CHOSEN_DRIVER" != "none" ]; then
-	Separate 4
+	Separate
 	printf "Installing the NVIDIA driver: \e[01m%s\e[00m\n" $CHOSEN_DRIVER
 	sudo apt install $CHOSEN_DRIVER
-	Separate 4
+	Separate
 fi
 
 # Upgrade packages
@@ -325,7 +314,7 @@ if [ $UPGRADABLE -gt 0 ]; then
 fi
 unset UPGRADABLE
 
-Separate 4
+Separate
 
 # Install user-selected packages:
 printf "Installing user-selected packages...\n"
@@ -333,8 +322,7 @@ sudo apt install ${TO_APT[@]}
 
 # Install user-selected flatpaks:
 if [ -n "$TO_FLATPAK" ]; then
-	Separate 4
-	flatpak --user remote-delete flathub &>/dev/null
+	Separate
 	flatpak --system remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &>/dev/null
 	printf "Installing user-selected flatpaks...\n"
 	printf "Which type of installation do you want to do?\n"
@@ -344,7 +332,7 @@ if [ -n "$TO_FLATPAK" ]; then
 		user)   flatpak --user   install ${TO_FLATPAK[@]}    ;;
 		*) printf "You must choose a valid option"; continue ;;
 	esac; break; done
-	Separate 4
+	Separate
 fi
 
 # Source the post-installation scripts for the packages we've installed
@@ -357,12 +345,12 @@ fi
 
 # Run extra scripts
 for i in ${SCRIPTS[@]}; do
-	Separate 4
+	Separate
 	printf "Running \e[01m%s\e[00m extra script...\n" "${i/".sh"/""}"
 	"$scripts_folder/$i"
 done
 
-Separate 4
+Separate
 
 # Clean up after we're done
 printf "Cleaning up...\n"
@@ -370,6 +358,7 @@ printf "Cleaning up...\n"
 [ -f "$choices_file"    ] && rm "$choices_file"
 sudo apt-get autoremove -y &>/dev/null
 sudo apt-get autoclean -y &>/dev/null
+wait
 
 # Restart GNOME's packagekit after we're done with the package manager
 sudo systemctl restart packagekit

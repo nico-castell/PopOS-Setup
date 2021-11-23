@@ -1,13 +1,12 @@
 # bash script to be sourced from popOS_setup.sh
 
-Separate 4
+Separate
 printf "Successfully installed \e[36mtlp\e[00m, configuring...\n"
 
 # Conditionally execute all the steps to configure tlp.
-sudo cp /etc/tlp.conf /etc/tlp.conf-og && \
-cat "$script_location/samples/tlp.conf" | sudo tee /etc/tlp.conf >/dev/null && \
-sudo systemctl enable tlp && \
-sudo systemctl restart tlp
+sudo cp /etc/{tlp.conf,tlp.conf-og}                                            && \
+	cat "$script_location/samples/tlp.conf" | sudo tee /etc/tlp.conf >/dev/null && \
+	sudo systemctl enable --now tlp
 
 printf "%s\e[00m\n" $([ $? -eq 0 ] && printf "\e[32mSuccess" || printf "\e[31mFail")
 

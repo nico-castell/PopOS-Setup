@@ -1,6 +1,6 @@
 # bash script to be sourced from popOS_setup.sh
 
-Separate 4
+Separate
 printf "Successfully installed \e[36mGNOME Builder\e[00m\n"
 
 # Install the GNOME SDK for GNOME Builder

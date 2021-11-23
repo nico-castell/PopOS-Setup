@@ -1,6 +1,9 @@
 # Change log
 All significant changes to **PopOS Setup** will be documented here.
 
+- [Unreleased](#unreleased)
+	- [Added](#added)
+	- [Changed](#changed)
 - [Released](#released)
 	- [Version 2.4.0 - *2021-11-21*](#version-240---2021-11-21)
 	- [Version 2.3.0 - *2021-10-17*](#version-230---2021-10-17)
@@ -12,8 +15,19 @@ All significant changes to **PopOS Setup** will be documented here.
 	- [Version 1.1.0 - *2021-06-05*](#version-110---2021-06-05)
 	- [Version 1.0.0 - *2021-05-28*](#version-100---2021-05-28)
 	- [Version 0.2.2 - *2021-05-07*](#version-022---2021-05-07)
-	- [Version 0.2.1 - *2021-04-26*](#version-021---2021-04-26)
-	- [Version 0.2.0 - *2021-04-14*](#version-020---2021-04-14)
+
+## Unreleased
+### Added
+- [popOS_setup.sh](popOS_setup.sh):
+	- Given that now some post-install.d processes use parallelization to run things in the
+		background and work faster, a `wait` command was implemented in the final clean-up step so
+		users don't close the shell while things are still running.
+### Changed
+- [popOS_setup.sh](popOS_setup.sh):
+	- There `Separate` function was optimized.
+- [post-install.d](post-install.d):
+	- Some files now use child subshells that run in parallel `( .. ) &` to speed things up by
+		running things in the background.
 
 ## Released
 ### Version [2.4.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.4.0) - *2021-11-21*
@@ -383,43 +397,3 @@ Some time before this release, the [Fedora Setup](https://githbub.com/nico-caste
 #### Fixed
 - [gnome_appearance.sh](gnome_appearance.sh)
 	- Fixed uncommented comment.
-
-### Version [0.2.1](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.1) - *2021-04-26*
-#### Added
-- [pop_OS_start.sh](pop_OS_start.sh)
-	- Added installation and configuration of `tlp` (improves power efficiency on battery) package for laptops.
-	- Added suspend when closing the lid for laptops.
-	- When installing `zsh` make it roots default shell too.
-- [mc_server_builder.sh](mc_server_builder.sh)
-	- Now updates the desktop database after installation and deletion.
-
-#### Changed
-- [.zshrc](samples/zshrc)
-	- Changed ls aliases.
-	- Changed `erase-history` function for a filter where the user can specify commands that should not be stored in history.
-
-#### Fixed
-- [mc_server_builder.sh](mc_server_builder.sh)
-	- Fixed colored prompts (the user can now type delete without deleting the prompt).
-	- Fixed inconsistent new-line behaviour when configuring the server.properties.
-- [pop_OS_start.sh](pop_OS_start.sh)
-	- Fixed colored prompts (the user can now type delete without deleting the prompt).
-- [vscode.sh](vscode.sh)
-	- Fixed colored prompts (the user can now type delete without deleting the prompt).
-	- Fixed git recursive alias `slog`.
-
-### Version [0.2.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/0.2.0) - *2021-04-14*
-#### Changed
-- [pop_OS_start.sh](pop_OS_start.sh):
-	- DETACHED VSCODE SETUP FROM THE SCRIPT:
-		- Deleted post-installation instructions for the `code` package.
-		- Created [vscode.sh](vscode.sh) to fulfill that role.
-		- [pop_OS_start.sh](pop_OS_start.sh) now sources [vscode.sh](vscode.sh)
-
-#### Fixed
-- [pop_OS_start.sh](pop_OS_start.sh):
-	- Fixed [.vimrc](samples/vimrc) sample file not being found.
-	- Create .tmp directories for user and root so vim can use them to keep *.swp* files.
-	- Fixed "missing [" when ensuring all packages are up to date.
-- [gnome_appearance.sh](gnome_appearance.sh):
-	- Fixed configuring favorite-apps.

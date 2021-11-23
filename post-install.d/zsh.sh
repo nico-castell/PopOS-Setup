@@ -1,7 +1,7 @@
 # bash script to be sourced from popOS_setup.sh
 
 # Copy .zshrc and offer to change default shell
-Separate 4
+Separate
 printf "Successfully installed \e[36mzsh\e[00m, configuring...\n"
 
 # Create .zshrc files

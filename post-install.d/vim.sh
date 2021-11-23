@@ -1,7 +1,7 @@
 # bash script to be sourced from popOS_setup.sh
 
 # Install .vimrc
-Separate 4
+Separate
 printf "Successfully installed \e[36mVim\e[00m, configuring...\n"
 cat "$script_location/samples/vimrc"     | \
 	sudo tee /root/.vimrc /root/.vimrc-og | \

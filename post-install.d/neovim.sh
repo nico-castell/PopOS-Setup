@@ -1,7 +1,7 @@
 # bash script to be sourced from popOS_setup.sh
 
 # Install a neovim init file
-Separate 4
+Separate
 printf "Successfully installed \e[36mNeovim\e[00m, configuring...\n"
 
 # Create config directories and name the file
