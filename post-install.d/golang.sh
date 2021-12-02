@@ -1,5 +1,6 @@
 # bash script to be sourced from popOS_setup.sh
 
+sudo echo >/dev/null
 (
 	# Add Golang configs every user's profile
 	[ ! -f /etc/profile.d/golang.sh ] && \

@@ -253,7 +253,7 @@ mkdir -p ~/.{ssh,safe} -m 700
 
 # Back up the following files if present
 for i in .bashrc .clang-format .zshrc .vimrc .config/{nvim/init.vim,htop/htoprc}; do
-	[ ! -f ~/$i-og -a -f ~/$i ] && cp ~/{$i,$1-og}
+	[ ! -f ~/$i-og -a -f ~/$i ] && cp ~/{$i,$i-og}
 	# "-og" stands for original
 done
 
