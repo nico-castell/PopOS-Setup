@@ -35,10 +35,11 @@ hi clear ColorColumn
 hi ColorColumn ctermbg=237 guibg=Grey23
 augroup vimrcEx
 	au!
-	autocmd FileType *        setlocal textwidth=0 colorcolumn=0 tabstop=3
-	autocmd FileType text     setlocal textwidth=100 colorcolumn=100
-	autocmd FileType markdown setlocal textwidth=100 colorcolumn=100
-	autocmd FileType limits   setlocal tabstop=8
+	autocmd FileType *         setlocal textwidth=0 colorcolumn=0 tabstop=3
+	autocmd FileType gitcommit setlocal textwidth=70 colorcolumn=50,70
+	autocmd FileType text      setlocal textwidth=100 colorcolumn=100
+	autocmd FileType markdown  setlocal textwidth=100 colorcolumn=100
+	autocmd FileType limits    setlocal tabstop=8
 augroup END
 
 " Add optional packages.
@@ -66,9 +67,12 @@ set fillchars+=vert:\│
 hi clear StatusLine
 hi clear StatusLineNC
 hi StatusLine   term=bold cterm=bold gui=bold ctermbg=234 guibg=Grey11
-hi StatusMode   term=bold cterm=bold gui=bold ctermfg=234 guifg=Grey11 ctermbg=34 guibg=Green3
 hi StatusLineNC ctermbg=232 guibg=Grey3
-if $USER == 'root' | hi Statusline ctermfg=124 | else | hi Statusline ctermfg=15 | endif
+if $USER == 'root'
+	hi StatusMode  term=bold cterm=bold gui=bold  ctermfg=15 guifg=White  ctermbg=124 guibg=Red3
+else
+	hi StatusMode  term=bold cterm=bold gui=bold  ctermfg=15 guifg=White  ctermbg=21  guibg=Blue1
+endif
 set laststatus=2
 
 let g:currentmode={
