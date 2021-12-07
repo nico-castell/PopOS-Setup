@@ -4,6 +4,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [Unreleased](#unreleased)
 	- [Added](#added)
 	- [Changed](#changed)
+	- [Removed](#removed)
 - [Released](#released)
 	- [Version 2.4.0 - *2021-11-21*](#version-240---2021-11-21)
 	- [Version 2.3.0 - *2021-10-17*](#version-230---2021-10-17)
@@ -28,6 +29,14 @@ All significant changes to **PopOS Setup** will be documented here.
 - [post-install.d](post-install.d):
 	- Some files now use child subshells that run in parallel `( .. ) &` to speed things up by
 		running things in the background.
+- [git.sh](post-install.d/git.sh):
+	- Tweaked the git slog alias so it does not specify the number of commits to show, allowing the
+	  user to specify it instead.
+	- The `now-ignored` alias was renamed to `list-ignored` because the keyword list better explains
+	  what the alias does.
+### Removed
+- [git.sh](post-install.d/git.sh):
+	- The alias `mrc` was removed because it is only useful in very rare situations.
 
 ## Released
 ### Version [2.4.0](https://github.com/nico-castell/PopOS-Setup/releases/tag/2.4.0) - *2021-11-21*

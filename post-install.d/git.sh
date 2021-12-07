@@ -86,12 +86,11 @@ fi
 printf "Configuring pull behaviour...\n"
 git config --global pull.ff only
 printf "Setting up some aliases...\n"
-git config --global alias.mrc '!git merge $1 && git commit -m "$2" --allow-empty && :'
+git config --global alias.unstage 'reset -q HEAD --'
 git config --global alias.flog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %an: %C(bold)%s%C(r) %C(auto)%d%C(r)'"
-git config --global alias.sflog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %C(bold green)%G?%C(r) %an: %C(bold)%s%C(r) %C(auto)%d%C(r)'"
 git config --global alias.eflog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %ae: %C(bold)%s%C(r) %C(auto)%d%C(r)'"
-git config --global alias.slog 'log --show-signature -1'
+git config --global alias.slog 'log --show-signature'
+git config --global alias.sflog "log --all --graph --oneline --format=format:'%C(bold yellow)%h%C(r) %C(bold green)%G?%C(r) %an: %C(bold)%s%C(r) %C(auto)%d%C(r)'"
 git config --global alias.mkst 'stash push -u'
 git config --global alias.popst 'stash pop "stash@{0}" -q'
-git config --global alias.unstage 'reset -q HEAD --'
-git config --global alias.now-ignored 'ls-files -i --exclude-standard'
+git config --global alias.list-ignored 'ls-files -i --exclude-standard'
