@@ -23,9 +23,14 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Given that now some post-install.d processes use parallelization to run things in the
 		background and work faster, a `wait` command was implemented in the final clean-up step so
 		users don't close the shell while things are still running.
+- [packages.txt](packages.txt):
+	- There's a new entry in the Development category called **Debian Packaging (.deb)**, which lists
+		`dpkg-dev` and `debhelper`, two packages needed to create .deb packages.
 ### Changed
 - [popOS_setup.sh](popOS_setup.sh):
 	- There `Separate` function was optimized.
+- [packages.txt](packages.txt):
+	- The **Gitg** entry in the Development category was renamed to **Git & Gitg**.
 - [post-install.d](post-install.d):
 	- Some files now use child subshells that run in parallel `( .. ) &` to speed things up by
 		running things in the background.
