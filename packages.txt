@@ -9,7 +9,8 @@ Development Apps and tools for developers
 	.NET_5.0_SDK dotnet-sdk-5.0 aspnetcore-runtime-5.0
 	C/C++_development build-essential
 	CMake cmake
-	Gitg gitg git git-lfs
+	Debian_Packaging_(.deb) dpkg-dev debhelper
+	Git_&_Gitg git git-lfs gitg
 	Glade glade
 	GNOME_Boxes gnome-boxes
 	GNOME_Builder gnome-builder
