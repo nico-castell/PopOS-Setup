@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MIT License - Copyright (c) 2021 Nicolás Castellán
+# MIT License - Copyright (c) 2021 Nicolás Castellán <cnicolas.developer@gmail.com>
 # SPDX License identifier: MIT
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information

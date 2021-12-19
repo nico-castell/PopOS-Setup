@@ -5,7 +5,7 @@
 # |_|\_\___|_| |_||_\___|_| \__,_\___|\_/  /__/\__|_| |_| .__/\__|
 #                                                       |_|
 
-# MIT License - Copyright (c) 2021 Nicolás Castellán
+# MIT License - Copyright (c) 2021 Nicolás Castellán <cnicolas.developer@gmail.com>
 # SPDX License identifier: MIT
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information

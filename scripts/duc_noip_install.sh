@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MIT License - Copyright (c) 2021 Nicolás Castellán
+# MIT License - Copyright (c) 2021 Nicolás Castellán <cnicolas.developer@gmail.com>
 # SPDX License identifier: MIT
 # THE SOFTWARE IS PROVIDED "AS IS"
 # Read the included LICENSE file for more information
@@ -168,7 +168,7 @@ if [ "$integrate_desktop" = "yes" -a "$installation_result" = "ok" ]; then
 # Target file to help you manage No-IP\'s DUC
 
 # File created by duc_noip_install.sh script.
-# MIT License - Copyright (c) Nicolás Castellán
+# MIT License - Copyright (c) Nicolás Castellán <cnicolas.developer@gmail.com>
 # THE SOFTWARE IS PROVIDED \"AS IS\"
 
 action=start
