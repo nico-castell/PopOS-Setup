@@ -26,6 +26,8 @@ All significant changes to **PopOS Setup** will be documented here.
 - [packages.txt](packages.txt):
 	- There's a new entry in the Development category called **Debian Packaging (.deb)**, which lists
 		`dpkg-dev` and `debhelper`, two packages needed to create .deb packages.
+- [flatpaks.txt](flatpaks.txt):
+	- The app *Metadata Cleaner* was added to the list.
 ### Changed
 - [popOS_setup.sh](popOS_setup.sh):
 	- There `Separate` function was optimized.

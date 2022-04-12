@@ -2,5 +2,6 @@ Bitwarden com.bitwarden.desktop
 Discord com.discordapp.Discord
 DropBox com.dropbox.Client
 GitKraken com.axosoft.GitKraken
+Metadata_Cleaner fr.romainvigier.MetadataCleaner
 KdenLive org.kde.kdenlive
 Spotify com.Spotify.Client
