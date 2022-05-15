@@ -133,7 +133,7 @@ if [ "$load_tmp_file" = "no" ]; then
 		if [ -n "$(awk '$0 ~ /\t/' $MEMFILE)" -a "$SKIP_CATEGORY" = 'no' ]; then
 			read -rp "$(printf "  Confirm: \e[33m%s\e[00m (Y/n) " "$(awk '{print $1}' $MEMFILE | tr '_' ' ')")"
 			[ "${REPLY,,}" == 'y' -o -z "$REPLY" ] && \
-				TO_DNF+=($(cut -d' ' -f2- $MEMFILE))
+				TO_APT+=($(cut -d' ' -f2- $MEMFILE))
 		fi
 
 		chmod u+w $MEMFILE
