@@ -44,7 +44,7 @@ set shiftwidth=0
 "set expandtab
 set number
 set nowrap
-set guicursor=
+"set guicursor=
 set scrolloff=5
 
 " Vertical split

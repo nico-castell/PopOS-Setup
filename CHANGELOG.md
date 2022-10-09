@@ -4,6 +4,7 @@ All significant changes to **PopOS Setup** will be documented here.
 - [Unreleased](#unreleased)
 	- [Added](#added)
 	- [Changed](#changed)
+	- [Fixed](#fixed)
 	- [Removed](#removed)
 - [Released](#released)
 	- [Version 2.4.0 - *2021-11-21*](#version-240---2021-11-21)
@@ -23,6 +24,8 @@ All significant changes to **PopOS Setup** will be documented here.
 	- Given that now some post-install.d processes use parallelization to run things in the
 		background and work faster, a `wait` command was implemented in the final clean-up step so
 		users don't close the shell while things are still running.
+- [gnome_settings.sh](gnome_settings.sh):
+	- The script now configures the new GNOME Text Editor.
 - [packages.txt](packages.txt):
 	- There's a new entry in the Development category called **Debian Packaging (.deb)**, which lists
 		`dpkg-dev` and `debhelper`, two packages needed to create .deb packages.
@@ -41,16 +44,34 @@ All significant changes to **PopOS Setup** will be documented here.
 	  user to specify it instead.
 	- The `now-ignored` alias was renamed to `list-ignored` because the keyword list better explains
 	  what the alias does.
+	- The placeholders for all `log --format` aliases were updated to use *%C(auto)* instead of
+		*%C(r)*.
+	- The alias `list-ignored` now uses the option `-o` because of an update to git.
+- [.zshrc](samples/zshrc):
+	- Changed the way coloring works for all the ls aliases. `ls` itselft is now aliased to `ls -BhF
+	  --group-directories-first`, *raw* ls can still be used in the shell by typing `\ls`.
+- [zsh.sh](post-install.d/zsh.sh):
+	- The script now makes a copy of *.zshrc* in */etc/skel/.zshrc*.
+	- The script now configures useradd to use zsh as the default shell when the user changes their
+		default shell to zsh.
 - [init.vim](samples/nvim.vim):
 	- The filetype *gitcommit* was added to an autocommand group to display colorcolumns at columns
 	  50 and 70 to help keep git commit messages at a reasonable length.
 	- The color of the mode in the statusline was changed to blue.
+	- Allow neovim to use the guicursor.
 - [.vimrc](samples/vimrc):
 	- The filetype *gitcommit* was added to an autocommand group to display colorcolumns at columns
 	  50 and 70 to help keep git commit messages at a reasonable length.
 	- The color of the mode in the statusline was changed to blue.
+- [back_me_up.sh](back_me_up.sh):
+	- The script was updated to be able to handle drives in */run/media/user* as well as in */media*.
+	- The script also syncs the drive so unmounting it after using the script is faster.
 - [mc_server_builder.sh](scripts/mc_server_builder.sh):
-	- The version was updated to 1.18.1.
+	- The version was updated to 1.19.2.
+### Fixed
+- [gnome_settings.sh](scripts/gnome_settings.sh):
+	- Removed the keybindings configurations as they were rather clunky.
+	- GNOME Terminal is no longer configured twice.
 ### Removed
 - [git.sh](post-install.d/git.sh):
 	- The alias `mrc` was removed because it is only useful in very rare situations.

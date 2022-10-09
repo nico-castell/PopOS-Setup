@@ -15,7 +15,7 @@ if which nautilus &>/dev/null; then
 fi
 
 if which gedit &>/dev/null; then
-	echo "Configuring the text editor (gedit)..."
+	echo "Configuring Gedit..."
 	which dconf &>/dev/null && dconf reset -f /org/gnome/gedit/
 
 	gsettings set org.gnome.gedit.plugins active-plugins "['time', 'spell', 'sort', 'snippets', 'quickhighlight', 'modelines', 'filebrowser', 'docinfo']"
@@ -29,7 +29,7 @@ if which gedit &>/dev/null; then
 	gsettings set org.gnome.gedit.preferences.ui side-panel-visible true
 
 	gsettings set org.gnome.gedit.preferences.editor scheme 'oblivion'
-	gsettings set org.gnome.gedit.preferences.editor background-pattern 'none'
+	gsettings set org.gnome.gedit.preferences.editor display-overview-map true
 	gsettings set org.gnome.gedit.preferences.editor display-right-margin true
 	gsettings set org.gnome.gedit.preferences.editor right-margin-position 100
 
@@ -38,14 +38,30 @@ if which gedit &>/dev/null; then
 	gsettings set org.gnome.gedit.state.window side-panel-active-page 'GeditFileBrowserPanel'
 fi
 
+if which gnome-text-editor &>/dev/null; then
+	echo "Configuring GNOME Text Editor..."
+	gsettings set org.gnome.TextEditor auto-indent true
+	gsettings set org.gnome.TextEditor discover-settings false
+	gsettings set org.gnome.TextEditor highlight-current-line true
+	gsettings set org.gnome.TextEditor indent-style 'tab'
+	gsettings set org.gnome.TextEditor indent-width -1
+	gsettings set org.gnome.TextEditor restore-session false
+	gsettings set org.gnome.TextEditor right-margin-position 100
+	gsettings set org.gnome.TextEditor show-line-numbers true
+	gsettings set org.gnome.TextEditor show-map true
+	gsettings set org.gnome.TextEditor spellcheck false
+	gsettings set org.gnome.TextEditor tab-width 4
+	gsettings set org.gnome.TextEditor wrap-text false
+fi
+
 if which gnome-calculator &>/dev/null; then
-	echo "Configuring calculator..."
+	echo "Configuring Calculator..."
 	gsettings set org.gnome.calculator refresh-interval 86400
 	gsettings set org.gnome.calculator show-thousands true
 fi
 
 if which gnome-weather &>/dev/null; then
-	echo "Disabling automatic location in weather..."
+	echo "Disabling automatic location in Weather..."
 	gsettings set org.gnome.Weather automatic-location false
 	gsettings set org.gnome.shell.weather automatic-location false
 fi
@@ -71,17 +87,25 @@ if which geary &>/dev/null; then
 	gsettings set org.gnome.Geary window-maximize false
 fi
 
-if which gnome-terminal &>/dev/null; then
-	echo "Configuring Terminal..."
-	GNOME_TERMINAL_PROFILE=`gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'`
-	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ default-size-columns 90
-	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ default-size-rows 30
-fi
-
 if which gnome-system-monitor &>/dev/null; then
 	echo "Configuring system monitor..."
 	gsettings set org.gnome.gnome-system-monitor current-tab "resources"
 	gsettings set org.gnome.gnome-system-monitor network-in-bits true
+fi
+
+if which gnome-terminal &>/dev/null; then
+	echo "Configuring the Terminal..."
+	GNOME_TERMINAL_PROFILE=`gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'`
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ cursor-shape 'underline'
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-theme-colors false
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-theme-transparency false
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-transparent-background true
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ background-color 'rgb(14,14,14)'
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ foreground-color 'rgb(224,224,224)'
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ background-transparency-percent 5
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy 'always'
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ default-size-columns 78
+	gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ default-size-rows 24
 fi
 
 # Configuring interface.
@@ -115,27 +139,6 @@ gsettings set org.gnome.desktop.privacy recent-files-max-age "7"
 echo "Setting the idle delay to 10 minutes..."
 gsettings set org.gnome.desktop.session idle-delay "600"
 
-# Configuring keybindings.
-echo "Configuring keybindings..."
-gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4']"
-gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Super>F10']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys calculator "['<Super>c']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys help "['<Super>F1']"
-
-# Configuring custom keybindings.
-# Gedit.
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Open text editor"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "'<Super>t'"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "gedit"
-# VS Code.
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name "Open VS Code"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "'<Primary><Super>c'"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command "code"
-# Add the keybindings.
-gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "[\
-'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', \
-'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
-
 # Enabling night light.
 echo "Enabling night light..."
 gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-automatic false
@@ -143,18 +146,5 @@ gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from 
 gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to "7"
 gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature 3200
 gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled true
-
-# Configuring terminal.
-echo "Configuring the terminal..."
-GNOME_TERMINAL_PROFILE=`gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}'`
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ cursor-shape "underline"
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-theme-colors false
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-theme-transparency false
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ use-transparent-background true
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ background-color "'rgb(5,5,5)'"
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ background-transparency-percent 5
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ scrollbar-policy "'always'"
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ default-size-columns 78
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ default-size-rows 24
 
 # Thanks for downloading, and enjoy!

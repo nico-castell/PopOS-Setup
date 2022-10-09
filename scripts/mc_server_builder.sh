@@ -7,8 +7,8 @@
 
 # TODO: Keep link up to date.
 # Copy the download link from https://www.minecraft.net/en-us/download/server if there's a newer version.
-version="1.18.1"
-download_link="https://launcher.mojang.com/v1/objects/125e5adf40c659fd3bce3e66e67a16bb49ecc1b9/server.jar"
+version="1.19.2"
+download_link="https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar"
 
 # Exit codes:
 # 1   - Java not found

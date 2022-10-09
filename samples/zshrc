@@ -196,7 +196,7 @@ unset color_prompt force_color_prompt
 # enable color support of ls, less and man, and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
 	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-	alias ls='ls --color=auto'
+	COLORING=' --color=auto'
 	#alias dir='dir --color=auto'
 	#alias vdir='vdir --color=auto'
 
@@ -218,13 +218,14 @@ if [ -x /usr/bin/dircolors ]; then
 	zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 fi
 
-# some more ls aliases
-alias lla='ls -lahF --group-directories-first'
-alias llz='ls -lahFZ --group-directories-first'
-alias ll='ls -lABhF --group-directories-first'
-alias la='ls -ABhF --group-directories-first'
-alias l='ls -lBhF --group-directories-first'
-alias lz='ls -lBhFZ --group-directories-first'
+# ls aliases
+alias ls="\ls$COLORING -BhF --group-directories-first"
+alias l="\ls$COLORING -lBhF --group-directories-first"
+alias la="\ls$COLORING -ABhF --group-directories-first"
+alias lz="\ls$COLORING -lBhFZ --group-directories-first"
+alias ll="\ls$COLORING -lABhF --group-directories-first"
+alias lla="\ls$COLORING -lahF --group-directories-first"
+alias llz="\ls$COLORING -lahFZ --group-directories-first"
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then

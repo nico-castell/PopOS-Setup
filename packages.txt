@@ -10,7 +10,6 @@ Development Apps and tools for developers
 	C/C++_development build-essential
 	CMake cmake
 	Debian_Packaging_(.deb) dpkg-dev debhelper
-	Git_&_Gitg git git-lfs gitg
 	Glade glade
 	GNOME_Boxes gnome-boxes
 	GNOME_Builder gnome-builder

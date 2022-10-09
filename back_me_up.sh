@@ -64,9 +64,6 @@ case "$1" in
 esac; shift; done
 unset USAGE_MSG EXTENDED_MSG
 
-# The destination folder
-destination="/media/$USER/$DRIVE"
-
 # The list of things to back up
 LIST+=("Desktop")
 LIST+=("Documents")
@@ -103,7 +100,11 @@ Animate() {
 }
 
 # Testing if the drive is connected.
-if [ ! -d "$destination" ]; then
+if [ -d "/run/media/$USER/$DRIVE" ]; then
+	destination="/run/media/$USER/$DRIVE"
+elif [ -d "/media/$DRIVE" ]; then
+	destination="/media/$DRIVE"
+else
 	printf "\e[31mERROR: \"${DRIVE}\" drive not found.\e[00m\n" >&2
 	exit 1
 fi
@@ -185,6 +186,8 @@ for i in ${LIST[@]}; do
 		;;
 	esac
 done
+
+sync "${destination/\/Backup/}"
 
 notify-send              \
 	-t 5000               \
